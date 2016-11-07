@@ -16,8 +16,7 @@
  * under the License.
  */
 
-
-package org.wso2.carbon.apimgt.apim.integration;
+package org.wso2.carbon.apimgt.apim.integration.dto;
 
 import javax.xml.bind.annotation.XmlElement;
 

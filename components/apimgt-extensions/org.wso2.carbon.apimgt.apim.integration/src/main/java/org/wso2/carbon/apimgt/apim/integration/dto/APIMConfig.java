@@ -16,8 +16,7 @@
  * under the License.
  */
 
-
-package org.wso2.carbon.apimgt.apim.integration;
+package org.wso2.carbon.apimgt.apim.integration.dto;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -26,22 +25,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class APIMConfig {
 	DCREndpointConfig dcrEndpointConfig;
 	TokenEndpoint tokenEndpointConfig;
-	
-	
+
 	@XmlElement(name = "DCREndpoint", required = true)
 	public DCREndpointConfig getDcrEndpointConfig() {
 		return dcrEndpointConfig;
 	}
-	
+
 	public void setDcrEndpointConfig(DCREndpointConfig dcrEndpointConfig) {
 		this.dcrEndpointConfig = dcrEndpointConfig;
 	}
-	
+
 	@XmlElement(name = "TokenEndpoint", required = true)
 	public TokenEndpoint getTokenEndpointConfig() {
 		return tokenEndpointConfig;
 	}
-	
+
 	public void setTokenEndpointConfig(TokenEndpoint tokenEndpointConfig) {
 		this.tokenEndpointConfig = tokenEndpointConfig;
 	}

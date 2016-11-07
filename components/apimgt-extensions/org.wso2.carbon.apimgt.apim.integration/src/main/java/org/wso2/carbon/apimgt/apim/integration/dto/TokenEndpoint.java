@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
 /*
  * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -16,23 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- -->
 
-<APIMConfiguration>
-<DCREndpoint>
-	<URL>http://localhost:9763/client-registration/v0.10/register</URL>
-	<UserName>admin</UserName>
-	<Password>admin</Password>
-	<ClientProfile>
-		<clientName>iotClient2</clientName>
-		<callbackUrl>www.goole.com</callbackUrl>
-		<tokenScope>Production</tokenScope>
-		<owner>admin</owner>
-		<grantType>password refresh_token</grantType>
-		<saasApp>true</saasApp>
-	</ClientProfile>
-</DCREndpoint>
-<TokenEndpoint></TokenEndpoint>
-<StoreEndpoint></StoreEndpoint>
-<PublisherEndpoint></PublisherEndpoint>
-</APIMConfiguration>
+package org.wso2.carbon.apimgt.apim.integration.dto;
+
+public class TokenEndpoint {
+
+}

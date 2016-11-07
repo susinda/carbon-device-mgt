@@ -111,8 +111,22 @@
             <groupId>org.wso2.carbon.devicemgt</groupId>
             <artifactId>org.wso2.carbon.device.mgt.common</artifactId>
         </dependency>
+        <dependency>
+		    <groupId>com.netflix.feign</groupId>
+		    <artifactId>feign-core</artifactId>
+		    <version>8.18.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.netflix.feign</groupId>
+		    <artifactId>feign-jaxrs</artifactId>
+		    <version>8.18.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.netflix.feign</groupId>
+		    <artifactId>feign-jackson</artifactId>
+		    <version>8.18.0</version>
+		</dependency>
     </dependencies>
-
 
     <build>
         <plugins>

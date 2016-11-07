@@ -16,45 +16,44 @@
  * under the License.
  */
 
-
-package org.wso2.carbon.apimgt.apim.integration;
+package org.wso2.carbon.apimgt.apim.integration.dto;
 
 import javax.xml.bind.annotation.XmlElement;
 
 public class DCREndpointConfig {
-	
+
 	private String url;
 	private String userName;
 	private String password;
 	private ClientProfile clientProfile;
-	
+
 	@XmlElement(name = "URL", required = true)
 	public String getUrl() {
 		return url;
 	}
-	
+
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
+
 	@XmlElement(name = "UserName", required = true)
 	public String getUserName() {
 		return userName;
 	}
-	
+
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
+
 	@XmlElement(name = "Password", required = true)
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	@XmlElement(name = "ClientProfile", required = true)
 	public ClientProfile getClientProfile() {
 		return clientProfile;

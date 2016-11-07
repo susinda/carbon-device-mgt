@@ -30,15 +30,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 
 import org.wso2.carbon.apimgt.api.APIManagementException;
-
+import org.wso2.carbon.apimgt.apim.integration.dto.APIMConfig;
 
 public class APIMConfigReader {
 
 	private static APIMConfig config;
 
 	private static final String APIM_INTEGRATION_CONFIG_PATH = "src/test/java/apim-integration.xml";
-	// CarbonUtils.getEtcCarbonConfigDirPath() + File.separator +
-	// "api-publisher-config.xml";
+	// CarbonUtils.getEtcCarbonConfigDirPath() + File.separator + "api-publisher-config.xml";
 
 	public synchronized static APIMConfig getAPIMConfig() throws APIManagementException {
 		if (config == null) {
@@ -46,8 +45,8 @@ public class APIMConfigReader {
 		}
 		return config;
 	}
- 
-	private static void init()  throws APIManagementException{
+
+	private static void init() throws APIManagementException {
 		try {
 			File apimConfigFile = new File(APIM_INTEGRATION_CONFIG_PATH);
 			Document doc = convertToDocument(apimConfigFile);

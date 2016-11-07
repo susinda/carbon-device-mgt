@@ -20,8 +20,10 @@
 package org.wso2.carbon.apimgt.apim.integration.tests;
 
 import org.wso2.carbon.apimgt.api.APIManagementException;
-import org.wso2.carbon.apimgt.apim.integration.APIMConfig;
+import org.wso2.carbon.apimgt.apim.integration.APIMClient;
 import org.wso2.carbon.apimgt.apim.integration.APIMConfigReader;
+import org.wso2.carbon.apimgt.apim.integration.dto.APIMConfig;
+
 
 public class TestClass {
 
@@ -30,8 +32,11 @@ public class TestClass {
 		try {
 			APIMConfig apimConfig = APIMConfigReader.getAPIMConfig();
 			System.out.println("apimConfig " + apimConfig.getDcrEndpointConfig().getClientProfile().getClientName());
+			
+			APIMClient client = new APIMClient();
+			client.createOAuthApplication(apimConfig.getDcrEndpointConfig());
+			
 		} catch (APIManagementException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -16,9 +16,23 @@
  * under the License.
  */
 
-
 package org.wso2.carbon.apimgt.apim.integration;
 
-public class TokenEndpoint {
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.wso2.carbon.apimgt.apim.integration.dto.ClientProfile;
+import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplication;
+
+@Path("/")
+public interface DynamicClientRegistrationService {
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public OAuthApplication register(ClientProfile registrationProfile);
 
 }
