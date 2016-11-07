@@ -43,6 +43,7 @@ public class APIPublisherStartupHandler implements ServerStartupObserver {
 
     }
 
+    //TODO check apim rest api is avaialbe
     @Override
     public void completedServerStartup() {
         APIPublisherDataHolder.getInstance().setServerStarted(true);

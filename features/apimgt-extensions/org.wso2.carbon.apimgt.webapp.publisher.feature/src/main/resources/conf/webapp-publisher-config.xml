@@ -16,8 +16,8 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-
 <!--
+
         This configuration file represents the configuration that are needed
         when publishing APIs to API Manager
 -->
@@ -25,12 +25,22 @@
 
     <!-- This host is used to define the host address which is used to publish APIs -->
     <Host>https://localhost:${carbon.https.port}</Host>
+    <AuthUserName>admin</AuthUserName>
+    <AuthPassword>admin</AuthPassword>
+    <DCREndpoint>http://localhost:9763/client-registration/v0.9/register</DCREndpoint>
+    <TokenEndpoint>https://localhost:8243/token</TokenEndpoint>
+    <PublisherEndpoint>https://localhost:9443/api/am/publisher/v0.10/apis</PublisherEndpoint>
 
     <!-- If it is true, the APIs of this instance will be published to the defined host -->
     <PublishAPI>true</PublishAPI>
 
     <!-- If it is true, the APIs of this instance will be updated when the webapps are redeployed -->
     <EnabledUpdateApi>true</EnabledUpdateApi>
+    <!-- TODO 
+    //restapi endpoint 
+    //username/pasword,
+    //auth endpoint
+    //DCR endpoint -->
 
     <!--Webapp will be published only when running below profiles-->
     <Profiles>

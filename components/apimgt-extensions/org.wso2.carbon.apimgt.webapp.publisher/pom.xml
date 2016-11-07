@@ -131,10 +131,11 @@
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Bundle-Version>${carbon.device.mgt.version}</Bundle-Version>
                         <Bundle-Description>API Management Webapp Publisher</Bundle-Description>
-                        <Private-Package>org.wso2.carbon.apimgt.webapp.publisher.internal
+                        <Private-Package>org.wso2.carbon.apimgt.webapp.publisher.internal, org.wso2.carbon.apimgt.apim.integration.utils
                         </Private-Package>
                         <Export-Package>
                             !org.wso2.carbon.apimgt.webapp.publisher.internal,
+                            org.wso2.carbon.apimgt.apim.integration,
                             org.wso2.carbon.apimgt.webapp.publisher.*
                         </Export-Package>
                         <Import-Package>

@@ -23,6 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.apimgt.impl.APIManagerConfigurationService;
+import org.wso2.carbon.apimgt.webapp.publisher.APIPublisherRESTServiceImpl;
 import org.wso2.carbon.apimgt.webapp.publisher.APIPublisherService;
 import org.wso2.carbon.apimgt.webapp.publisher.APIPublisherServiceImpl;
 import org.wso2.carbon.apimgt.webapp.publisher.APIPublisherStartupHandler;
@@ -91,7 +92,7 @@ public class APIPublisherServiceComponent {
         /* Registering Device Management Service */
         BundleContext bundleContext = componentContext.getBundleContext();
 
-        APIPublisherService publisher = new APIPublisherServiceImpl();
+        APIPublisherService publisher = new APIPublisherRESTServiceImpl();
         APIPublisherDataHolder.getInstance().setApiPublisherService(publisher);
         bundleContext.registerService(APIPublisherService.class, publisher, null);
         bundleContext.registerService(ServerStartupObserver.class, new APIPublisherStartupHandler(), null);

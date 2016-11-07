@@ -39,6 +39,11 @@ import java.io.File;
 public class WebappPublisherConfig {
 
     private String host;
+    private String authUserName;
+    private String authPassword;
+    private String dcrEndpoint;
+    private String tokenEndpoint;
+    private String publisherEndpoint;
     private boolean isPublished;
     private boolean isEnabledUpdateApi;
     private Profiles profiles;
@@ -67,7 +72,54 @@ public class WebappPublisherConfig {
     public void setHost(String host) {
         this.host = host;
     }
+    
+    
+    @XmlElement(name = "AuthUserName", required = true)
+    public String getAuthUserName() {
+        return this.authUserName;
+    }
 
+    public void setAuthUserName(String user) {
+        this.authUserName = user;
+    }
+
+    @XmlElement(name = "AuthPassword", required = true)
+    public String getAuthPassword() {
+        return this.authPassword;
+    }
+
+    public void setAuthPassword(String pwd) {
+        this.authPassword = pwd;
+    }
+    
+    @XmlElement(name = "DCREndpoint", required = true)
+    public String getDCREndpoint() {
+        return this.dcrEndpoint;
+    }
+
+    public void setDCREndpoint(String dcrEp) {
+        this.dcrEndpoint = dcrEp;
+    }
+    
+    @XmlElement(name = "TokenEndpoint", required = true)
+	public String getTokenEndpoint() {
+		return this.tokenEndpoint;
+	}
+    
+    public void setTokenEndpoint(String tokenEp) {
+        this.tokenEndpoint = tokenEp;
+    }
+    
+    @XmlElement(name = "PublisherEndpoint", required = true)
+   	public String getPublisherEndpoint() {
+   		return this.publisherEndpoint;
+   	}
+       
+	public void setPublisherEndpoint(String pubEp) {
+	    this.publisherEndpoint = pubEp;
+	}
+
+    
     @XmlElement(name = "PublishAPI", required = true)
     public boolean isPublished() {
         return isPublished;

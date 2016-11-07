@@ -47,6 +47,7 @@ public interface APIPublisherService {
      * @param id An instance of the bean that carries API identification related metadata
      * @throws APIManagementException Is thrown if some unexpected event occurs while removing the API
      */
+    //TODO check if we really need this
     void removeAPI(APIIdentifier id) throws APIManagementException;
 
     /**
@@ -55,5 +56,6 @@ public interface APIPublisherService {
      * @param apis A list of the beans that passes metadata related to the APIs being published
      * @throws APIManagementException Is thrown if some unexpected event occurs while publishing the APIs
      */
+    //TODO check if we really need this
     void publishAPIs(List<API> apis) throws APIManagementException, FaultGatewaysException;
 }
