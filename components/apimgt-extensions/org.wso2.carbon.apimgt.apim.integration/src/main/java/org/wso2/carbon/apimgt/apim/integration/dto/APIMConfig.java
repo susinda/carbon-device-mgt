@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class APIMConfig {
 	DCREndpointConfig dcrEndpointConfig;
 	TokenEndpoint tokenEndpointConfig;
+	PublisherEndpoint publisherEndpoint;
 
 	@XmlElement(name = "DCREndpoint", required = true)
 	public DCREndpointConfig getDcrEndpointConfig() {
@@ -42,6 +43,15 @@ public class APIMConfig {
 
 	public void setTokenEndpointConfig(TokenEndpoint tokenEndpointConfig) {
 		this.tokenEndpointConfig = tokenEndpointConfig;
+	}
+	
+	@XmlElement(name = "PublisherEndpoint", required = true)
+	public PublisherEndpoint getPublisherEndpointConfig() {
+		return publisherEndpoint;
+	}
+
+	public void setPublisherEndpointConfig(PublisherEndpoint publisherEndpoint) {
+		this.publisherEndpoint = publisherEndpoint;
 	}
 
 }
