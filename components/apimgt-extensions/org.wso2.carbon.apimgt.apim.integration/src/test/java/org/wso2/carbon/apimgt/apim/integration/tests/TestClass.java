@@ -18,17 +18,20 @@
 
 package org.wso2.carbon.apimgt.apim.integration.tests;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.apim.integration.APIMClient;
 import org.wso2.carbon.apimgt.apim.integration.APIMConfigReader;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO.VisibilityEnum;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIMConfig;
-import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplication;
-import org.wso2.carbon.apimgt.apim.integration.dto.Token;
+import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplicationDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.TokenDTO;
 
-import com.google.gson.JsonObject;
 
 public class TestClass {
 
@@ -44,35 +47,42 @@ public class TestClass {
 							+ apimConfig.getDcrEndpointConfig().getClientProfile().getClientName());
 
 			APIMClient client = new APIMClient();
-			OAuthApplication app = client.createOAuthApplication(apimConfig.getDcrEndpointConfig());
+			OAuthApplicationDTO app = client.createOAuthApplication(apimConfig.getDcrEndpointConfig());
 			System.out.println("Auth app created sucessfully, app.getClientSecret() = " + app.getClientSecret());
 
 			
-			Token token = client.getUserToken(apimConfig.getTokenEndpointConfig(), app);
+			TokenDTO token = client.getUserToken(apimConfig.getTokenEndpointConfig(), app);
 			System.out.println("Token generated succesfully, token.getAccessToken() = " + token.getAccess_token());
 
-			
+			String fileString = "";
+			try {
+				fileString = new String(Files.readAllBytes(Paths.get("src/test/java/api6.json")));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+					
 			APIDTO api = new APIDTO();
-			api.setName("test13");
-			api.setContext("/test13");
-			api.setVersion("1.0");
+			api.setName("qtest27");
+			api.setContext("/qtest27");
+			api.setVersion("1.0.1");
 			api.setProvider("admin");
+			api.setApiDefinition(fileString);
+			api.setIsDefaultVersion(false);
 			api.setTransport(Arrays.asList("http", "https"));
-			api.setApiDefinition(
-					"{\"paths\":{\"/order\":{\"post\":{\"x-auth-type\":\"Application & Application User\",\"x-throttling-tier\":\"Unlimited\",\"description\":\"Create a new Order\",\"parameters\":[{\"schema\":{\"$ref\":\"#/definitions/Order\"},\"description\":\"Order object that needs to be added\",\"name\":\"body\",\"required\":true,\"in\":\"body\"}],\"responses\":{\"201\":{\"headers\":{\"Location\":{\"description\":\"The URL of the newly created resource.\",\"type\":\"string\"}},\"schema\":{\"$ref\":\"#/definitions/Order\"},\"description\":\"Created.\"}}}},\"/menu\":{\"get\":{\"x-auth-type\":\"Application & Application User\",\"x-throttling-tier\":\"Unlimited\",\"description\":\"Return a list of available menu items\",\"parameters\":[],\"responses\":{\"200\":{\"headers\":{},\"schema\":{\"title\":\"Menu\",\"properties\":{\"list\":{\"items\":{\"$ref\":\"#/definitions/MenuItem\"},\"type\":\"array\"}},\"type\":\"object\"},\"description\":\"OK.\"}}}}},\"schemes\":[\"https\"],\"produces\":[\"application/json\"],\"swagger\":\"2.0\",\"definitions\":{\"MenuItem\":{\"title\":\"Pizza menu Item\",\"properties\":{\"price\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"image\":{\"type\":\"string\"}},\"required\":[\"name\"]},\"Order\":{\"title\":\"Pizza Order\",\"properties\":{\"customerName\":{\"type\":\"string\"},\"delivered\":{\"type\":\"boolean\"},\"address\":{\"type\":\"string\"},\"pizzaType\":{\"type\":\"string\"},\"creditCardNumber\":{\"type\":\"string\"},\"quantity\":{\"type\":\"number\"},\"orderId\":{\"type\":\"integer\"}},\"required\":[\"orderId\"]}},\"consumes\":[\"application/json\"],\"info\":{\"title\":\"PizzaShackAPI\",\"description\":\"This document describe a RESTFul API for Pizza Shack online pizza delivery store.\\n\",\"license\":{\"name\":\"Apache 2.0\",\"url\":\"http://www.apache.org/licenses/LICENSE-2.0.html\"},\"contact\":{\"email\":\"architecture@pizzashack.com\",\"name\":\"John Doe\",\"url\":\"http://www.pizzashack.com\"},\"version\":\"1.0.0\"}}");
-			api.setTiers(Arrays.asList("Gold"));
-			api.setVisibility("PUBLIC");
-			api.setEndpointConfig(
-					"{\"production_endpoints\":{\"url\":\"https://localhost:9443/am/sample/pizzashack/v1/api/\",\"config\":null}, \"endpoint_type\":\"http\" ");
-
+			api.setTiers(Arrays.asList("Unlimited"));
+			api.setVisibility(VisibilityEnum.PUBLIC);
+			api.setEndpointConfig("{\"production_endpoints\":{\"url\":\"https://localhost:9443/am/sample/pizzashack/v1/api/\",\"config\":null}, \"endpoint_type\":\"http\" }");
+			api.setGatewayEnvironments("Production");
+			//api.setResponseCaching("Disabled");
+			//api.setDestinationStatsEnabled("false");
 			
-			JsonObject resultApiObject = client.createAPI(apimConfig.getPublisherEndpointConfig(), api, token.getAccess_token());
-			System.out.println("API creation completed succesfully, api.Id = " + resultApiObject.getAsJsonPrimitive("id").toString().replace("\"", ""));
+			APIDTO resultApiObject = client.createAPI(apimConfig.getPublisherEndpointConfig(), api, token.getAccess_token());
+			System.out.println("API creation completed succesfully, api.Id = " + resultApiObject.getId());
 
-		
-			String apiID = resultApiObject.getAsJsonPrimitive("id").toString().replace("\"", "");
-			JsonObject publishResult = client.publishAPI(apimConfig.getPublisherEndpointConfig(), apiID, token.getAccess_token());
-			System.out.println("API publish completed succesfully, api.Id = " + publishResult.toString());
+			boolean response = client.publishAPI(apimConfig.getPublisherEndpointConfig(), resultApiObject.getId(), token.getAccess_token());
+			System.out.println("API publish completed and result is = " + response);
+
 
 		} catch (APIManagementException e) {
 			e.printStackTrace();

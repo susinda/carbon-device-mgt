@@ -20,7 +20,7 @@ package org.wso2.carbon.apimgt.apim.integration.dto;
 
 import javax.xml.bind.annotation.XmlElement;
 
-public class ClientProfile {
+public class ClientProfileDTO {
 
 	private String clientName;
 	private String callbackUrl;

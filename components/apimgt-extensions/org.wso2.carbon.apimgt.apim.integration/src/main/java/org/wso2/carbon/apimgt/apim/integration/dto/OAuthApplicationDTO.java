@@ -18,7 +18,7 @@
 
 package org.wso2.carbon.apimgt.apim.integration.dto;
 
-public class OAuthApplication {
+public class OAuthApplicationDTO {
 
 	private String jsonString;
 	private String appOwner;

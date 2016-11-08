@@ -28,12 +28,14 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.ClientProfile;
-import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplication;
-import org.wso2.carbon.apimgt.apim.integration.dto.Token;
-import org.wso2.carbon.apimgt.apim.integration.dto.TokenInfo;
+import org.wso2.carbon.apimgt.apim.integration.dto.ClientProfileDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplicationDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.TokenDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.TokenRequestDTO;
 
 import com.google.gson.JsonObject;
+
+import feign.Response;
 
 @Path("/")
 public interface APIMRestClientService {
@@ -41,22 +43,22 @@ public interface APIMRestClientService {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public OAuthApplication register(ClientProfile registrationProfile);
+	public OAuthApplicationDTO register(ClientProfileDTO registrationProfile);
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Token getToken(@QueryParam("grant_type") String grant, @QueryParam("username") String username,
+	public TokenDTO getToken(@QueryParam("grant_type") String grant, @QueryParam("username") String username,
             @QueryParam("password") String password, @QueryParam("scope") String scope);
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public JsonObject createAPI(APIDTO apiDTO);
+	public APIDTO createAPI(APIDTO apiDTO);
 
 	//https://localhost:9443/api/am/publisher/v0.10/apis/change-lifecycle?apiId=xxxxxx&action=Publish"
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/change-lifecycle?apiId={apiIdentifier}&action={actionName}")
-	public JsonObject publishAPI(@QueryParam("apiIdentifier") String apiID, @QueryParam("actionName") String state);
+	public Response publishAPI(@QueryParam("apiIdentifier") String apiID, @QueryParam("actionName") String state);
 
 }

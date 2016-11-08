@@ -20,13 +20,11 @@ package org.wso2.carbon.apimgt.apim.integration.dto;
 
 import javax.xml.bind.annotation.XmlElement;
 
-public class DCREndpointConfig {
-
+public class TokenEndpointConfig {
+	
 	private String url;
-	private String userName;
-	private String password;
-	private ClientProfileDTO clientProfile;
-
+	private TokenRequestDTO token;
+	
 	@XmlElement(name = "URL", required = true)
 	public String getUrl() {
 		return url;
@@ -36,31 +34,14 @@ public class DCREndpointConfig {
 		this.url = url;
 	}
 
-	@XmlElement(name = "UserName", required = true)
-	public String getUserName() {
-		return userName;
+
+	@XmlElement(name = "TokenInfo", required = true)
+	public TokenRequestDTO getTokenInfo() {
+		return token;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	@XmlElement(name = "Password", required = true)
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	@XmlElement(name = "ClientProfile", required = true)
-	public ClientProfileDTO getClientProfile() {
-		return clientProfile;
-	}
-
-	public void setClientProfile(ClientProfileDTO clientProfile) {
-		this.clientProfile = clientProfile;
+	public void setTokenInfo(TokenRequestDTO token) {
+		this.token = token;
 	}
 
 }

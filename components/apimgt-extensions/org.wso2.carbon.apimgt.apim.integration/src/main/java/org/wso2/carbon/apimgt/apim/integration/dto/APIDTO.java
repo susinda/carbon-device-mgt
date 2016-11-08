@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package org.wso2.carbon.apimgt.apim.integration.dto;
 
 import java.util.ArrayList;
@@ -23,7 +41,13 @@ public class APIDTO {
 
 	private String status = null;
 
-	private Boolean isDefaultVersion = false;
+	private String responseCaching = null;
+
+	private Integer cacheTimeout = null;
+
+	private String destinationStatsEnabled = null;
+
+	private Boolean isDefaultVersion = null;
 
 	private List<String> transport = new ArrayList<String>();
 
@@ -31,15 +55,39 @@ public class APIDTO {
 
 	private List<String> tiers = new ArrayList<String>();
 
-	private String thumbnailUrl = null;
+	private APIMaxTpsDTO maxTps = null;
 
-	private String visibility;
-	
-	private String endpointConfig;
+	private String thumbnailUri = null;
 
-	//private List<APIEndpointURLsDTO> endpointURLs = new ArrayList<APIEndpointURLsDTO>();
+	public enum VisibilityEnum {
+		PUBLIC, PRIVATE, RESTRICTED, CONTROLLED,
+	};
 
-	//private APIBusinessInformationDTO businessInformation = null;
+	private VisibilityEnum visibility = null;
+
+	private List<String> visibleRoles = new ArrayList<String>();
+
+	private List<String> visibleTenants = new ArrayList<String>();
+
+	private String endpointConfig = null;
+
+	private APIEndpointSecurityDTO endpointSecurity = null;
+
+	private String gatewayEnvironments = null;
+
+	private List<SequenceDTO> sequences = new ArrayList<SequenceDTO>();
+
+	public enum SubscriptionAvailabilityEnum {
+		current_tenant, all_tenants, specific_tenants,
+	};
+
+	private SubscriptionAvailabilityEnum subscriptionAvailability = null;
+
+	private List<String> subscriptionAvailableTenants = new ArrayList<String>();
+
+	private APIBusinessInformationDTO businessInformation = null;
+
+	private APICorsConfigurationDTO corsConfiguration = null;
 
 	public String getId() {
 		return id;
@@ -113,6 +161,30 @@ public class APIDTO {
 		this.status = status;
 	}
 
+	public String getResponseCaching() {
+		return responseCaching;
+	}
+
+	public void setResponseCaching(String responseCaching) {
+		this.responseCaching = responseCaching;
+	}
+
+	public Integer getCacheTimeout() {
+		return cacheTimeout;
+	}
+
+	public void setCacheTimeout(Integer cacheTimeout) {
+		this.cacheTimeout = cacheTimeout;
+	}
+
+	public String getDestinationStatsEnabled() {
+		return destinationStatsEnabled;
+	}
+
+	public void setDestinationStatsEnabled(String destinationStatsEnabled) {
+		this.destinationStatsEnabled = destinationStatsEnabled;
+	}
+
 	public Boolean getIsDefaultVersion() {
 		return isDefaultVersion;
 	}
@@ -145,22 +217,46 @@ public class APIDTO {
 		this.tiers = tiers;
 	}
 
-	public String getThumbnailUrl() {
-		return thumbnailUrl;
+	public APIMaxTpsDTO getMaxTps() {
+		return maxTps;
 	}
 
-	public void setThumbnailUrl(String thumbnailUrl) {
-		this.thumbnailUrl = thumbnailUrl;
+	public void setMaxTps(APIMaxTpsDTO maxTps) {
+		this.maxTps = maxTps;
 	}
-	
-	public String getVisibility() {
+
+	public String getThumbnailUri() {
+		return thumbnailUri;
+	}
+
+	public void setThumbnailUri(String thumbnailUri) {
+		this.thumbnailUri = thumbnailUri;
+	}
+
+	public VisibilityEnum getVisibility() {
 		return visibility;
 	}
-	
-	public void setVisibility(String visibility) {
+
+	public void setVisibility(VisibilityEnum visibility) {
 		this.visibility = visibility;
 	}
-	
+
+	public List<String> getVisibleRoles() {
+		return visibleRoles;
+	}
+
+	public void setVisibleRoles(List<String> visibleRoles) {
+		this.visibleRoles = visibleRoles;
+	}
+
+	public List<String> getVisibleTenants() {
+		return visibleTenants;
+	}
+
+	public void setVisibleTenants(List<String> visibleTenants) {
+		this.visibleTenants = visibleTenants;
+	}
+
 	public String getEndpointConfig() {
 		return endpointConfig;
 	}
@@ -169,21 +265,61 @@ public class APIDTO {
 		this.endpointConfig = endpointConfig;
 	}
 
+	public APIEndpointSecurityDTO getEndpointSecurity() {
+		return endpointSecurity;
+	}
 
-//	public List<APIEndpointURLsDTO> getEndpointURLs() {
-//		return endpointURLs;
-//	}
-//
-//	public void setEndpointURLs(List<APIEndpointURLsDTO> endpointURLs) {
-//		this.endpointURLs = endpointURLs;
-//	}
+	public void setEndpointSecurity(APIEndpointSecurityDTO endpointSecurity) {
+		this.endpointSecurity = endpointSecurity;
+	}
 
-	/*
-	 * public APIBusinessInformationDTO getBusinessInformation() { return
-	 * businessInformation; } public void
-	 * setBusinessInformation(APIBusinessInformationDTO businessInformation) {
-	 * this.businessInformation = businessInformation; }
-	 */
+	public List<SequenceDTO> getSequences() {
+		return sequences;
+	}
+
+	public void setSequences(List<SequenceDTO> sequences) {
+		this.sequences = sequences;
+	}
+
+	public String getGatewayEnvironments() {
+		return gatewayEnvironments;
+	}
+
+	public void setGatewayEnvironments(String gatewayEnvironments) {
+		this.gatewayEnvironments = gatewayEnvironments;
+	}
+
+	public SubscriptionAvailabilityEnum getSubscriptionAvailability() {
+		return subscriptionAvailability;
+	}
+
+	public void setSubscriptionAvailability(SubscriptionAvailabilityEnum subscriptionAvailability) {
+		this.subscriptionAvailability = subscriptionAvailability;
+	}
+
+	public List<String> getSubscriptionAvailableTenants() {
+		return subscriptionAvailableTenants;
+	}
+
+	public void setSubscriptionAvailableTenants(List<String> subscriptionAvailableTenants) {
+		this.subscriptionAvailableTenants = subscriptionAvailableTenants;
+	}
+
+	public APIBusinessInformationDTO getBusinessInformation() {
+		return businessInformation;
+	}
+
+	public void setBusinessInformation(APIBusinessInformationDTO businessInformation) {
+		this.businessInformation = businessInformation;
+	}
+
+	public APICorsConfigurationDTO getCorsConfiguration() {
+		return corsConfiguration;
+	}
+
+	public void setCorsConfiguration(APICorsConfigurationDTO corsConfiguration) {
+		this.corsConfiguration = corsConfiguration;
+	}
 
 	@Override
 	public String toString() {
@@ -199,18 +335,27 @@ public class APIDTO {
 		sb.append("  apiDefinition: ").append(apiDefinition).append("\n");
 		sb.append("  wsdlUri: ").append(wsdlUri).append("\n");
 		sb.append("  status: ").append(status).append("\n");
+		sb.append("  responseCaching: ").append(responseCaching).append("\n");
+		sb.append("  cacheTimeout: ").append(cacheTimeout).append("\n");
+		sb.append("  destinationStatsEnabled: ").append(destinationStatsEnabled).append("\n");
 		sb.append("  isDefaultVersion: ").append(isDefaultVersion).append("\n");
 		sb.append("  transport: ").append(transport).append("\n");
 		sb.append("  tags: ").append(tags).append("\n");
 		sb.append("  tiers: ").append(tiers).append("\n");
-		sb.append("  thumbnailUrl: ").append(thumbnailUrl).append("\n");
-		// sb.append(" endpointURLs: ").append(endpointURLs).append("\n");
-		// sb.append(" businessInformation:
-		// ").append(businessInformation).append("\n");
+		sb.append("  maxTps: ").append(maxTps).append("\n");
+		sb.append("  thumbnailUri: ").append(thumbnailUri).append("\n");
+		sb.append("  visibility: ").append(visibility).append("\n");
+		sb.append("  visibleRoles: ").append(visibleRoles).append("\n");
+		sb.append("  visibleTenants: ").append(visibleTenants).append("\n");
+		sb.append("  endpointConfig: ").append(endpointConfig).append("\n");
+		sb.append("  endpointSecurity: ").append(endpointSecurity).append("\n");
+		sb.append("  gatewayEnvironments: ").append(gatewayEnvironments).append("\n");
+		sb.append("  sequences: ").append(sequences).append("\n");
+		sb.append("  subscriptionAvailability: ").append(subscriptionAvailability).append("\n");
+		sb.append("  subscriptionAvailableTenants: ").append(subscriptionAvailableTenants).append("\n");
+		sb.append("  businessInformation: ").append(businessInformation).append("\n");
+		sb.append("  corsConfiguration: ").append(corsConfiguration).append("\n");
 		sb.append("}\n");
 		return sb.toString();
 	}
-
-
-
 }

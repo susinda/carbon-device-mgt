@@ -20,10 +20,9 @@ package org.wso2.carbon.apimgt.apim.integration.dto;
 
 import javax.xml.bind.annotation.XmlElement;
 
-public class TokenEndpoint {
-	
+public class PublisherEndpointConfig {
+
 	private String url;
-	private TokenInfo token;
 	
 	@XmlElement(name = "URL", required = true)
 	public String getUrl() {
@@ -32,16 +31,6 @@ public class TokenEndpoint {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-
-	@XmlElement(name = "TokenInfo", required = true)
-	public TokenInfo getTokenInfo() {
-		return token;
-	}
-
-	public void setTokenInfo(TokenInfo token) {
-		this.token = token;
 	}
 
 }

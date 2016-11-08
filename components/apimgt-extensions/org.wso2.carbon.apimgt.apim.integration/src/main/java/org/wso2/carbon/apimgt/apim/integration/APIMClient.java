@@ -20,16 +20,17 @@ package org.wso2.carbon.apimgt.apim.integration;
 
 import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.DCREndpointConfig;
-import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplication;
-import org.wso2.carbon.apimgt.apim.integration.dto.PublisherEndpoint;
-import org.wso2.carbon.apimgt.apim.integration.dto.Token;
-import org.wso2.carbon.apimgt.apim.integration.dto.TokenEndpoint;
-import org.wso2.carbon.apimgt.apim.integration.dto.TokenInfo;
+import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplicationDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.PublisherEndpointConfig;
+import org.wso2.carbon.apimgt.apim.integration.dto.TokenDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.TokenEndpointConfig;
+import org.wso2.carbon.apimgt.apim.integration.dto.TokenRequestDTO;
+import org.wso2.carbon.apimgt.apim.integration.utils.AuthBearerRequestInterceptor;
 import org.wso2.carbon.apimgt.apim.integration.utils.FeignClientUtil;
 
-import com.google.gson.JsonObject;
 
 import feign.Feign;
+import feign.Response;
 import feign.auth.BasicAuthRequestInterceptor;
 import feign.gson.GsonDecoder;
 import feign.jackson.JacksonDecoder;
@@ -38,7 +39,7 @@ import feign.jaxrs.JAXRSContract;
 
 public class APIMClient {
 
-	public OAuthApplication createOAuthApplication(DCREndpointConfig dcrConfig) {
+	public OAuthApplicationDTO createOAuthApplication(DCREndpointConfig dcrConfig) {
 
 		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
 				.client(FeignClientUtil.getCustomHostnameVerification())
@@ -48,11 +49,11 @@ public class APIMClient {
 				.requestInterceptor(new BasicAuthRequestInterceptor(dcrConfig.getUserName(), dcrConfig.getPassword()))
 				.target(APIMRestClientService.class, dcrConfig.getUrl());
 
-		OAuthApplication oAuthApplication = dynamicClientRegistrationService.register(dcrConfig.getClientProfile());
+		OAuthApplicationDTO oAuthApplication = dynamicClientRegistrationService.register(dcrConfig.getClientProfile());
 		return oAuthApplication;
 	}
 
-	public Token getUserToken(TokenEndpoint tokenConfig, OAuthApplication oAuthApplication) {
+	public TokenDTO getUserToken(TokenEndpointConfig tokenConfig, OAuthApplicationDTO oAuthApplication) {
 
 		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
 				.client(FeignClientUtil.getCustomHostnameVerification())
@@ -62,12 +63,12 @@ public class APIMClient {
 				.requestInterceptor(new BasicAuthRequestInterceptor(oAuthApplication.getClientId(), oAuthApplication.getClientSecret()))
 				.target(APIMRestClientService.class, tokenConfig.getUrl());
 
-		TokenInfo tokenInfo = tokenConfig.getTokenInfo();
-		Token token = dynamicClientRegistrationService.getToken(tokenInfo.getGrantType(), tokenInfo.getUserName(), tokenInfo.getPassword(), tokenInfo.getScope());
+		TokenRequestDTO tokenInfo = tokenConfig.getTokenInfo();
+		TokenDTO token = dynamicClientRegistrationService.getToken(tokenInfo.getGrantType(), tokenInfo.getUserName(), tokenInfo.getPassword(), tokenInfo.getScope());
 		return token;
 	}
 	
-	public JsonObject createAPI(PublisherEndpoint publisherEndpointConfig, APIDTO apiDTO, String accessToken) {
+	public APIDTO createAPI(PublisherEndpointConfig publisherEndpointConfig, APIDTO apiDTO, String accessToken) {
 
 		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
 				.client(FeignClientUtil.getCustomHostnameVerification())
@@ -77,22 +78,24 @@ public class APIMClient {
 				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMRestClientService.class, publisherEndpointConfig.getUrl());
 
-		JsonObject apiCreationResult = dynamicClientRegistrationService.createAPI(apiDTO);
+		APIDTO apiCreationResult = dynamicClientRegistrationService.createAPI(apiDTO);
 		return apiCreationResult;
 	}
 	
-	public JsonObject publishAPI(PublisherEndpoint publisherEndpointConfig, String apiID, String accessToken) {
+	public boolean publishAPI(PublisherEndpointConfig publisherEndpointConfig, String apiID, String accessToken) {
 
 		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
 				.client(FeignClientUtil.getCustomHostnameVerification())
 				.contract(new JAXRSContract())
 				.encoder(new JacksonEncoder())
-				.decoder(new GsonDecoder())
 				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMRestClientService.class, publisherEndpointConfig.getUrl());
 
-		JsonObject apiPublishResult = dynamicClientRegistrationService.publishAPI(apiID, "Publish");
-		return apiPublishResult;
+		Response apiPublishResult = dynamicClientRegistrationService.publishAPI(apiID, "Publish");
+		if (apiPublishResult.status() == 200) {
+			return true;
+		}
+		return false;
 	}
 
 }
