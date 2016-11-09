@@ -26,6 +26,7 @@ public class APIMConfig {
 	DCREndpointConfig dcrEndpointConfig;
 	TokenEndpointConfig tokenEndpointConfig;
 	PublisherEndpointConfig publisherEndpoint;
+	StoreEndpointConfig storeEndpoint;
 
 	@XmlElement(name = "DCREndpoint", required = true)
 	public DCREndpointConfig getDcrEndpointConfig() {
@@ -52,6 +53,15 @@ public class APIMConfig {
 
 	public void setPublisherEndpointConfig(PublisherEndpointConfig publisherEndpoint) {
 		this.publisherEndpoint = publisherEndpoint;
+	}
+	
+	@XmlElement(name = "StoreEndpoint", required = true)
+	public StoreEndpointConfig getStoreEndpointConfig() {
+		return storeEndpoint;
+	}
+
+	public void setStoreEndpointConfig(StoreEndpointConfig storeEndpoint) {
+		this.storeEndpoint = storeEndpoint;
 	}
 
 }

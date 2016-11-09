@@ -24,7 +24,7 @@
 	<UserName>admin</UserName>
 	<Password>admin</Password>
 	<ClientProfile>
-		<clientName>iotClient54</clientName>
+		<clientName>iotClient138</clientName>
 		<callbackUrl>www.goole.com</callbackUrl>
 		<tokenScope>Production</tokenScope>
 		<owner>admin</owner>
@@ -37,12 +37,14 @@
 	<TokenInfo>
 			<UserName>admin</UserName>
 			<Password>admin</Password>
-			<Scope>apim:api_create apim:api_view apim:api_publish</Scope>
+			<Scope>apim:api_create apim:api_view apim:api_publish apim:subscribe</Scope>
 			<GrantType>password</GrantType>
 	</TokenInfo>
 </TokenEndpoint>
 <PublisherEndpoint>
 	<URL>https://localhost:9443/api/am/publisher/v0.10/apis</URL>
 </PublisherEndpoint>
-<StoreEndpoint></StoreEndpoint>
+<StoreEndpoint>
+ 	<URL>https://127.0.0.1:9443/api/am/store/v0.10</URL>
+</StoreEndpoint>
 </APIMConfiguration>

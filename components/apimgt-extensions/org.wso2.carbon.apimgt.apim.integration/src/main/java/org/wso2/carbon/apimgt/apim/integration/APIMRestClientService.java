@@ -22,17 +22,17 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.APIMApplicationDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.ClientProfileDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplicationDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.StoreAPIListDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionInfoDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.TokenDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.TokenRequestDTO;
-
 import com.google.gson.JsonObject;
 
 import feign.Response;
@@ -60,5 +60,22 @@ public interface APIMRestClientService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/change-lifecycle?apiId={apiIdentifier}&action={actionName}")
 	public Response publishAPI(@QueryParam("apiIdentifier") String apiID, @QueryParam("actionName") String state);
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/applications")
+	public APIMApplicationDTO createAPIMApplication(APIMApplicationDTO requestApp);
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/apis?query={searchQuery}")
+	public StoreAPIListDTO getAPIs(@QueryParam("searchQuery") String searchQuery);
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/subscriptions")
+	public SubscriptionInfoDTO subscribeAPItoApp(SubscriptionInfoDTO subscriptionRequest);
 
 }

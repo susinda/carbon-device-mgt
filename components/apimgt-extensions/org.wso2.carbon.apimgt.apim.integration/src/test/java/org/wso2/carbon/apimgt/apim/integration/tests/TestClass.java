@@ -27,9 +27,12 @@ import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.apim.integration.APIMClient;
 import org.wso2.carbon.apimgt.apim.integration.APIMConfigReader;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.APIMApplicationDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO.VisibilityEnum;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIMConfig;
 import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplicationDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.StoreAPIListDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionInfoDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.TokenDTO;
 
 
@@ -47,13 +50,14 @@ public class TestClass {
 							+ apimConfig.getDcrEndpointConfig().getClientProfile().getClientName());
 
 			APIMClient client = new APIMClient();
-			OAuthApplicationDTO app = client.createOAuthApplication(apimConfig.getDcrEndpointConfig());
-			System.out.println("Auth app created sucessfully, app.getClientSecret() = " + app.getClientSecret());
+			OAuthApplicationDTO dcrApp = client.createOAuthApplication(apimConfig.getDcrEndpointConfig());
+			System.out.println("Auth app created sucessfully, app.getClientSecret() = " + dcrApp.getClientSecret());
 
 			
-			TokenDTO token = client.getUserToken(apimConfig.getTokenEndpointConfig(), app);
+			TokenDTO token = client.getUserToken(apimConfig.getTokenEndpointConfig(), dcrApp);
 			System.out.println("Token generated succesfully, token.getAccessToken() = " + token.getAccess_token());
 
+			
 			String fileString = "";
 			try {
 				fileString = new String(Files.readAllBytes(Paths.get("src/test/java/api6.json")));
@@ -61,10 +65,12 @@ public class TestClass {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-					
+			
+			
 			APIDTO api = new APIDTO();
-			api.setName("qtest27");
-			api.setContext("/qtest27");
+			api.setTags(Arrays.asList("apple"));
+			api.setName("rtest34");
+			api.setContext("/rtest34");
 			api.setVersion("1.0.1");
 			api.setProvider("admin");
 			api.setApiDefinition(fileString);
@@ -82,7 +88,24 @@ public class TestClass {
 
 			boolean response = client.publishAPI(apimConfig.getPublisherEndpointConfig(), resultApiObject.getId(), token.getAccess_token());
 			System.out.println("API publish completed and result is = " + response);
-
+			
+			
+			APIMApplicationDTO requestApp = new APIMApplicationDTO();
+			requestApp.setName("AppleApp36");
+			requestApp.setThrottlingTier("Unlimited");
+			APIMApplicationDTO apimApp = client.createAPIMApplication(apimConfig.getStoreEndpointConfig(), requestApp, token.getAccess_token());
+			System.out.println("API application creation successfull apimApp.getApplicationId() = " + apimApp.getApplicationId());
+			
+			StoreAPIListDTO apiList = client.getAPIs(apimConfig.getStoreEndpointConfig(), "tag:apple", token.getAccess_token());
+			System.out.println("API list retrived apiList.count = " + apiList.getCount());
+			
+			SubscriptionInfoDTO subscription = new SubscriptionInfoDTO();
+			subscription.setTier("Unlimited");
+			subscription.setApplicationId(apimApp.getApplicationId());
+			subscription.setApiIdentifier(apiList.getList().get(0).getId());
+			SubscriptionInfoDTO subscriptionResult = client.subscribeAPItoApp(apimConfig.getStoreEndpointConfig(), subscription, token.getAccess_token());
+			System.out.println("API getSubscriptionId successfull subscriptionResult.getSubscriptionId() = " + subscriptionResult.getSubscriptionId());
+			
 
 		} catch (APIManagementException e) {
 			e.printStackTrace();

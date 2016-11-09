@@ -19,9 +19,13 @@
 package org.wso2.carbon.apimgt.apim.integration;
 
 import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.APIMApplicationDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.DCREndpointConfig;
 import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplicationDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.PublisherEndpointConfig;
+import org.wso2.carbon.apimgt.apim.integration.dto.StoreAPIListDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.StoreEndpointConfig;
+import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionInfoDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.TokenDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.TokenEndpointConfig;
 import org.wso2.carbon.apimgt.apim.integration.dto.TokenRequestDTO;
@@ -96,6 +100,45 @@ public class APIMClient {
 			return true;
 		}
 		return false;
+	}
+
+	public APIMApplicationDTO createAPIMApplication(StoreEndpointConfig storeEndpointConfig, APIMApplicationDTO requestApp,  String accessToken) {
+		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
+				.client(FeignClientUtil.getCustomHostnameVerification())
+				.contract(new JAXRSContract())
+				.encoder(new JacksonEncoder())
+				.decoder(new GsonDecoder())
+				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+				.target(APIMRestClientService.class, storeEndpointConfig.getUrl());
+
+		APIMApplicationDTO resultApp = dynamicClientRegistrationService.createAPIMApplication(requestApp);
+		return resultApp;
+	}
+	
+	public StoreAPIListDTO getAPIs(StoreEndpointConfig storeEndpointConfig, String searchQuery,  String accessToken) {
+		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
+				.client(FeignClientUtil.getCustomHostnameVerification())
+				.contract(new JAXRSContract())
+				.encoder(new JacksonEncoder())
+				.decoder(new GsonDecoder())
+				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+				.target(APIMRestClientService.class, storeEndpointConfig.getUrl());
+
+		StoreAPIListDTO resultApp = dynamicClientRegistrationService.getAPIs(searchQuery);
+		return resultApp;
+	}
+	
+	public SubscriptionInfoDTO subscribeAPItoApp(StoreEndpointConfig storeEndpointConfig, SubscriptionInfoDTO subscriptionRequest,  String accessToken) {
+		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
+				.client(FeignClientUtil.getCustomHostnameVerification())
+				.contract(new JAXRSContract())
+				.encoder(new JacksonEncoder())
+				.decoder(new GsonDecoder())
+				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+				.target(APIMRestClientService.class, storeEndpointConfig.getUrl());
+
+		SubscriptionInfoDTO subscriptionResult = dynamicClientRegistrationService.subscribeAPItoApp(subscriptionRequest);
+		return subscriptionResult;
 	}
 
 }
