@@ -18,6 +18,8 @@
 
 package org.wso2.carbon.apimgt.apim.integration.dto;
 
+import java.util.List;
+
 public class StoreAPIDTO {
 
 	private String provider;
@@ -27,7 +29,17 @@ public class StoreAPIDTO {
 	private String name;
 	private String context;
 	private String id;
-
+	private String apiDefinition;
+	private String wsdlUri;
+	private List<String> transport;
+	private List<String> tags;
+	private List<String> tiers;
+	private String thumbnailUrl;
+	private List<APIEndpointURLsDTO> endpointURLs;
+    private APIBusinessInformationDTO businessInformation;
+    private boolean isDefaultVersion;
+    
+	
 	public String getProvider() {
 		return provider;
 	}
@@ -82,5 +94,104 @@ public class StoreAPIDTO {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	
+	public String getApiDefinition() {
+		return apiDefinition;
+	}
+
+	public void setApiDefinition(String apiDefinition) {
+		this.apiDefinition = apiDefinition;
+	}
+
+	public String getWsdlUri() {
+		return wsdlUri;
+	}
+
+	public void setWsdlUri(String wsdlUri) {
+		this.wsdlUri = wsdlUri;
+	}
+
+	public List<String> getTransport() {
+		return transport;
+	}
+
+	public void setTransport(List<String> transport) {
+		this.transport = transport;
+	}
+
+	public List<String> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+
+	public List<String> getTiers() {
+		return tiers;
+	}
+
+	public void setTiers(List<String> tiers) {
+		this.tiers = tiers;
+	}
+
+	public String getThumbnailUrl() {
+		return thumbnailUrl;
+	}
+
+	public void setThumbnailUrl(String thumbnailUrl) {
+		this.thumbnailUrl = thumbnailUrl;
+	}
+
+	public List<APIEndpointURLsDTO> getEndpointURLs() {
+		return endpointURLs;
+	}
+
+	public void setEndpointURLs(List<APIEndpointURLsDTO> endpointURLs) {
+		this.endpointURLs = endpointURLs;
+	}
+
+	public APIBusinessInformationDTO getBusinessInformation() {
+		return businessInformation;
+	}
+
+	public void setBusinessInformation(APIBusinessInformationDTO businessInformation) {
+		this.businessInformation = businessInformation;
+	}
+
+	public boolean isDefaultVersion() {
+		return isDefaultVersion;
+	}
+
+	public void setDefaultVersion(boolean isDefaultVersion) {
+		this.isDefaultVersion = isDefaultVersion;
+	}
+	
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class APIDTO {\n");
+
+		sb.append("  id: ").append(id).append("\n");
+		sb.append("  name: ").append(name).append("\n");
+		sb.append("  description: ").append(description).append("\n");
+		sb.append("  context: ").append(context).append("\n");
+		sb.append("  version: ").append(version).append("\n");
+		sb.append("  provider: ").append(provider).append("\n");
+		sb.append("  apiDefinition: ").append(apiDefinition).append("\n");
+		sb.append("  wsdlUri: ").append(wsdlUri).append("\n");
+		sb.append("  status: ").append(status).append("\n");
+		sb.append("  isDefaultVersion: ").append(isDefaultVersion).append("\n");
+		sb.append("  transport: ").append(transport).append("\n");
+		sb.append("  tags: ").append(tags).append("\n");
+		sb.append("  tiers: ").append(tiers).append("\n");
+		sb.append("  thumbnailUrl: ").append(thumbnailUrl).append("\n");
+		sb.append("  endpointURLs: ").append(endpointURLs).append("\n");
+		sb.append("  businessInformation: ").append(businessInformation).append("\n");
+		sb.append("}\n");
+		return sb.toString();
 	}
 }

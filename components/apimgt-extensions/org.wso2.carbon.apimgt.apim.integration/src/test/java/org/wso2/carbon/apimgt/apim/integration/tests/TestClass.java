@@ -30,9 +30,11 @@ import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIMApplicationDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO.VisibilityEnum;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIMConfig;
+import org.wso2.carbon.apimgt.apim.integration.dto.ApplicationKeyDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.ApplicationKeyGenRequestDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplicationDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.StoreAPIListDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionInfoDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionListDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.TokenDTO;
 
 
@@ -69,8 +71,8 @@ public class TestClass {
 			
 			APIDTO api = new APIDTO();
 			api.setTags(Arrays.asList("apple"));
-			api.setName("rtest34");
-			api.setContext("/rtest34");
+			api.setName("susi34");
+			api.setContext("/susi34");
 			api.setVersion("1.0.1");
 			api.setProvider("admin");
 			api.setApiDefinition(fileString);
@@ -91,22 +93,28 @@ public class TestClass {
 			
 			
 			APIMApplicationDTO requestApp = new APIMApplicationDTO();
-			requestApp.setName("AppleApp36");
+			requestApp.setName("SusiApp37");
 			requestApp.setThrottlingTier("Unlimited");
 			APIMApplicationDTO apimApp = client.createAPIMApplication(apimConfig.getStoreEndpointConfig(), requestApp, token.getAccess_token());
 			System.out.println("API application creation successfull apimApp.getApplicationId() = " + apimApp.getApplicationId());
 			
-			StoreAPIListDTO apiList = client.getAPIs(apimConfig.getStoreEndpointConfig(), "tag:apple", token.getAccess_token());
+			SubscriptionListDTO apiList = client.getAPIs(apimConfig.getStoreEndpointConfig(), "tag:apple", token.getAccess_token());
 			System.out.println("API list retrived apiList.count = " + apiList.getCount());
 			
-			SubscriptionInfoDTO subscription = new SubscriptionInfoDTO();
+			SubscriptionDTO subscription = new SubscriptionDTO();
 			subscription.setTier("Unlimited");
 			subscription.setApplicationId(apimApp.getApplicationId());
-			subscription.setApiIdentifier(apiList.getList().get(0).getId());
-			SubscriptionInfoDTO subscriptionResult = client.subscribeAPItoApp(apimConfig.getStoreEndpointConfig(), subscription, token.getAccess_token());
+			subscription.setApiIdentifier(resultApiObject.getId());
+			SubscriptionDTO subscriptionResult = client.subscribeAPItoApp(apimConfig.getStoreEndpointConfig(), subscription, token.getAccess_token());
 			System.out.println("API getSubscriptionId successfull subscriptionResult.getSubscriptionId() = " + subscriptionResult.getSubscriptionId());
 			
-
+			ApplicationKeyGenRequestDTO keygenRequest = new ApplicationKeyGenRequestDTO();
+			keygenRequest.setKeyType(ApplicationKeyGenRequestDTO.KeyTypeEnum.PRODUCTION);
+			keygenRequest.setValidityTime("3600");
+			keygenRequest.setAccessAllowDomains(Arrays.asList("ALL"));
+			ApplicationKeyDTO applicationKey = client.generateKeysforApp(apimConfig.getStoreEndpointConfig(), keygenRequest, apimApp.getApplicationId(), token.getAccess_token());
+			System.out.println("API applicationKey generation successfull applicationKey.getToken().toString() = " + applicationKey.getToken().toString());
+			
 		} catch (APIManagementException e) {
 			e.printStackTrace();
 		}

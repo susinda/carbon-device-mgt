@@ -28,10 +28,12 @@ import javax.ws.rs.core.MediaType;
 
 import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIMApplicationDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.ApplicationKeyDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.ApplicationKeyGenRequestDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.ClientProfileDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplicationDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.StoreAPIListDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionInfoDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionListDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.TokenDTO;
 import com.google.gson.JsonObject;
 
@@ -70,12 +72,18 @@ public interface APIMRestClientService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/apis?query={searchQuery}")
-	public StoreAPIListDTO getAPIs(@QueryParam("searchQuery") String searchQuery);
+	public SubscriptionListDTO getAPIs(@QueryParam("searchQuery") String searchQuery);
 	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/subscriptions")
-	public SubscriptionInfoDTO subscribeAPItoApp(SubscriptionInfoDTO subscriptionRequest);
+	public SubscriptionDTO subscribeAPItoApp(SubscriptionDTO subscriptionRequest);
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/applications/generate-keys?applicationId={appId}")
+	public ApplicationKeyDTO generateKeysforApp(ApplicationKeyGenRequestDTO keygenRequest, @QueryParam("appId") String appId);
 
 }

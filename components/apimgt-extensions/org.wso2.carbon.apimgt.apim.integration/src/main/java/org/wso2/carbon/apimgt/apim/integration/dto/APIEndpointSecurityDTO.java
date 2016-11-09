@@ -21,11 +21,11 @@ package org.wso2.carbon.apimgt.apim.integration.dto;
 public class APIEndpointSecurityDTO {
 
 	  private String username = null;
+	  private TypeEnum type = null;
+	  private String password = null;
 	  public enum TypeEnum {
 	     basic,  digest, 
 	  };
-	  private TypeEnum type = null;
-	  private String password = null;
 
 	  public String getUsername() {
 	    return username;

@@ -83,5 +83,5 @@ public class OAuthApplicationDTO {
 	public void setClientSecret(String clientSecret) {
 		this.clientSecret = clientSecret;
 	}
-
+	
 }

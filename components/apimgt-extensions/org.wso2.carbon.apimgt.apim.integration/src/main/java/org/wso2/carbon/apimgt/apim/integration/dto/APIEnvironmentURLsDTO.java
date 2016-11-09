@@ -16,48 +16,36 @@
  * under the License.
  */
 
-
 package org.wso2.carbon.apimgt.apim.integration.dto;
 
-import java.util.List;
+public class APIEnvironmentURLsDTO {
+	private String https = null;
+	private String http = null;
 
-public class StoreAPIListDTO {
-
-	private String previous;
-	private String next;
-	private int count;
-	private List<StoreAPIDTO> list;
-
-	public String getPrevious() {
-		return previous;
+	public String getHttps() {
+		return https;
 	}
 
-	public void setPrevious(String previous) {
-		this.previous = previous;
+	public void setHttps(String https) {
+		this.https = https;
 	}
 
-	public String getNext() {
-		return next;
+	public String getHttp() {
+		return http;
 	}
 
-	public void setNext(String next) {
-		this.next = next;
+	public void setHttp(String http) {
+		this.http = http;
 	}
 
-	public int getCount() {
-		return count;
-	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class APIEnvironmentURLsDTO {\n");
 
-	public void setCount(int count) {
-		this.count = count;
+		sb.append("  https: ").append(https).append("\n");
+		sb.append("  http: ").append(http).append("\n");
+		sb.append("}\n");
+		return sb.toString();
 	}
-
-	public List<StoreAPIDTO> getList() {
-		return list;
-	}
-
-	public void setList(List<StoreAPIDTO> list) {
-		this.list = list;
-	}
-
 }

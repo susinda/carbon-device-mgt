@@ -30,7 +30,7 @@ public class APIMApplicationDTO {
 	private String subscriber;
 	private String applicationId;
 	private String status;
-	private List<String> keys;
+	private List<ApplicationKeyDTO> keys;
 
 	public String getThrottlingTier() {
 		return throttlingTier;
@@ -96,12 +96,30 @@ public class APIMApplicationDTO {
 		this.status = status;
 	}
 
-	public List<String> getKeys() {
+	public List<ApplicationKeyDTO> getKeys() {
 		return keys;
 	}
 
-	public void setKeys(List<String> keys) {
+	public void setKeys(List<ApplicationKeyDTO> keys) {
 		this.keys = keys;
 	}
+	
+	@Override
+	  public String toString()  {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("class ApplicationDTO {\n");
+	    
+	    sb.append("  applicationId: ").append(applicationId).append("\n");
+	    sb.append("  name: ").append(name).append("\n");
+	    sb.append("  subscriber: ").append(subscriber).append("\n");
+	    sb.append("  throttlingTier: ").append(throttlingTier).append("\n");
+	    sb.append("  callbackUrl: ").append(callbackUrl).append("\n");
+	    sb.append("  description: ").append(description).append("\n");
+	    sb.append("  status: ").append(status).append("\n");
+	    sb.append("  groupId: ").append(groupId).append("\n");
+	    sb.append("  keys: ").append(keys).append("\n");
+	    sb.append("}\n");
+	    return sb.toString();
+	  }
 
 }
