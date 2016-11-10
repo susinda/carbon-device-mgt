@@ -23,71 +23,41 @@ import java.util.List;
 
 public class APIDTO {
 
-	private String id = null;
-
-	private String name = null;
-
-	private String description = null;
-
-	private String context = null;
-
-	private String version = null;
-
-	private String provider = null;
-
-	private String apiDefinition = null;
-
-	private String wsdlUri = null;
-
-	private String status = null;
-
-	private String responseCaching = null;
-
-	private Integer cacheTimeout = null;
-
-	private String destinationStatsEnabled = null;
-
-	private Boolean isDefaultVersion = null;
-
+	private String id;
+	private String name;
+	private String description;
+	private String context;
+	private String version;
+	private String provider;
+	private String apiDefinition;
+	private String wsdlUri;
+	private String status;
+	private String responseCaching;
+	private Integer cacheTimeout;
+	private String destinationStatsEnabled;
+	private Boolean isDefaultVersion;
 	private List<String> transport = new ArrayList<String>();
-
 	private List<String> tags = new ArrayList<String>();
-
 	private List<String> tiers = new ArrayList<String>();
-
-	private APIMaxTpsDTO maxTps = null;
-
-	private String thumbnailUri = null;
-
+	private APIMaxTpsDTO maxTps;
+	private String thumbnailUri;
 	public enum VisibilityEnum {
 		PUBLIC, PRIVATE, RESTRICTED, CONTROLLED,
 	};
-
-	private VisibilityEnum visibility = null;
-
+	private VisibilityEnum visibility;
 	private List<String> visibleRoles = new ArrayList<String>();
-
 	private List<String> visibleTenants = new ArrayList<String>();
-
-	private String endpointConfig = null;
-
-	private APIEndpointSecurityDTO endpointSecurity = null;
-
-	private String gatewayEnvironments = null;
-
+	private String endpointConfig;
+	private APIEndpointSecurityDTO endpointSecurity;
+	private String gatewayEnvironments;
 	private List<SequenceDTO> sequences = new ArrayList<SequenceDTO>();
-
 	public enum SubscriptionAvailabilityEnum {
 		current_tenant, all_tenants, specific_tenants,
 	};
-
-	private SubscriptionAvailabilityEnum subscriptionAvailability = null;
-
+	private SubscriptionAvailabilityEnum subscriptionAvailability;
 	private List<String> subscriptionAvailableTenants = new ArrayList<String>();
-
-	private APIBusinessInformationDTO businessInformation = null;
-
-	private APICorsConfigurationDTO corsConfiguration = null;
+	private APIBusinessInformationDTO businessInformation;
+	private APICorsConfigurationDTO corsConfiguration;
 
 	public String getId() {
 		return id;

@@ -20,9 +20,9 @@ package org.wso2.carbon.apimgt.apim.integration.dto;
 
 public class APIEndpointURLsDTO {
 
-	private APIEnvironmentURLsDTO environmentURLs = null;
-	private String environmentName = null;
-	private String environmentType = null;
+	private APIEnvironmentURLsDTO environmentURLs;
+	private String environmentName;
+	private String environmentType;
 
 	public APIEnvironmentURLsDTO getEnvironmentURLs() {
 		return environmentURLs;

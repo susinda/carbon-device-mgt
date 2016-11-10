@@ -55,7 +55,7 @@ public class APIMConfigReader {
 			Unmarshaller unmarshaller = ctx.createUnmarshaller();
 			config = (APIMConfig) unmarshaller.unmarshal(doc);
 		} catch (JAXBException e) {
-			throw new APIManagementException("Error occurred while un-marshalling Webapp " + "Publisher Config", e);
+			throw new APIManagementException("Error occurred while un-marshalling APIMConfig", e);
 		}
 	}
 
@@ -68,7 +68,7 @@ public class APIMConfigReader {
 			return docBuilder.parse(file);
 		} catch (Exception e) {
 			throw new APIManagementException(
-					"Error occurred while parsing file, while converting " + "to a org.w3c.dom.Document", e);
+					"Error occurred while parsing file, while converting apim-integration.xml to a org.w3c.dom.Document", e);
 		}
 	}
 

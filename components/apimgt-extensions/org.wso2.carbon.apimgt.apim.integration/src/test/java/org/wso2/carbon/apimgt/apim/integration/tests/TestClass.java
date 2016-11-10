@@ -71,8 +71,8 @@ public class TestClass {
 			
 			APIDTO api = new APIDTO();
 			api.setTags(Arrays.asList("apple"));
-			api.setName("susi34");
-			api.setContext("/susi34");
+			api.setName("Ausi34");
+			api.setContext("/Ausi34");
 			api.setVersion("1.0.1");
 			api.setProvider("admin");
 			api.setApiDefinition(fileString);
@@ -93,7 +93,7 @@ public class TestClass {
 			
 			
 			APIMApplicationDTO requestApp = new APIMApplicationDTO();
-			requestApp.setName("SusiApp37");
+			requestApp.setName("AusiApp37");
 			requestApp.setThrottlingTier("Unlimited");
 			APIMApplicationDTO apimApp = client.createAPIMApplication(apimConfig.getStoreEndpointConfig(), requestApp, token.getAccess_token());
 			System.out.println("API application creation successfull apimApp.getApplicationId() = " + apimApp.getApplicationId());

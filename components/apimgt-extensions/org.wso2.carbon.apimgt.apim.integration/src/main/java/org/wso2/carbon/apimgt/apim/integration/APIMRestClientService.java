@@ -57,7 +57,6 @@ public interface APIMRestClientService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public APIDTO createAPI(APIDTO apiDTO);
 
-	//https://localhost:9443/api/am/publisher/v0.10/apis/change-lifecycle?apiId=xxxxxx&action=Publish"
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/change-lifecycle?apiId={apiIdentifier}&action={actionName}")

@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "APIMConfiguration")
 public class APIMConfig {
+	
 	DCREndpointConfig dcrEndpointConfig;
 	TokenEndpointConfig tokenEndpointConfig;
 	PublisherEndpointConfig publisherEndpoint;
