@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.wso2.carbon.apimgt.apim.integration;
+package org.wso2.carbon.apimgt.apim.utils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

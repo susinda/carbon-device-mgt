@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package org.wso2.carbon.apimgt.apim.integration;
+package org.wso2.carbon.apimgt.apim.utils;
 
 import com.google.gson.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.api.model.API;
-import org.wso2.carbon.apimgt.apim.integration.utils.APIJsonSerializerImpl;
-import org.wso2.carbon.apimgt.apim.integration.utils.Constants;
-import org.wso2.carbon.apimgt.apim.integration.utils.HttpRequestUtil;
-import org.wso2.carbon.apimgt.apim.integration.utils.HttpResponse;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.utils.multitenancy.MultitenantUtils;
 

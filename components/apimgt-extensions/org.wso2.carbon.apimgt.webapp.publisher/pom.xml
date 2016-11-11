@@ -111,6 +111,11 @@
             <groupId>org.wso2.carbon.devicemgt</groupId>
             <artifactId>org.wso2.carbon.device.mgt.common</artifactId>
         </dependency>
+        <dependency>
+          <groupId>org.wso2.carbon.devicemgt</groupId>
+          <artifactId>org.wso2.carbon.apimgt.apim.integration</artifactId>
+          <version>1.2.7-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 

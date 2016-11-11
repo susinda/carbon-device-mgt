@@ -1,4 +1,4 @@
-package org.wso2.carbon.apimgt.apim.integration.utils;
+package org.wso2.carbon.apimgt.apim.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

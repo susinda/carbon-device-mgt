@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.wso2.carbon.apimgt.apim.integration.utils;
+package org.wso2.carbon.apimgt.apim.utils;
 
 
 import javax.net.ssl.HostnameVerifier;
