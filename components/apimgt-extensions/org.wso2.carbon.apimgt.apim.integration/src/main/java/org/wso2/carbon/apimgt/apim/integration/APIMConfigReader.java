@@ -36,11 +36,13 @@ public class APIMConfigReader {
 
 	private static APIMConfig config;
 
-	private static final String APIM_INTEGRATION_CONFIG_PATH = "src/test/java/apim-integration.xml";
+	private static String APIM_INTEGRATION_CONFIG_PATH = "";
+	//"src/test/java/apim-integration.xml";
 	// CarbonUtils.getEtcCarbonConfigDirPath() + File.separator + "api-publisher-config.xml";
 
-	public synchronized static APIMConfig getAPIMConfig() throws APIManagementException {
+	public synchronized static APIMConfig getAPIMConfig(String configFilePath) throws APIManagementException {
 		if (config == null) {
+			APIM_INTEGRATION_CONFIG_PATH = configFilePath;
 			init();
 		}
 		return config;

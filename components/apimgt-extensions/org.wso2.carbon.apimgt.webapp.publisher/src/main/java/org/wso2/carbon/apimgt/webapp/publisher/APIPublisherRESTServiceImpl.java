@@ -1,5 +1,6 @@
 package org.wso2.carbon.apimgt.webapp.publisher;
 
+import java.io.File;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,7 +12,7 @@ import org.wso2.carbon.apimgt.apim.integration.APIMClient;
 import org.wso2.carbon.apimgt.apim.integration.APIMConfigReader;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIMConfig;
-import org.wso2.carbon.apimgt.apim.utils.APIMConfigurations;
+import org.wso2.carbon.utils.CarbonUtils;
 
 public class APIPublisherRESTServiceImpl extends APIPublisherServiceImpl {
 	private static final Log log = LogFactory.getLog(APIPublisherRESTServiceImpl.class);
@@ -20,10 +21,13 @@ public class APIPublisherRESTServiceImpl extends APIPublisherServiceImpl {
 	public void publishAPI(API apimAPI) throws APIManagementException, FaultGatewaysException {
 	   log.info("APIPublisherRESTServiceImpl Creating api " + apimAPI.getId().getApiName());
 	   APIMClient apimRestClient = new APIMClient();
-	   APIMConfig config = APIMConfigReader.getAPIMConfig(); 
+	   String configFile =  CarbonUtils.getCarbonConfigDirPath() + File.separator + "apim-integration.xml";
+	   log.info("APIPublisherRESTServiceImpl configFile" + configFile);
+	   APIMConfig config = APIMConfigReader.getAPIMConfig(configFile); 
 	   APIDTO apiDTO = APIBuilderUtil.fromAPItoDTO(apimAPI);
 	   String accessToken = APIBuilderUtil.getAccessToken();
-	   apimRestClient.createAPI(config.getPublisherEndpointConfig(), apiDTO, accessToken);
+	   APIDTO createdAPI = apimRestClient.createAPI(config.getPublisherEndpointConfig(), apiDTO, accessToken);
+	   log.info("APIPublisherRESTServiceImpl createdAPI " + createdAPI.getName() + "  " + createdAPI.getId());
     }
 		
 	@Override
@@ -32,7 +36,8 @@ public class APIPublisherRESTServiceImpl extends APIPublisherServiceImpl {
             log.debug("Removing API '" + id.getApiName() + "'");
         }
         APIMClient apimRestClient = new APIMClient();
- 	    APIMConfigurations.APIMEnvironmentConfig apiEnvironmentConfig = APIMConfigurations.getInstance().getApiEnvironmentConfigList().get(0);
+        String configFile =  CarbonUtils.getCarbonConfigDirPath() + File.separator + "apim-integration.xml";
+ 	    //APIMConfigurations.APIMEnvironmentConfig apiEnvironmentConfig = APIMConfigurations.getInstance().getApiEnvironmentConfigList().get(0);
  	    //apimRestClient.deleteAPI(id.getApiName(), apiEnvironmentConfig);
         if (log.isDebugEnabled()) {
             log.debug("API '" + id.getApiName() + "' has been successfully removed");

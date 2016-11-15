@@ -98,6 +98,7 @@ public class APIPublisherStartupHandler implements ServerStartupObserver {
                 publisher.publishAPI(api);
             } catch (Exception e) {
                 failedStack.push(api);
+                log.error(e.getMessage(), e);
             }
         }
     }

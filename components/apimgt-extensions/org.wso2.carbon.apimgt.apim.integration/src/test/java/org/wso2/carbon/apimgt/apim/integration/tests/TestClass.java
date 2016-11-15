@@ -46,7 +46,7 @@ public class TestClass {
 		try {
 
 			System.out.println("Reading the config file 'apim-integration.xml'");
-			APIMConfig apimConfig = APIMConfigReader.getAPIMConfig();
+			APIMConfig apimConfig = APIMConfigReader.getAPIMConfig("src/test/java/apim-integration.xml");
 			System.out.println(
 					"Config file red sucessfully and apimConfig.getDcrEndpointConfig().getClientProfile().getClientName() = "
 							+ apimConfig.getDcrEndpointConfig().getClientProfile().getClientName());

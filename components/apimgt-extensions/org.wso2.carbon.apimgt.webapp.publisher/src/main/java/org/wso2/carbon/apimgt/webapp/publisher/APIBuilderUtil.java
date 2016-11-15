@@ -1,5 +1,6 @@
 package org.wso2.carbon.apimgt.webapp.publisher;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplicationDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.SequenceDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.TokenDTO;
 import org.wso2.carbon.apimgt.impl.APIConstants;
+import org.wso2.carbon.utils.CarbonUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -38,7 +40,8 @@ public class APIBuilderUtil {
 	private static final Log log = LogFactory.getLog(APIBuilderUtil.class);
 	
 	public static String getAccessToken() throws APIManagementException {
-		APIMConfig apimConfig = APIMConfigReader.getAPIMConfig();
+		String configFile =  CarbonUtils.getCarbonConfigDirPath() + File.separator + "api-integration.xml";
+		APIMConfig apimConfig = APIMConfigReader.getAPIMConfig(configFile);
 		
 		APIMClient client = new APIMClient();
 		OAuthApplicationDTO dcrApp = client.createOAuthApplication(apimConfig.getDcrEndpointConfig());
