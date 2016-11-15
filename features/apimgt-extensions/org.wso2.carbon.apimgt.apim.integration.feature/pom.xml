@@ -26,7 +26,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>org.wso2.carbon.apimgt.api.integration.feature</artifactId>
+    <artifactId>org.wso2.carbon.apimgt.apim.integration.feature</artifactId>
     <packaging>pom</packaging>
     <name>WSO2 Carbon - APIM Integration Feature</name>
     <url>http://wso2.org</url>
@@ -36,7 +36,6 @@
         <dependency>
             <groupId>org.wso2.carbon.devicemgt</groupId>
             <artifactId>org.wso2.carbon.apimgt.apim.integration</artifactId>
-            <version>1.2.7-SNAPSHOT</version>
         </dependency>
         <dependency>
 		    <groupId>io.github.openfeign</groupId>

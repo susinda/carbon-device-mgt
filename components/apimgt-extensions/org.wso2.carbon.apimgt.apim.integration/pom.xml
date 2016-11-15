@@ -21,7 +21,6 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.wso2.carbon.apimgt.apim.integration</artifactId>
-	<version>1.2.7-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 	<name>WSO2 Carbon - API Management Integration</name>
 	<description>WSO2 Carbon - API Management APIM Integration Module</description>
