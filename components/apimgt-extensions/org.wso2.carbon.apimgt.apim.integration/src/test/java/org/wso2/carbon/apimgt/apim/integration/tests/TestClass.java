@@ -71,8 +71,8 @@ public class TestClass {
 			
 			APIDTO api = new APIDTO();
 			api.setTags(Arrays.asList("apple"));
-			api.setName("Ausi34");
-			api.setContext("/Ausi34");
+			api.setName("Ausi36");
+			api.setContext("/Ausi36");
 			api.setVersion("1.0.1");
 			api.setProvider("admin");
 			api.setApiDefinition(fileString);
@@ -93,12 +93,12 @@ public class TestClass {
 			
 			
 			APIMApplicationDTO requestApp = new APIMApplicationDTO();
-			requestApp.setName("AusiApp37");
+			requestApp.setName("AusiApp38");
 			requestApp.setThrottlingTier("Unlimited");
 			APIMApplicationDTO apimApp = client.createAPIMApplication(apimConfig.getStoreEndpointConfig(), requestApp, token.getAccess_token());
 			System.out.println("API application creation successfull apimApp.getApplicationId() = " + apimApp.getApplicationId());
 			
-			SubscriptionListDTO apiList = client.getAPIs(apimConfig.getStoreEndpointConfig(), "tag:apple", token.getAccess_token());
+			SubscriptionListDTO apiList = client.searchAPIs(apimConfig.getStoreEndpointConfig(), "tag:apple", token.getAccess_token());
 			System.out.println("API list retrived apiList.count = " + apiList.getCount());
 			
 			SubscriptionDTO subscription = new SubscriptionDTO();

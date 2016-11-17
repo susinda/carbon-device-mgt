@@ -65,11 +65,11 @@
 			<artifactId>feign-jaxrs</artifactId>
 			<version>${io.github.openfeign.version}</version>
 		</dependency>
-		<dependency>
+		<!-- dependency>
 			<groupId>io.github.openfeign</groupId>
 			<artifactId>feign-jackson</artifactId>
 			<version>${io.github.openfeign.version}</version>
-		</dependency>
+		</dependency-->
 		<dependency>
 			<groupId>io.github.openfeign</groupId>
 			<artifactId>feign-gson</artifactId>
@@ -86,7 +86,6 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>1.4.0</version>
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
@@ -102,6 +101,13 @@
 							org.osgi.framework,
 							org.osgi.service.component,
 							org.apache.commons.logging,
+							feign, 
+							feign.auth, 
+							feign.codec, 
+							feign.gson, 
+							feign.jaxrs, 
+							javax.net.ssl,
+							org.w3c.dom,
 							javax.servlet,
 							javax.xml.*,
 							javax.xml.parsers;version="${javax.xml.parsers.import.pkg.version}";resolution:=optional,
@@ -112,13 +118,12 @@
 							org.wso2.carbon.apimgt.impl,
 							org.wso2.carbon.core,
 							org.apache.commons.lang,
+							javax.ws.rs.*;version="${javax.ws.rs.jsr311-api.version}",
 							org.wso2.carbon.utils
 						</Import-Package>
 						<Embed-Dependency>
-							javax.ws.rs-api,
 							scribe;scope=compile|runtime;inline=false;
 						</Embed-Dependency>
-						<DynamicImport-Package>*</DynamicImport-Package>
 					</instructions>
 				</configuration>
 			</plugin>
@@ -127,6 +132,7 @@
 
 	<properties>
 		<io.github.openfeign.version>9.3.1</io.github.openfeign.version>
+		<javax.ws.rs.jsr311-api.version>[1.1.0, 2.0.0)</javax.ws.rs.jsr311-api.version>
 	</properties>
 
 </project>

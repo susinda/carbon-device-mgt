@@ -28,7 +28,6 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.carbon.apimgt.webapp.publisher.feature</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.7-SNAPSHOT</version>
     <name>WSO2 Carbon - API Management Webapp Publisher Feature</name>
     <url>http://wso2.org</url>
     <description>This feature contains an implementation of a Tomcat lifecycle listener, which takes care of publishing
@@ -54,7 +53,6 @@
         <plugins>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
                 <executions>
                     <execution>
                         <id>copy-resources</id>
@@ -107,7 +105,6 @@
             <plugin>
                 <groupId>org.wso2.maven</groupId>
                 <artifactId>carbon-p2-plugin</artifactId>
-                <version>${carbon.p2.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>p2-feature-generation</id>

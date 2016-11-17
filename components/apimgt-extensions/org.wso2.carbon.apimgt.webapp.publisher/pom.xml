@@ -114,7 +114,6 @@
         <dependency>
           <groupId>org.wso2.carbon.devicemgt</groupId>
           <artifactId>org.wso2.carbon.apimgt.apim.integration</artifactId>
-          <version>1.2.7-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -140,7 +139,6 @@
                         </Private-Package>
                         <Export-Package>
                             !org.wso2.carbon.apimgt.webapp.publisher.internal,
-                            org.wso2.carbon.apimgt.apim.integration,
                             org.wso2.carbon.apimgt.webapp.publisher.*
                         </Export-Package>
                         <Import-Package>

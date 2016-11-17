@@ -30,13 +30,18 @@
     <packaging>pom</packaging>
     <name>WSO2 Carbon - APIM Integration Feature</name>
     <url>http://wso2.org</url>
-    <description>This feature contains an http client implementation to communicate with WSO2-APIM server</description>
+    <description>This feature contains a http client implementation to communicate with WSO2-APIM server</description>
 
     <dependencies>
         <dependency>
             <groupId>org.wso2.carbon.devicemgt</groupId>
             <artifactId>org.wso2.carbon.apimgt.apim.integration</artifactId>
         </dependency>
+        <!-- dependency>
+		    <groupId>io.github.openfeign</groupId>
+		    <artifactId>feign-jackson</artifactId>
+		     <version>${io.github.openfeign.version}</version>
+		</dependency-->
         <dependency>
 		    <groupId>io.github.openfeign</groupId>
 		    <artifactId>feign-core</artifactId>
@@ -45,11 +50,6 @@
         <dependency>
 		    <groupId>io.github.openfeign</groupId>
 		    <artifactId>feign-jaxrs</artifactId>
-		     <version>${io.github.openfeign.version}</version>
-		</dependency>
-		<dependency>
-		    <groupId>io.github.openfeign</groupId>
-		    <artifactId>feign-jackson</artifactId>
 		     <version>${io.github.openfeign.version}</version>
 		</dependency>
 		<dependency>
@@ -110,7 +110,6 @@
                                 </properties>
                             </adviceFile>
                             <bundles>
-                                
                                 <bundleDef>
                                     org.wso2.carbon.devicemgt:org.wso2.carbon.apimgt.apim.integration:${carbon.device.mgt.version}
                                 </bundleDef>
@@ -121,11 +120,11 @@
                                     io.github.openfeign:feign-jaxrs:${io.github.openfeign.version}
                                 </bundleDef>
                                 <bundleDef>
-                                    io.github.openfeign:feign-jackson:${io.github.openfeign.version}
-                                </bundleDef>
-                                <bundleDef>
                                     io.github.openfeign:feign-gson:${io.github.openfeign.version}
                                 </bundleDef>
+                                <!-- bundleDef>
+                                    io.github.openfeign:feign-jackson:${io.github.openfeign.version}
+                                </bundleDef-->
                                 <bundleDef>
                                 	javax.ws.rs:jsr311-api:1.1.1
                                 </bundleDef>

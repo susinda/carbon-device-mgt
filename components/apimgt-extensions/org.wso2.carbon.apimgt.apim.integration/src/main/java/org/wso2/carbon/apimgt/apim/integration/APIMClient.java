@@ -38,8 +38,7 @@ import feign.Feign;
 import feign.Response;
 import feign.auth.BasicAuthRequestInterceptor;
 import feign.gson.GsonDecoder;
-import feign.jackson.JacksonDecoder;
-import feign.jackson.JacksonEncoder;
+import feign.gson.GsonEncoder;
 import feign.jaxrs.JAXRSContract;
 
 /**
@@ -63,8 +62,8 @@ public class APIMClient {
 		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
 				.client(FeignClientUtil.getCustomHostnameVerification())
 				.contract(new JAXRSContract())
-				.encoder(new JacksonEncoder())
-				.decoder(new JacksonDecoder())
+				.encoder(new GsonEncoder())
+				.decoder(new GsonDecoder())
 				.requestInterceptor(new BasicAuthRequestInterceptor(dcrConfig.getUserName(), dcrConfig.getPassword()))
 				.target(APIMRestClientService.class, dcrConfig.getUrl());
 
@@ -84,8 +83,8 @@ public class APIMClient {
 		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
 				.client(FeignClientUtil.getCustomHostnameVerification())
 				.contract(new JAXRSContract())
-				.encoder(new JacksonEncoder())
-				.decoder(new JacksonDecoder())
+				.encoder(new GsonEncoder())
+				.decoder(new GsonDecoder())
 				.requestInterceptor(new BasicAuthRequestInterceptor(oAuthApplication.getClientId(), oAuthApplication.getClientSecret()))
 				.target(APIMRestClientService.class, tokenConfig.getUrl());
 
@@ -107,7 +106,7 @@ public class APIMClient {
 		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
 				.client(FeignClientUtil.getCustomHostnameVerification())
 				.contract(new JAXRSContract())
-				.encoder(new JacksonEncoder())
+				.encoder(new GsonEncoder())
 				.decoder(new GsonDecoder())
 				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMRestClientService.class, publisherEndpointConfig.getUrl());
@@ -129,7 +128,7 @@ public class APIMClient {
 		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
 				.client(FeignClientUtil.getCustomHostnameVerification())
 				.contract(new JAXRSContract())
-				.encoder(new JacksonEncoder())
+				.encoder(new GsonEncoder())
 				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMRestClientService.class, publisherEndpointConfig.getUrl());
 
@@ -152,7 +151,7 @@ public class APIMClient {
 		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
 				.client(FeignClientUtil.getCustomHostnameVerification())
 				.contract(new JAXRSContract())
-				.encoder(new JacksonEncoder())
+				.encoder(new GsonEncoder())
 				.decoder(new GsonDecoder())
 				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMRestClientService.class, storeEndpointConfig.getUrl());
@@ -165,20 +164,20 @@ public class APIMClient {
 	 * Get a list of of available APIs (from WSO2-APIM) qualifying under a given search query. 
 	 * @param storeEndpointConfig - Part of the APIMConfig, which defines the configurations parameters for
 	 * Store Endpoint, see apim-integration.xml
-	 * @param searchQuery - You can search in attributes by using an ":" modifier. Eg. "tag:wso2" will match an API if the tag of the API is "wso2".
+	 * @param query - You can search in attributes by using an ":" modifier. Eg. "tag:wso2" will match an API if the tag of the API is "wso2".
 	 * @param accessToken - OAuth bearer token, required to invoke the (OAuth secured) store-apis.
 	 * @return - An instance of SubscriptionListDTO, which contains the list of apis
 	 */
-	public SubscriptionListDTO getAPIs(StoreEndpointConfig storeEndpointConfig, String searchQuery,  String accessToken) {
+	public SubscriptionListDTO searchAPIs(StoreEndpointConfig storeEndpointConfig, String searchQuery,  String accessToken) {
 		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
 				.client(FeignClientUtil.getCustomHostnameVerification())
 				.contract(new JAXRSContract())
-				.encoder(new JacksonEncoder())
+				.encoder(new GsonEncoder())
 				.decoder(new GsonDecoder())
 				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMRestClientService.class, storeEndpointConfig.getUrl());
 
-		SubscriptionListDTO resultApp = dynamicClientRegistrationService.getAPIs(searchQuery);
+		SubscriptionListDTO resultApp = dynamicClientRegistrationService.searchAPIs(searchQuery);
 		return resultApp;
 	}
 	
@@ -194,7 +193,7 @@ public class APIMClient {
 		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
 				.client(FeignClientUtil.getCustomHostnameVerification())
 				.contract(new JAXRSContract())
-				.encoder(new JacksonEncoder())
+				.encoder(new GsonEncoder())
 				.decoder(new GsonDecoder())
 				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMRestClientService.class, storeEndpointConfig.getUrl());
@@ -216,7 +215,7 @@ public class APIMClient {
 		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
 				.client(FeignClientUtil.getCustomHostnameVerification())
 				.contract(new JAXRSContract())
-				.encoder(new JacksonEncoder())
+				.encoder(new GsonEncoder())
 				.decoder(new GsonDecoder())
 				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMRestClientService.class, storeEndpointConfig.getUrl());

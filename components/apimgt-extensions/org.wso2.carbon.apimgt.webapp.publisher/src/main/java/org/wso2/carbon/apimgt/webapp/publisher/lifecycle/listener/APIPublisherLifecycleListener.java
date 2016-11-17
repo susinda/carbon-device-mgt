@@ -76,22 +76,22 @@ public class APIPublisherLifecycleListener implements LifecycleListener {
                             if (isTenantActive) {
                                 apiConfig.init();
                                 API api = APIPublisherUtil.getAPI(apiConfig); //TODO call restendpoints
-                                //boolean isServerStarted = APIPublisherDataHolder.getInstance().isServerStarted();
-//                                if (isServerStarted) {
-//                                    APIPublisherService apiPublisherService =
-//                                            APIPublisherDataHolder.getInstance().getApiPublisherService();
-//                                    if (apiPublisherService == null) {
-//                                        throw new IllegalStateException(
-//                                                "API Publisher service is not initialized properly");
-//                                    }
-//                                    apiPublisherService.publishAPI(api);
-//                                } else {
+                                boolean isServerStarted = APIPublisherDataHolder.getInstance().isServerStarted();
+                                if (isServerStarted) {
+                                    APIPublisherService apiPublisherService =
+                                            APIPublisherDataHolder.getInstance().getApiPublisherService();
+                                    if (apiPublisherService == null) {
+                                        throw new IllegalStateException(
+                                                "API Publisher service is not initialized properly");
+                                    }
+                                    apiPublisherService.publishAPI(api);
+                                } else {
                                     if (log.isDebugEnabled()) {
                                         log.debug("Server has not started yet. Hence adding API '" +
                                                 api.getId().getApiName() + "' to the queue");
                                     }
                                     APIPublisherDataHolder.getInstance().getUnpublishedApis().push(api);
-//                                }
+                                }
                             } else {
                                 log.error("No tenant [" + apiConfig.getTenantDomain() + "] " +
                                         "found when publishing the Web app");

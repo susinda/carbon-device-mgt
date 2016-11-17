@@ -12,6 +12,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joda.time.DateTime;
 import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.api.model.API;
 import org.wso2.carbon.apimgt.api.model.Scope;
@@ -38,18 +39,35 @@ import com.google.gson.reflect.TypeToken;
 
 public class APIBuilderUtil {
 	private static final Log log = LogFactory.getLog(APIBuilderUtil.class);
+	private static TokenDTO accessToken;
+	private static OAuthApplicationDTO dcrApp;
 	
 	public static String getAccessToken() throws APIManagementException {
-		String configFile =  CarbonUtils.getCarbonConfigDirPath() + File.separator + "api-integration.xml";
-		APIMConfig apimConfig = APIMConfigReader.getAPIMConfig(configFile);
-		
-		APIMClient client = new APIMClient();
-		OAuthApplicationDTO dcrApp = client.createOAuthApplication(apimConfig.getDcrEndpointConfig());
-		System.out.println("Auth app created sucessfully, app.getClientSecret() = " + dcrApp.getClientSecret());
+		if (isTokenNullOrExpired(accessToken)) {
+			String configFile =  CarbonUtils.getCarbonConfigDirPath() + File.separator + "api-integration.xml";
+			APIMConfig apimConfig = APIMConfigReader.getAPIMConfig(configFile);
+			
+			APIMClient client = new APIMClient();
+			//TODO do the fix in apim side to return the same app if already created
+			dcrApp = client.createOAuthApplication(apimConfig.getDcrEndpointConfig());
+			log.info("Auth app created sucessfully, app.getClientSecret() = " + dcrApp.getClientId());
+	
+			accessToken = client.getUserToken(apimConfig.getTokenEndpointConfig(), dcrApp);
+			log.info("Token generated succesfully, token.getExpires_in() = " + accessToken.getExpires_in());
+		}
+		return accessToken.getAccess_token();
+	}
 
-		TokenDTO token = client.getUserToken(apimConfig.getTokenEndpointConfig(), dcrApp);
-		System.out.println("Token generated succesfully, token.getAccessToken() = " + token.getAccess_token());
-		return token.getAccess_token();
+	private static boolean isTokenNullOrExpired(TokenDTO token) {
+		if (token == null) {
+			return true;
+		} else {
+			return false; //Here we considered if token is there it is not expired
+			//TODO implement this logic properly, than returning false always
+			//if (DateTime.parse(token.getExpires_in()).getMillisOfSecond() > DateTime.now().getMillisOfSecond()) {
+			//	return true;
+			//}
+		}
 	}
 
 	public static APIDTO fromAPItoDTO(API model) throws APIManagementException {
