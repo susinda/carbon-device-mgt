@@ -104,8 +104,7 @@
 							feign, 
 							feign.auth, 
 							feign.codec, 
-							feign.gson, 
-							feign.jaxrs, 
+							feign.gson,  
 							javax.net.ssl,
 							org.w3c.dom,
 							javax.servlet,
@@ -118,11 +117,11 @@
 							org.wso2.carbon.apimgt.impl,
 							org.wso2.carbon.core,
 							org.apache.commons.lang,
-							javax.ws.rs.*;version="${javax.ws.rs.jsr311-api.version}",
 							org.wso2.carbon.utils
 						</Import-Package>
 						<Embed-Dependency>
-							scribe;scope=compile|runtime;inline=false;
+							jsr311-api,
+							feign-jaxrs
 						</Embed-Dependency>
 					</instructions>
 				</configuration>

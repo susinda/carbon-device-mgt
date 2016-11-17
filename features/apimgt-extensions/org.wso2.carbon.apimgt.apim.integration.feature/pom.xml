@@ -37,11 +37,6 @@
             <groupId>org.wso2.carbon.devicemgt</groupId>
             <artifactId>org.wso2.carbon.apimgt.apim.integration</artifactId>
         </dependency>
-        <!-- dependency>
-		    <groupId>io.github.openfeign</groupId>
-		    <artifactId>feign-jackson</artifactId>
-		     <version>${io.github.openfeign.version}</version>
-		</dependency-->
         <dependency>
 		    <groupId>io.github.openfeign</groupId>
 		    <artifactId>feign-core</artifactId>
@@ -117,16 +112,7 @@
                                    io.github.openfeign:feign-core:${io.github.openfeign.version}
                                 </bundleDef>
                                 <bundleDef>
-                                    io.github.openfeign:feign-jaxrs:${io.github.openfeign.version}
-                                </bundleDef>
-                                <bundleDef>
                                     io.github.openfeign:feign-gson:${io.github.openfeign.version}
-                                </bundleDef>
-                                <!-- bundleDef>
-                                    io.github.openfeign:feign-jackson:${io.github.openfeign.version}
-                                </bundleDef-->
-                                <bundleDef>
-                                	javax.ws.rs:jsr311-api:1.1.1
                                 </bundleDef>
                             </bundles>
                             <importFeatures>

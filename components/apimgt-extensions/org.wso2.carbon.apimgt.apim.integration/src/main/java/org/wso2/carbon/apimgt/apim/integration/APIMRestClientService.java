@@ -43,55 +43,47 @@ import feign.Response;
 @Path("/")
 public interface APIMRestClientService {
 
-	
+	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@POST
 	public OAuthApplicationDTO register(ClientProfileDTO registrationProfile);
 
-	
-	@Produces(MediaType.APPLICATION_JSON)
 	@POST
+	@Produces(MediaType.APPLICATION_JSON)
 	public TokenDTO getToken(@QueryParam("grant_type") String grant, @QueryParam("username") String username,
             @QueryParam("password") String password, @QueryParam("scope") String scope);
 
-	
+	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@POST
 	public APIDTO createAPI(APIDTO apiDTO);
 
-	
+	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/change-lifecycle?apiId={apiIdentifier}&action={actionName}")
-	@POST
 	public Response publishAPI(@QueryParam("apiIdentifier") String apiID, @QueryParam("actionName") String state);
 
-	
+	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/applications")
-	@POST
 	public APIMApplicationDTO createAPIMApplication(APIMApplicationDTO requestApp);
 	
-	
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/apis?query={searchQuery}")
-	@GET
 	public SubscriptionListDTO searchAPIs(@QueryParam("searchQuery") String query);
 	
-	
+	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/subscriptions")
-	@POST
 	public SubscriptionDTO subscribeAPItoApp(SubscriptionDTO subscriptionRequest);
 
-	
+	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/applications/generate-keys?applicationId={appId}")
-	@POST
 	public ApplicationKeyDTO generateKeysforApp(ApplicationKeyGenRequestDTO keygenRequest, @QueryParam("appId") String appId);
 
 }

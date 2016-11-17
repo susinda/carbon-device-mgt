@@ -42,17 +42,13 @@ public class APIBuilderUtil {
 	private static TokenDTO accessToken;
 	private static OAuthApplicationDTO dcrApp;
 	
-	public static String getAccessToken() throws APIManagementException {
+	public static String getAccessToken(APIMClient apimClient, APIMConfig apimConfig) throws APIManagementException {
 		if (isTokenNullOrExpired(accessToken)) {
-			String configFile =  CarbonUtils.getCarbonConfigDirPath() + File.separator + "api-integration.xml";
-			APIMConfig apimConfig = APIMConfigReader.getAPIMConfig(configFile);
-			
-			APIMClient client = new APIMClient();
 			//TODO do the fix in apim side to return the same app if already created
-			dcrApp = client.createOAuthApplication(apimConfig.getDcrEndpointConfig());
+			dcrApp = apimClient.createOAuthApplication(apimConfig.getDcrEndpointConfig());
 			log.info("Auth app created sucessfully, app.getClientSecret() = " + dcrApp.getClientId());
 	
-			accessToken = client.getUserToken(apimConfig.getTokenEndpointConfig(), dcrApp);
+			accessToken = apimClient.getUserToken(apimConfig.getTokenEndpointConfig(), dcrApp);
 			log.info("Token generated succesfully, token.getExpires_in() = " + accessToken.getExpires_in());
 		}
 		return accessToken.getAccess_token();

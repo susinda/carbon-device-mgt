@@ -174,7 +174,7 @@ public class APIMClient {
 				.contract(new JAXRSContract())
 				.encoder(new GsonEncoder())
 				.decoder(new GsonDecoder())
-				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+				//.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMRestClientService.class, storeEndpointConfig.getUrl());
 
 		SubscriptionListDTO resultApp = dynamicClientRegistrationService.searchAPIs(searchQuery);

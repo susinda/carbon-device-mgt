@@ -37,7 +37,7 @@ public class APIPublisherRESTServiceImpl extends APIPublisherServiceImpl {
 	public void publishAPI(API apimAPI) throws APIManagementException, FaultGatewaysException {
 
 		APIDTO apiDTO = APIBuilderUtil.fromAPItoDTO(apimAPI);
-		String accessToken = APIBuilderUtil.getAccessToken();
+		String accessToken = APIBuilderUtil.getAccessToken(apimRestClient, config);
 		log.info("APIBuilderUtil.getAccessToken() accessToken generated sucesfully");
 
 		PublisherEndpointConfig publisherConfig = config.getPublisherEndpointConfig();
@@ -54,13 +54,9 @@ public class APIPublisherRESTServiceImpl extends APIPublisherServiceImpl {
 		if (log.isDebugEnabled()) {
 			log.debug("Removing API '" + id.getApiName() + "'");
 		}
-		APIMClient apimRestClient = new APIMClient();
-		String configFile = CarbonUtils.getCarbonConfigDirPath() + File.separator + "apim-integration.xml";
-		// APIMConfigurations.APIMEnvironmentConfig apiEnvironmentConfig =
-		// APIMConfigurations.getInstance().getApiEnvironmentConfigList().get(0);
-		// apimRestClient.deleteAPI(id.getApiName(), apiEnvironmentConfig);
+		//TODO implement this and chnage the debug message
 		if (log.isDebugEnabled()) {
-			log.debug("API '" + id.getApiName() + "' has been successfully removed");
+			log.debug("API '" + id.getApiName() + "' has NOT been removed");
 		}
 	}
 
