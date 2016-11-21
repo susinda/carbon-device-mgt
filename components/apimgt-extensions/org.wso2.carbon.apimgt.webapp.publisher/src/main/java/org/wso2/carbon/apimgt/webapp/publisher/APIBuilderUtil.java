@@ -21,7 +21,7 @@ import org.wso2.carbon.apimgt.apim.integration.APIMClient;
 import org.wso2.carbon.apimgt.apim.integration.APIMConfigReader;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIBusinessInformationDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.APICorsConfigurationDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.PublisherAPIDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIEndpointSecurityDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIMConfig;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIMaxTpsDTO;
@@ -66,9 +66,9 @@ public class APIBuilderUtil {
 		}
 	}
 
-	public static APIDTO fromAPItoDTO(API model) throws APIManagementException {
+	public static PublisherAPIDTO fromAPItoDTO(API model) throws APIManagementException {
 
-		APIDTO dto = new APIDTO();
+		PublisherAPIDTO dto = new PublisherAPIDTO();
 		dto.setName(model.getId().getApiName());
 		dto.setVersion(model.getId().getVersion());
 		String providerName = model.getId().getProviderName();
@@ -252,7 +252,7 @@ public class APIBuilderUtil {
         return swaggerDefinition.toString();
     }
 
-	private static void setEndpointSecurityFromModelToApiDTO(API api, APIDTO dto) {
+	private static void setEndpointSecurityFromModelToApiDTO(API api, PublisherAPIDTO dto) {
 		if (api.isEndpointSecured()) {
 			APIEndpointSecurityDTO securityDTO = new APIEndpointSecurityDTO();
 			securityDTO.setType(APIEndpointSecurityDTO.TypeEnum.basic); // set
@@ -268,7 +268,7 @@ public class APIBuilderUtil {
 		}
 	}
 
-	private static void setMaxTpsFromModelToApiDTO(API api, APIDTO dto) {
+	private static void setMaxTpsFromModelToApiDTO(API api, PublisherAPIDTO dto) {
 		if (StringUtils.isBlank(api.getProductionMaxTps()) && StringUtils.isBlank(api.getSandboxMaxTps())) {
 			return;
 		}
@@ -287,32 +287,32 @@ public class APIBuilderUtil {
 		}
 	}
 
-	private static APIDTO.SubscriptionAvailabilityEnum mapSubscriptionAvailabilityFromAPItoDTO(
+	private static PublisherAPIDTO.SubscriptionAvailabilityEnum mapSubscriptionAvailabilityFromAPItoDTO(
 			String subscriptionAvailability) {
 
 		switch (subscriptionAvailability) {
 		case APIConstants.SUBSCRIPTION_TO_CURRENT_TENANT:
-			return APIDTO.SubscriptionAvailabilityEnum.current_tenant;
+			return PublisherAPIDTO.SubscriptionAvailabilityEnum.current_tenant;
 		case APIConstants.SUBSCRIPTION_TO_ALL_TENANTS:
-			return APIDTO.SubscriptionAvailabilityEnum.all_tenants;
+			return PublisherAPIDTO.SubscriptionAvailabilityEnum.all_tenants;
 		case APIConstants.SUBSCRIPTION_TO_SPECIFIC_TENANTS:
-			return APIDTO.SubscriptionAvailabilityEnum.specific_tenants;
+			return PublisherAPIDTO.SubscriptionAvailabilityEnum.specific_tenants;
 		default:
 			return null; // how to handle this?
 		}
 
 	}
 
-	private static APIDTO.VisibilityEnum mapVisibilityFromAPItoDTO(String visibility) {
+	private static PublisherAPIDTO.VisibilityEnum mapVisibilityFromAPItoDTO(String visibility) {
 		switch (visibility) { // public, private,controlled, restricted
 		case APIConstants.API_GLOBAL_VISIBILITY:
-			return APIDTO.VisibilityEnum.PUBLIC;
+			return PublisherAPIDTO.VisibilityEnum.PUBLIC;
 		case APIConstants.API_PRIVATE_VISIBILITY:
-			return APIDTO.VisibilityEnum.PRIVATE;
+			return PublisherAPIDTO.VisibilityEnum.PRIVATE;
 		case APIConstants.API_RESTRICTED_VISIBILITY:
-			return APIDTO.VisibilityEnum.RESTRICTED;
+			return PublisherAPIDTO.VisibilityEnum.RESTRICTED;
 		case APIConstants.API_CONTROLLED_VISIBILITY:
-			return APIDTO.VisibilityEnum.CONTROLLED;
+			return PublisherAPIDTO.VisibilityEnum.CONTROLLED;
 		default:
 			return null; // how to handle this?
 		}

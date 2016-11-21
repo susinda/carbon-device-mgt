@@ -21,7 +21,7 @@ package org.wso2.carbon.apimgt.apim.integration.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class APIDTO {
+public class PublisherAPIDTO {
 
 	private String id;
 	private String name;

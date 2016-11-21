@@ -20,6 +20,7 @@ package org.wso2.carbon.apimgt.application.extension.api.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.apimgt.application.extension.APIManagementProviderRESTServiceImpl;
 import org.wso2.carbon.apimgt.application.extension.APIManagementProviderService;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.user.core.service.RealmService;
@@ -49,13 +50,13 @@ public class APIUtil {
 
     public static APIManagementProviderService getAPIManagementProviderService() {
         PrivilegedCarbonContext ctx = PrivilegedCarbonContext.getThreadLocalCarbonContext();
-        APIManagementProviderService apiManagementProviderService =
-                (APIManagementProviderService) ctx.getOSGiService(APIManagementProviderService.class, null);
-        if (apiManagementProviderService == null) {
-            String msg = "API management provider service has not initialized.";
-            log.error(msg);
-            throw new IllegalStateException(msg);
-        }
+        APIManagementProviderService apiManagementProviderService = (APIManagementProviderService) ctx.getOSGiService(APIManagementProviderService.class, null);
+        //APIManagementProviderService apiManagementProviderService = new APIManagementProviderRESTServiceImpl();
+//        if (apiManagementProviderService == null) {
+//            String msg = "API management provider service has not initialized.";
+//            log.error(msg);
+//            throw new IllegalStateException(msg);
+//        }
         return apiManagementProviderService;
     }
 

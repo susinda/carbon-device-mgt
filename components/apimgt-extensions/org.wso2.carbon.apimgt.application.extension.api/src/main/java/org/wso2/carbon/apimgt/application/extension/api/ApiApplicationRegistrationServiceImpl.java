@@ -61,8 +61,12 @@ public class ApiApplicationRegistrationServiceImpl implements ApiApplicationRegi
             username = username + "@" + APIUtil.getTenantDomainOftheUser();
             PrivilegedCarbonContext.getThreadLocalCarbonContext().setUsername(username);
             APIManagementProviderService apiManagementProviderService = APIUtil.getAPIManagementProviderService();
+//            ApiApplicationKey apiApplicationKey = apiManagementProviderService.generateAndRetrieveApplicationKeys(
+//                    applicationName, ApiApplicationConstants.DEFAULT_TOKEN_TYPE, username, false);
+            
             ApiApplicationKey apiApplicationKey = apiManagementProviderService.generateAndRetrieveApplicationKeys(
-                    applicationName, ApiApplicationConstants.DEFAULT_TOKEN_TYPE, username, false);
+            		applicationName, new String[]{"device_management"}, ApiApplicationConstants.DEFAULT_TOKEN_TYPE, username, false);
+            
             return Response.status(Response.Status.CREATED).entity(apiApplicationKey.toString()).build();
         } catch (APIManagerException e) {
             String msg = "Error occurred while registering an application '" + applicationName + "'";
@@ -77,7 +81,7 @@ public class ApiApplicationRegistrationServiceImpl implements ApiApplicationRegi
         }
     }
 
-    @Path("register")
+    @Path("register") //https://localhost:9443/webappNAme/register/ postbody regsteratoin profile
     @POST
     public Response register(RegistrationProfile registrationProfile) {
         try {
@@ -100,8 +104,7 @@ public class ApiApplicationRegistrationServiceImpl implements ApiApplicationRegi
                 return Response.status(Response.Status.ACCEPTED).entity("true").build();
             } else {
                 ApiApplicationKey apiApplicationKey = apiManagementProviderService.generateAndRetrieveApplicationKeys(
-                        registrationProfile.getApplicationName(), registrationProfile.getTags(),
-                        ApiApplicationConstants.DEFAULT_TOKEN_TYPE, username, false);
+                        registrationProfile.getApplicationName(), registrationProfile.getTags(), ApiApplicationConstants.DEFAULT_TOKEN_TYPE, username, false);
                 return Response.status(Response.Status.CREATED).entity(apiApplicationKey.toString()).build();
             }
         } catch (APIManagerException e) {

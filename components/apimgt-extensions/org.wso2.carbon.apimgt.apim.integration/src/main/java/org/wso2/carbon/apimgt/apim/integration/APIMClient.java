@@ -18,16 +18,19 @@
 
 package org.wso2.carbon.apimgt.apim.integration;
 
-import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.PublisherAPIDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.PublisherAPIListDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIMApplicationDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.ApplicationKeyDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.ApplicationKeyGenRequestDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.APIMApplicationListDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.DCREndpointConfig;
 import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplicationDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.PublisherEndpointConfig;
-import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionListDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.StoreAPIListDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.StoreEndpointConfig;
 import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionListDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.TokenDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.TokenEndpointConfig;
 import org.wso2.carbon.apimgt.apim.integration.dto.TokenRequestDTO;
@@ -89,8 +92,30 @@ public class APIMClient {
 				.target(APIMRestClientService.class, tokenConfig.getUrl());
 
 		TokenRequestDTO tokenInfo = tokenConfig.getTokenInfo();
-		TokenDTO token = dynamicClientRegistrationService.getToken(tokenInfo.getGrantType(), tokenInfo.getUserName(), tokenInfo.getPassword(), tokenInfo.getScope());
+		TokenDTO token = dynamicClientRegistrationService.requestToken(tokenInfo.getGrantType(), tokenInfo.getUserName(), tokenInfo.getPassword(), tokenInfo.getScope());
 		return token;
+	}
+	
+	
+	/**
+	 * Get a list of of available APIs (from WSO2-APIM) qualifying under a given search query. 
+	 * @param publisherEndpointConfig - Part of the APIMConfig, which defines the configurations parameters for
+	 * Publisher Endpoint, see apim-integration.xml
+	 * @param query - You can search in attributes by using an ":" modifier. Eg. "tag:wso2" will match an API if the tag of the API is "wso2".
+	 * @param accessToken - OAuth bearer token, required to invoke the (OAuth secured) publisher-apis.
+	 * @return - An instance of SubscriptionListDTO, which contains the list of apis
+	 */
+	public PublisherAPIListDTO searchPublisherAPIs(PublisherEndpointConfig publisherEndpointConfig, String searchQuery,  String accessToken) {
+		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
+				.client(FeignClientUtil.getCustomHostnameVerification())
+				.contract(new JAXRSContract())
+				//.encoder(new GsonEncoder())
+				.decoder(new GsonDecoder())
+				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+				.target(APIMRestClientService.class, publisherEndpointConfig.getUrl());
+
+		PublisherAPIListDTO resultApp = dynamicClientRegistrationService.getExistingPublisherAPIs();
+		return resultApp;
 	}
 	
 	/**
@@ -101,7 +126,7 @@ public class APIMClient {
 	 * @param accessToken - OAuth bearer token, required to invoke the (OAuth secured) publisher-apis.
 	 * @return - Instance of APIDTO, which contains the information of created API
 	 */
-	public APIDTO createAPI(PublisherEndpointConfig publisherEndpointConfig, APIDTO apiDTO, String accessToken) {
+	public PublisherAPIDTO createAPI(PublisherEndpointConfig publisherEndpointConfig, PublisherAPIDTO apiDTO, String accessToken) {
 
 		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
 				.client(FeignClientUtil.getCustomHostnameVerification())
@@ -111,7 +136,7 @@ public class APIMClient {
 				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMRestClientService.class, publisherEndpointConfig.getUrl());
 
-		APIDTO apiCreationResult = dynamicClientRegistrationService.createAPI(apiDTO);
+		PublisherAPIDTO apiCreationResult = dynamicClientRegistrationService.createAPI(apiDTO);
 		return apiCreationResult;
 	}
 	
@@ -137,6 +162,46 @@ public class APIMClient {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Searches available applications in WSO2-APIM, which then can be used to subscribe api's
+	 * @param storeEndpointConfig - Part of the APIMConfig, which defines the configurations parameters for
+	 * Store Endpoint, see apim-integration.xml
+	 * @param accessToken - OAuth bearer token, required to invoke the (OAuth secured) store-apis.
+	 * @return - An instance of APIMApplicationListDTO, which contains a list of APIMApplicationDTO objects corresponds to existing apllications.
+	 */
+	public APIMApplicationListDTO searchAPIMApplications(StoreEndpointConfig storeEndpointConfig, String accessToken) {
+		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
+				.client(FeignClientUtil.getCustomHostnameVerification())
+				.contract(new JAXRSContract())
+				//.encoder(new GsonEncoder())
+				.decoder(new GsonDecoder())
+				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+				.target(APIMRestClientService.class, storeEndpointConfig.getUrl());
+
+		APIMApplicationListDTO resultApps = dynamicClientRegistrationService.getAPIMApplications();
+		return resultApps;
+	}
+	
+	/**
+	 * Gets the details of APIM application (specified by the appId) in WSO2-APIM.
+	 * @param storeEndpointConfig - Part of the APIMConfig, which defines the configurations parameters for
+	 * Store Endpoint, see apim-integration.xml
+	 * @param accessToken - OAuth bearer token, required to invoke the (OAuth secured) store-apis.
+	 * @return - An instance of APIMApplicationDTO, which contains the details of application corresponds to appId.
+	 */
+	public APIMApplicationDTO getAPIMApplicationDetails(StoreEndpointConfig storeEndpointConfig, String accessToken, String appId) {
+		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
+				.client(FeignClientUtil.getCustomHostnameVerification())
+				.contract(new JAXRSContract())
+				//.encoder(new GsonEncoder())
+				.decoder(new GsonDecoder())
+				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+				.target(APIMRestClientService.class, storeEndpointConfig.getUrl());
+
+		APIMApplicationDTO resultApps = dynamicClientRegistrationService.getAPIMApplicationDetails(appId);
+		return resultApps;
 	}
 
 	/**
@@ -168,17 +233,37 @@ public class APIMClient {
 	 * @param accessToken - OAuth bearer token, required to invoke the (OAuth secured) store-apis.
 	 * @return - An instance of SubscriptionListDTO, which contains the list of apis
 	 */
-	public SubscriptionListDTO searchAPIs(StoreEndpointConfig storeEndpointConfig, String searchQuery,  String accessToken) {
+	public StoreAPIListDTO searchStoreAPIs(StoreEndpointConfig storeEndpointConfig, String searchQuery,  String accessToken) {
 		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
 				.client(FeignClientUtil.getCustomHostnameVerification())
 				.contract(new JAXRSContract())
-				.encoder(new GsonEncoder())
+				//.encoder(new GsonEncoder())
 				.decoder(new GsonDecoder())
 				//.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMRestClientService.class, storeEndpointConfig.getUrl());
 
-		SubscriptionListDTO resultApp = dynamicClientRegistrationService.searchAPIs(searchQuery);
+		StoreAPIListDTO resultApp = dynamicClientRegistrationService.getExistingStoreAPIs(searchQuery);
 		return resultApp;
+	}
+	
+	/**
+	 * Gets existing subscriptions for a api (specified by apiId). 
+	 * @param storeEndpointConfig - Part of the APIMConfig, which defines the configurations parameters for
+	 * Store Endpoint, see apim-integration.xml
+	 * @param accessToken - OAuth bearer token, required to invoke the (OAuth secured) store-apis.
+	 * @return - An instance of SubscriptionListDTO, which contains the list of subscriptions of the requested api.
+	 */
+	public SubscriptionListDTO getExistingSubscriptions(StoreEndpointConfig storeEndpointConfig, String accessToken, String apiId) {
+		APIMRestClientService dynamicClientRegistrationService = Feign.builder()
+				.client(FeignClientUtil.getCustomHostnameVerification())
+				.contract(new JAXRSContract())
+				//.encoder(new GsonEncoder())
+				.decoder(new GsonDecoder())
+				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+				.target(APIMRestClientService.class, storeEndpointConfig.getUrl());
+
+		SubscriptionListDTO subscriptionResult = dynamicClientRegistrationService.getExistingSubscriptions(apiId);
+		return subscriptionResult;
 	}
 	
 	/**
@@ -223,5 +308,7 @@ public class APIMClient {
 		ApplicationKeyDTO appKeyResult = dynamicClientRegistrationService.generateKeysforApp(keygenRequest, applicationId);
 		return appKeyResult;
 	}
+
+	
 
 }

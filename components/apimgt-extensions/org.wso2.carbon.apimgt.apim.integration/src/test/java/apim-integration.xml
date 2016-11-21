@@ -24,7 +24,7 @@
 	<UserName>admin</UserName>
 	<Password>admin</Password>
 	<ClientProfile>
-		<clientName>iotClient149</clientName>
+		<clientName>iotClient1A41</clientName>
 		<callbackUrl>www.goole.com</callbackUrl>
 		<tokenScope>Production</tokenScope>
 		<owner>admin</owner>
@@ -42,9 +42,9 @@
 	</TokenInfo>
 </TokenEndpoint>
 <PublisherEndpoint>
-	<URL>https://localhost:9443/api/am/publisher/v0.10/apis</URL>
+	<URL>https://localhost:9443/api/am/publisher/v0.10</URL>
 </PublisherEndpoint>
 <StoreEndpoint>
- 	<URL>https://127.0.0.1:9443/api/am/store/v0.10</URL>
+ 	<URL>https://localhost:9443/api/am/store/v0.10</URL>
 </StoreEndpoint>
 </APIMConfiguration>

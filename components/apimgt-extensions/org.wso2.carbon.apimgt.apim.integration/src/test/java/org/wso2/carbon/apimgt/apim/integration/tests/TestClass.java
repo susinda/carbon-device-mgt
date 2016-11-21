@@ -22,19 +22,24 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 
 import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.apim.integration.APIMClient;
 import org.wso2.carbon.apimgt.apim.integration.APIMConfigReader;
-import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.PublisherAPIDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIMApplicationDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO.VisibilityEnum;
+import org.wso2.carbon.apimgt.apim.integration.dto.APIMApplicationListDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.PublisherAPIDTO.VisibilityEnum;
+import org.wso2.carbon.apimgt.apim.integration.dto.PublisherAPIListDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIMConfig;
 import org.wso2.carbon.apimgt.apim.integration.dto.ApplicationKeyDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.ApplicationKeyGenRequestDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplicationDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionListDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.StoreAPIDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.StoreAPIListDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionListDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.TokenDTO;
 
 
@@ -69,10 +74,10 @@ public class TestClass {
 			}
 			
 			
-			APIDTO api = new APIDTO();
+			PublisherAPIDTO api = new PublisherAPIDTO();
 			api.setTags(Arrays.asList("apple"));
-			api.setName("Ausi36");
-			api.setContext("/Ausi36");
+			api.setName("Ausi374");
+			api.setContext("/Ausi374");
 			api.setVersion("1.0.1");
 			api.setProvider("admin");
 			api.setApiDefinition(fileString);
@@ -85,39 +90,129 @@ public class TestClass {
 			//api.setResponseCaching("Disabled");
 			//api.setDestinationStatsEnabled("false");
 			
+			/* 
 			APIDTO resultApiObject = client.createAPI(apimConfig.getPublisherEndpointConfig(), api, token.getAccess_token());
 			System.out.println("API creation completed succesfully, api.Id = " + resultApiObject.getId());
 
 			boolean response = client.publishAPI(apimConfig.getPublisherEndpointConfig(), resultApiObject.getId(), token.getAccess_token());
 			System.out.println("API publish completed and result is = " + response);
+			*/
 			
-			
+			 
+			PublisherAPIDTO resultApiObject = null;
+			PublisherAPIListDTO list = client.searchPublisherAPIs(apimConfig.getPublisherEndpointConfig(), "", token.getAccess_token());
+			List<PublisherAPIDTO> apiLIst = list.getList();
+			PublisherAPIDTO existingAPI = getExistingApi(api, apiLIst);
+			if (existingAPI != null) {
+				resultApiObject = existingAPI;
+				System.out.println("API " + existingAPI.getName() + " apready exists, therefore not creating");
+				if ("PUBLISHED".equals(existingAPI.getStatus())) {
+					System.out.println("API " + existingAPI.getName() + " apready in PUBLISHED state, therefore not publishing");
+				} else {
+					boolean publishResult = client.publishAPI(apimConfig.getPublisherEndpointConfig(), existingAPI.getId(), token.getAccess_token());
+					System.out.println("API publish result " + publishResult);
+				}
+			} else {
+				resultApiObject = client.createAPI(apimConfig.getPublisherEndpointConfig(), api, token.getAccess_token());
+				System.out.println("API creation succesful : createdAPI " + resultApiObject.getName() + "  " + resultApiObject.getId());
+				boolean publishResult = client.publishAPI(apimConfig.getPublisherEndpointConfig(), resultApiObject.getId(), token.getAccess_token());
+				System.out.println("API publish result " + publishResult);
+			}
+			 
+			String appName = "AusiApp374";
 			APIMApplicationDTO requestApp = new APIMApplicationDTO();
-			requestApp.setName("AusiApp38");
+			requestApp.setName(appName);
 			requestApp.setThrottlingTier("Unlimited");
-			APIMApplicationDTO apimApp = client.createAPIMApplication(apimConfig.getStoreEndpointConfig(), requestApp, token.getAccess_token());
-			System.out.println("API application creation successfull apimApp.getApplicationId() = " + apimApp.getApplicationId());
+			APIMApplicationDTO apimApp = null;
 			
-			SubscriptionListDTO apiList = client.searchAPIs(apimConfig.getStoreEndpointConfig(), "tag:apple", token.getAccess_token());
+			APIMApplicationListDTO appList = client.searchAPIMApplications(apimConfig.getStoreEndpointConfig(), token.getAccess_token());
+			System.out.println("API application listing successfull appList.getApplicationId() = " + appList.getCount());
+			List<APIMApplicationDTO> apimAppList = appList.getList();
+			APIMApplicationDTO existingApp = getExistingApp(requestApp, apimAppList);
+			if (existingApp != null) {
+				System.out.println("Application " + existingApp.getName() + " apready exists, therefore not creating");
+				APIMApplicationDTO existingApInfo = client.getAPIMApplicationDetails(apimConfig.getStoreEndpointConfig(), token.getAccess_token(), existingApp.getApplicationId());
+				apimApp = existingApInfo;
+			} else {
+				apimApp = client.createAPIMApplication(apimConfig.getStoreEndpointConfig(), requestApp, token.getAccess_token());
+				System.out.println("API application creation successfull apimApp.getApplicationId() = " + apimApp.getApplicationId());
+			}
+			
+			StoreAPIListDTO apiList = client.searchStoreAPIs(apimConfig.getStoreEndpointConfig(), "tag:apple", token.getAccess_token());
 			System.out.println("API list retrived apiList.count = " + apiList.getCount());
+			
+			ApplicationKeyDTO applicationKey = getProductionKeyIfExists(apimApp);
+			if (applicationKey != null) {
+				System.out.println("A PRODCUTION applicationKey is already exists therefore not cretating keys, applicationKey.getConsumerKey and secret " + applicationKey.getConsumerKey() + "  " + applicationKey.getConsumerSecret());
+			} else {
+				ApplicationKeyGenRequestDTO keygenRequest = new ApplicationKeyGenRequestDTO();
+				keygenRequest.setKeyType(ApplicationKeyGenRequestDTO.KeyTypeEnum.PRODUCTION);
+				keygenRequest.setValidityTime("3600");
+				keygenRequest.setAccessAllowDomains(Arrays.asList("ALL"));
+				applicationKey = client.generateKeysforApp(apimConfig.getStoreEndpointConfig(), keygenRequest, apimApp.getApplicationId(), token.getAccess_token());
+				System.out.println("API applicationKey gen OK, applicationKey.getConsumerKey and secret " + applicationKey.getConsumerKey() + "  " + applicationKey.getConsumerSecret());
+				System.out.println("API applicationKey generation successfull applicationKey.getToken().toString() = " + applicationKey.getToken().toString());
+			}
 			
 			SubscriptionDTO subscription = new SubscriptionDTO();
 			subscription.setTier("Unlimited");
 			subscription.setApplicationId(apimApp.getApplicationId());
 			subscription.setApiIdentifier(resultApiObject.getId());
-			SubscriptionDTO subscriptionResult = client.subscribeAPItoApp(apimConfig.getStoreEndpointConfig(), subscription, token.getAccess_token());
-			System.out.println("API getSubscriptionId successfull subscriptionResult.getSubscriptionId() = " + subscriptionResult.getSubscriptionId());
 			
-			ApplicationKeyGenRequestDTO keygenRequest = new ApplicationKeyGenRequestDTO();
-			keygenRequest.setKeyType(ApplicationKeyGenRequestDTO.KeyTypeEnum.PRODUCTION);
-			keygenRequest.setValidityTime("3600");
-			keygenRequest.setAccessAllowDomains(Arrays.asList("ALL"));
-			ApplicationKeyDTO applicationKey = client.generateKeysforApp(apimConfig.getStoreEndpointConfig(), keygenRequest, apimApp.getApplicationId(), token.getAccess_token());
-			System.out.println("API applicationKey generation successfull applicationKey.getToken().toString() = " + applicationKey.getToken().toString());
+			SubscriptionListDTO existingSubscriptions = client.getExistingSubscriptions(apimConfig.getStoreEndpointConfig(), token.getAccess_token(), resultApiObject.getId());  
+			SubscriptionDTO availableSubscription = getExistingSubscription(existingSubscriptions, subscription);
+			if (availableSubscription != null) {
+				System.out.println("API subscription already exists for apiID " + resultApiObject.getId() + " and appID " +  apimApp.getApplicationId());
+				System.out.println("API subscription already exists availableSubscription.getSubscriptionId() = " + availableSubscription.getSubscriptionId());
+			} else {
+				SubscriptionDTO subscriptionResult = client.subscribeAPItoApp(apimConfig.getStoreEndpointConfig(), subscription, token.getAccess_token());
+				System.out.println("API getSubscriptionId successfull subscriptionResult.getSubscriptionId() = " + subscriptionResult.getSubscriptionId());
+			}
 			
 		} catch (APIManagementException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static  PublisherAPIDTO getExistingApi(PublisherAPIDTO apiDTO, List<PublisherAPIDTO> apiLIst) {
+		for (PublisherAPIDTO api : apiLIst) {
+			if (api.getContext().equals(apiDTO.getContext())) {
+				return api;
+			}
+		}
+		return null;
+	}
+	
+	private static  APIMApplicationDTO getExistingApp(APIMApplicationDTO application, List<APIMApplicationDTO> appList) {
+		for (APIMApplicationDTO app : appList) {
+			if (application.getName().equals(app.getName())) {
+				return app;
+			}
+		}
+		return null;
+	}
+	
+	private static ApplicationKeyDTO getProductionKeyIfExists(APIMApplicationDTO apimApp) {
+		if (apimApp.getKeys().isEmpty()) {
+			return null;
+		} else {
+			List<ApplicationKeyDTO> appKeys = apimApp.getKeys();
+			for (ApplicationKeyDTO key : appKeys) {
+				if (key.getKeyType().equals(ApplicationKeyDTO.KeyTypeEnum.PRODUCTION)){
+					return key;
+				}
+			}
+			return null;
+		}
+	}
+	
+	private static SubscriptionDTO getExistingSubscription(SubscriptionListDTO existingSubscriptions, SubscriptionDTO subscription) {
+		for (SubscriptionDTO apiSubscription : existingSubscriptions.getList()) {
+			if (apiSubscription.getApplicationId().equals(subscription.getApplicationId())){
+				return apiSubscription;
+			}
+		}
+		return null;
 	}
 
 }

@@ -67,6 +67,10 @@
             <groupId>org.wso2.carbon.registry</groupId>
             <artifactId>org.wso2.carbon.registry.indexing</artifactId>
         </dependency>
+         <dependency>
+          <groupId>org.wso2.carbon.devicemgt</groupId>
+          <artifactId>org.wso2.carbon.apimgt.apim.integration</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -108,6 +112,8 @@
                             org.json.simple,
                             org.wso2.carbon.context,
                             org.wso2.carbon.base,
+                            org.wso2.carbon.utils,
+                            org.wso2.carbon.apimgt.apim.integration.*,
                             org.wso2.carbon.registry.core.*;resolution:=optional,
                             org.wso2.carbon.registry.indexing.*; version="${carbon.registry.imp.pkg.version.range}"
                         </Import-Package>

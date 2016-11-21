@@ -10,9 +10,12 @@ import org.wso2.carbon.apimgt.api.model.API;
 import org.wso2.carbon.apimgt.api.model.APIIdentifier;
 import org.wso2.carbon.apimgt.apim.integration.APIMClient;
 import org.wso2.carbon.apimgt.apim.integration.APIMConfigReader;
-import org.wso2.carbon.apimgt.apim.integration.dto.APIDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.PublisherAPIDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.PublisherAPIListDTO;
 import org.wso2.carbon.apimgt.apim.integration.dto.APIMConfig;
 import org.wso2.carbon.apimgt.apim.integration.dto.PublisherEndpointConfig;
+import org.wso2.carbon.apimgt.apim.integration.dto.StoreAPIDTO;
+import org.wso2.carbon.apimgt.apim.integration.dto.StoreAPIListDTO;
 import org.wso2.carbon.utils.CarbonUtils;
 
 public class APIPublisherRESTServiceImpl extends APIPublisherServiceImpl {
@@ -36,17 +39,37 @@ public class APIPublisherRESTServiceImpl extends APIPublisherServiceImpl {
 	@Override
 	public void publishAPI(API apimAPI) throws APIManagementException, FaultGatewaysException {
 
-		APIDTO apiDTO = APIBuilderUtil.fromAPItoDTO(apimAPI);
+		PublisherAPIDTO apiDTO = APIBuilderUtil.fromAPItoDTO(apimAPI);
 		String accessToken = APIBuilderUtil.getAccessToken(apimRestClient, config);
 		log.info("APIBuilderUtil.getAccessToken() accessToken generated sucesfully");
 
 		PublisherEndpointConfig publisherConfig = config.getPublisherEndpointConfig();
-		APIDTO createdAPI = apimRestClient.createAPI(publisherConfig, apiDTO, accessToken);
-		log.info("API creation succesfull : createdAPI " + createdAPI.getName() + "  " + createdAPI.getId());
+		PublisherAPIListDTO list = apimRestClient.searchPublisherAPIs(publisherConfig, "", accessToken);
+		List<PublisherAPIDTO> apiLIst = list.getList();
+		PublisherAPIDTO existingAPI = getExistingApi(apiDTO, apiLIst);
+		if (existingAPI != null) {
+			log.info("API " + existingAPI.getName() + " apready exists, therefore not creating");
+			if ("PUBLISHED".equals(existingAPI.getStatus())) {
+				log.info("API " + existingAPI.getName() + " apready in PUBLISHED state, therefore not publishing");
+			} else {
+				boolean publishResult = apimRestClient.publishAPI(publisherConfig, existingAPI.getId(), accessToken);
+				log.info("API publish result " + publishResult);
+			}
+		} else {
+			PublisherAPIDTO createdAPI = apimRestClient.createAPI(publisherConfig, apiDTO, accessToken);
+			log.info("API creation succesful : createdAPI " + createdAPI.getName() + "  " + createdAPI.getId());
+			boolean publishResult = apimRestClient.publishAPI(publisherConfig, createdAPI.getId(), accessToken);
+			log.info("API publish result " + publishResult);
+		}
+	}
 
-		boolean publishResult = apimRestClient.publishAPI(publisherConfig, createdAPI.getId(),
-				accessToken);
-		log.info("API publish result " + publishResult);
+	private PublisherAPIDTO getExistingApi(PublisherAPIDTO apiDTO, List<PublisherAPIDTO> apiLIst) {
+		for (PublisherAPIDTO api : apiLIst) {
+			if (api.getContext().equals(apiDTO.getContext())) {
+				return api;
+			}
+		}
+		return null;
 	}
 
 	@Override

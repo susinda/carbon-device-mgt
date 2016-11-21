@@ -21,12 +21,12 @@ package org.wso2.carbon.apimgt.apim.integration.dto;
 
 import java.util.List;
 
-public class SubscriptionListDTO {
+public class PublisherAPIListDTO {
 
 	private String previous;
 	private String next;
 	private int count;
-	private List<SubscriptionDTO> list;
+	private List<PublisherAPIDTO> list;
 
 	public String getPrevious() {
 		return previous;
@@ -52,18 +52,18 @@ public class SubscriptionListDTO {
 		this.count = count;
 	}
 
-	public List<SubscriptionDTO> getList() {
+	public List<PublisherAPIDTO> getList() {
 		return list;
 	}
 
-	public void setList(List<SubscriptionDTO> list) {
+	public void setList(List<PublisherAPIDTO> list) {
 		this.list = list;
 	}
 	
 	 @Override
 	  public String toString()  {
 	    StringBuilder sb = new StringBuilder();
-	    sb.append("class SubscriptionListDTO {\n");
+	    sb.append("class PublisherAPIListDTO {\n");
 	    
 	    sb.append("  count: ").append(count).append("\n");
 	    sb.append("  next: ").append(next).append("\n");
