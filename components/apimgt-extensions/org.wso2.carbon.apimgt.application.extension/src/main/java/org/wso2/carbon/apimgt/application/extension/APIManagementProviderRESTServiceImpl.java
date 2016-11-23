@@ -6,18 +6,18 @@ import java.util.Arrays;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.apimgt.api.APIManagementException;
-import org.wso2.carbon.apimgt.apim.integration.APIMClient;
-import org.wso2.carbon.apimgt.apim.integration.APIMConfigReader;
-import org.wso2.carbon.apimgt.apim.integration.dto.APIMApplicationDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.APIMConfig;
-import org.wso2.carbon.apimgt.apim.integration.dto.ApplicationKeyDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.ApplicationKeyGenRequestDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplicationDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.StoreAPIDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.StoreEndpointConfig;
-import org.wso2.carbon.apimgt.apim.integration.dto.SubscriptionDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.StoreAPIListDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.TokenDTO;
+import org.wso2.carbon.apimgt.apim.integration.common.APIMConfigReader;
+import org.wso2.carbon.apimgt.apim.integration.common.configs.APIMConfig;
+import org.wso2.carbon.apimgt.apim.integration.common.configs.StoreEndpointConfig;
+import org.wso2.carbon.apimgt.apim.integration.dcr.dto.OAuthApplicationDTO;
+import org.wso2.carbon.apimgt.apim.integration.dcr.dto.TokenDTO;
+import org.wso2.carbon.apimgt.apim.integration.publisher.InternalPublisherClient;
+import org.wso2.carbon.apimgt.apim.integration.store.dto.APIMApplicationDTO;
+import org.wso2.carbon.apimgt.apim.integration.store.dto.ApplicationKeyDTO;
+import org.wso2.carbon.apimgt.apim.integration.store.dto.ApplicationKeyGenRequestDTO;
+import org.wso2.carbon.apimgt.apim.integration.store.dto.StoreAPIDTO;
+import org.wso2.carbon.apimgt.apim.integration.store.dto.StoreAPIListDTO;
+import org.wso2.carbon.apimgt.apim.integration.store.dto.SubscriptionDTO;
 import org.wso2.carbon.apimgt.application.extension.dto.ApiApplicationKey;
 import org.wso2.carbon.apimgt.application.extension.exception.APIManagerException;
 import org.wso2.carbon.utils.CarbonUtils;
@@ -34,7 +34,7 @@ public class APIManagementProviderRESTServiceImpl implements APIManagementProvid
 	public ApiApplicationKey generateAndRetrieveApplicationKeys(String apiApplicationName1, String[] tags1,
 			String keyType1, String username, boolean isAllowedAllDomains1) throws APIManagerException {
 		
-		APIMClient apimClient = new APIMClient();
+		InternalPublisherClient apimClient = new InternalPublisherClient();
 		APIMApplicationDTO requestApp = new APIMApplicationDTO();
 		requestApp.setName(apiApplicationName1);
 		requestApp.setThrottlingTier("Unlimited");
@@ -107,7 +107,7 @@ public class APIManagementProviderRESTServiceImpl implements APIManagementProvid
 
 	}
 	
-	private static String getAccessToken(APIMClient apimClient, APIMConfig apimConfig) throws APIManagementException {
+	private static String getAccessToken(InternalPublisherClient apimClient, APIMConfig apimConfig) throws APIManagementException {
 		if (isTokenNullOrExpired(accessToken)) {
 			//TODO do the fix in apim side to return the same app if already created
 			dcrApp = apimClient.createOAuthApplication(apimConfig.getDcrEndpointConfig());

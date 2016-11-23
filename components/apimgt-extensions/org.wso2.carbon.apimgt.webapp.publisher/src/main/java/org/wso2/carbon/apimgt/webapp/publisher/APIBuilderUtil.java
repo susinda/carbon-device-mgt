@@ -17,17 +17,17 @@ import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.api.model.API;
 import org.wso2.carbon.apimgt.api.model.Scope;
 import org.wso2.carbon.apimgt.api.model.URITemplate;
-import org.wso2.carbon.apimgt.apim.integration.APIMClient;
-import org.wso2.carbon.apimgt.apim.integration.APIMConfigReader;
-import org.wso2.carbon.apimgt.apim.integration.dto.APIBusinessInformationDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.APICorsConfigurationDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.PublisherAPIDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.APIEndpointSecurityDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.APIMConfig;
-import org.wso2.carbon.apimgt.apim.integration.dto.APIMaxTpsDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.OAuthApplicationDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.SequenceDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.TokenDTO;
+import org.wso2.carbon.apimgt.apim.integration.common.APIMConfigReader;
+import org.wso2.carbon.apimgt.apim.integration.common.configs.APIMConfig;
+import org.wso2.carbon.apimgt.apim.integration.dcr.dto.OAuthApplicationDTO;
+import org.wso2.carbon.apimgt.apim.integration.dcr.dto.PublisherAPIDTO;
+import org.wso2.carbon.apimgt.apim.integration.dcr.dto.TokenDTO;
+import org.wso2.carbon.apimgt.apim.integration.publisher.InternalPublisherClient;
+import org.wso2.carbon.apimgt.apim.integration.store.dto.APIBusinessInformationDTO;
+import org.wso2.carbon.apimgt.apim.integration.store.dto.APICorsConfigurationDTO;
+import org.wso2.carbon.apimgt.apim.integration.store.dto.APIEndpointSecurityDTO;
+import org.wso2.carbon.apimgt.apim.integration.store.dto.APIMaxTpsDTO;
+import org.wso2.carbon.apimgt.apim.integration.store.dto.SequenceDTO;
 import org.wso2.carbon.apimgt.impl.APIConstants;
 import org.wso2.carbon.utils.CarbonUtils;
 
@@ -42,7 +42,7 @@ public class APIBuilderUtil {
 	private static TokenDTO accessToken;
 	private static OAuthApplicationDTO dcrApp;
 	
-	public static String getAccessToken(APIMClient apimClient, APIMConfig apimConfig) throws APIManagementException {
+	public static String getAccessToken(InternalPublisherClient apimClient, APIMConfig apimConfig) throws APIManagementException {
 		if (isTokenNullOrExpired(accessToken)) {
 			//TODO do the fix in apim side to return the same app if already created
 			dcrApp = apimClient.createOAuthApplication(apimConfig.getDcrEndpointConfig());

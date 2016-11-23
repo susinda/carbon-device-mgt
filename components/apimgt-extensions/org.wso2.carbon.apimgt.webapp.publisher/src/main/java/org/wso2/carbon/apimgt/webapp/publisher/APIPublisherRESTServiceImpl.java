@@ -8,23 +8,23 @@ import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.api.FaultGatewaysException;
 import org.wso2.carbon.apimgt.api.model.API;
 import org.wso2.carbon.apimgt.api.model.APIIdentifier;
-import org.wso2.carbon.apimgt.apim.integration.APIMClient;
-import org.wso2.carbon.apimgt.apim.integration.APIMConfigReader;
-import org.wso2.carbon.apimgt.apim.integration.dto.PublisherAPIDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.PublisherAPIListDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.APIMConfig;
-import org.wso2.carbon.apimgt.apim.integration.dto.PublisherEndpointConfig;
-import org.wso2.carbon.apimgt.apim.integration.dto.StoreAPIDTO;
-import org.wso2.carbon.apimgt.apim.integration.dto.StoreAPIListDTO;
+import org.wso2.carbon.apimgt.apim.integration.common.APIMConfigReader;
+import org.wso2.carbon.apimgt.apim.integration.common.configs.APIMConfig;
+import org.wso2.carbon.apimgt.apim.integration.common.configs.PublisherEndpointConfig;
+import org.wso2.carbon.apimgt.apim.integration.dcr.dto.PublisherAPIDTO;
+import org.wso2.carbon.apimgt.apim.integration.publisher.InternalPublisherClient;
+import org.wso2.carbon.apimgt.apim.integration.publisher.dto.PublisherAPIListDTO;
+import org.wso2.carbon.apimgt.apim.integration.store.dto.StoreAPIDTO;
+import org.wso2.carbon.apimgt.apim.integration.store.dto.StoreAPIListDTO;
 import org.wso2.carbon.utils.CarbonUtils;
 
 public class APIPublisherRESTServiceImpl extends APIPublisherServiceImpl {
 	private static final Log log = LogFactory.getLog(APIPublisherRESTServiceImpl.class);
-	APIMClient apimRestClient;
+	InternalPublisherClient apimRestClient;
 	APIMConfig config;
 
 	public APIPublisherRESTServiceImpl() {
-		apimRestClient = new APIMClient();
+		apimRestClient = new InternalPublisherClient();
 		String configFile = CarbonUtils.getCarbonConfigDirPath() + File.separator + "apim-integration.xml";
 		log.info("configFile  " + configFile);
 
