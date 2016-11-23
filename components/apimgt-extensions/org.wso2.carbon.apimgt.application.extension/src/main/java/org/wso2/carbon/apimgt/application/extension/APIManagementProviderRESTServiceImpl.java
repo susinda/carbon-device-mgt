@@ -104,12 +104,6 @@ public class APIManagementProviderRESTServiceImpl implements APIManagementProvid
 		return key;
 	}
 
-	@Override
-	public ApiApplicationKey generateAndRetrieveApplicationKeys(String apiApplicationName, String keyType,
-			String username, boolean isAllowedAllDomains) throws APIManagerException {
-
-		return null;
-	}
 
 	@Override
 	public void registerExistingOAuthApplicationToAPIApplication(String jsonString, String applicationName,

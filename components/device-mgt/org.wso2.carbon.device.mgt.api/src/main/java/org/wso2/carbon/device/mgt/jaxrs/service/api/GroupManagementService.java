@@ -19,33 +19,26 @@
 
 package org.wso2.carbon.device.mgt.jaxrs.service.api;
 
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Info;
+import io.swagger.annotations.ExtensionProperty;
+import io.swagger.annotations.Extension;
+import io.swagger.annotations.Tag;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.AuthorizationScope;
+import io.swagger.annotations.Authorization;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ResponseHeader;
 import org.apache.axis2.transport.http.HTTPConstants;
-import org.wso2.carbon.apimgt.annotations.api.API;
-import org.wso2.carbon.apimgt.annotations.api.Permission;
 import org.wso2.carbon.device.mgt.common.DeviceIdentifier;
 import org.wso2.carbon.device.mgt.common.group.mgt.DeviceGroup;
-import org.wso2.carbon.device.mgt.jaxrs.beans.DeviceGroupList;
-import org.wso2.carbon.device.mgt.jaxrs.beans.DeviceGroupShare;
-import org.wso2.carbon.device.mgt.jaxrs.beans.DeviceGroupUsersList;
-import org.wso2.carbon.device.mgt.jaxrs.beans.DeviceList;
-import org.wso2.carbon.device.mgt.jaxrs.beans.ErrorResponse;
+import org.wso2.carbon.device.mgt.jaxrs.beans.*;
 
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -53,8 +46,21 @@ import java.util.List;
 /**
  * Device group related REST-API. This can be used to manipulated device group related details.
  */
-@API(name = "GroupManagement", version = "1.0.0", context = "/api/device-mgt/v1.0/groups", tags = {"device_management"})
-
+@SwaggerDefinition(
+        info = @Info(
+                version = "1.0.0",
+                title = "",
+                extensions = {
+                        @Extension(properties = {
+                                @ExtensionProperty(name = "name", value = "GroupManagement"),
+                                @ExtensionProperty(name = "context", value = "/api/device-mgt/v1.0/groups"),
+                        })
+                }
+        ),
+        tags = {
+                @Tag(name = "device_management", description = "")
+        }
+)
 @Path("/groups")
 @Api(value = "Device Group Management", description = "This API carries all device group management related operations " +
                                                       "such as get all the available groups, etc.")
@@ -68,7 +74,15 @@ public interface GroupManagementService {
             httpMethod = HTTPConstants.HEADER_GET,
             value = "Get the list of groups belongs to current user.",
             notes = "Returns all permitted groups enrolled with the system.",
-            tags = "Device Group Management")
+            tags = "Device Group Management",
+            authorizations = {
+                    @Authorization(
+                            value="permission",
+                            scopes = { @AuthorizationScope(scope = "/device-mgt/groups/view",
+                                    description = "View Groups") }
+                    )
+            }
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. \n Successfully fetched the list of device groups.",
                     response = DeviceGroupList.class,
@@ -101,7 +115,6 @@ public interface GroupManagementService {
                     message = "Internal Server Error. \n Server error occurred while fetching the groups list.",
                     response = ErrorResponse.class)
     })
-    @Permission(name = "View Groups", permission = "/device-mgt/groups/view")
     Response getGroups(@ApiParam(
                                name = "name",
                                value = "Name of the group.")
@@ -126,7 +139,15 @@ public interface GroupManagementService {
             httpMethod = HTTPConstants.HEADER_GET,
             value = "Get the count of groups belongs to current user.",
             notes = "Returns count of all permitted groups enrolled with the system.",
-            tags = "Device Group Management")
+            tags = "Device Group Management",
+            authorizations = {
+                    @Authorization(
+                            value="permission",
+                            scopes = { @AuthorizationScope(scope = "/device-mgt/groups/view",
+                                    description = "View Groups") }
+                    )
+            }
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. \n Successfully fetched the device group count.",
                     response = DeviceGroupList.class,
@@ -159,7 +180,6 @@ public interface GroupManagementService {
                     message = "Internal Server Error. \n Server error occurred while fetching the group count.",
                     response = ErrorResponse.class)
     })
-    @Permission(name = "View Groups", permission = "/device-mgt/groups/view")
     Response getGroupCount();
 
     @POST
@@ -168,7 +188,15 @@ public interface GroupManagementService {
             httpMethod = HTTPConstants.HEADER_POST,
             value = "Add new device group to the system.",
             notes = "Add device group with current user as the owner.",
-            tags = "Device Group Management")
+            tags = "Device Group Management",
+            authorizations = {
+                    @Authorization(
+                            value="permission",
+                            scopes = { @AuthorizationScope(scope = "/device-mgt/groups/add",
+                                    description = "Add Group") }
+                    )
+            }
+    )
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -215,7 +243,6 @@ public interface GroupManagementService {
                                       "Server error occurred while adding a new device group.",
                             response = ErrorResponse.class)
             })
-    @Permission(name = "Add Group", permission = "/device-mgt/groups/add")
     Response createGroup(@ApiParam(
                                  name = "group",
                                  value = "Group object with data.",
@@ -229,7 +256,15 @@ public interface GroupManagementService {
             httpMethod = HTTPConstants.HEADER_GET,
             value = "View group specified.",
             notes = "Returns details of group enrolled with the system.",
-            tags = "Device Group Management")
+            tags = "Device Group Management",
+            authorizations = {
+                    @Authorization(
+                            value="permission",
+                            scopes = { @AuthorizationScope(scope = "/device-mgt/groups/view",
+                                    description = "View Groups") }
+                    )
+            }
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. \n Successfully fetched the device group.",
                     response = DeviceGroup.class,
@@ -262,7 +297,6 @@ public interface GroupManagementService {
                     message = "Internal Server Error. \n Server error occurred while fetching the group details.",
                     response = ErrorResponse.class)
     })
-    @Permission(name = "View Groups", permission = "/device-mgt/groups/view")
     Response getGroup(@ApiParam(
                               name = "groupId",
                               value = "ID of the group to view.",
@@ -277,7 +311,15 @@ public interface GroupManagementService {
             value = "Update a group.",
             notes = "If you wish to make changes to an existing group, that can be done by updating the group using " +
                     "this resource.",
-            tags = "Device Group Management")
+            tags = "Device Group Management",
+            authorizations = {
+                    @Authorization(
+                            value="permission",
+                            scopes = { @AuthorizationScope(scope = "/device-mgt/groups/update",
+                                    description = "Update Group") }
+                    )
+            }
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. \n Group has been updated successfully.",
                     responseHeaders = {
@@ -309,7 +351,6 @@ public interface GroupManagementService {
                     message = "Internal Server Error. \n Server error occurred while updating the group.",
                     response = ErrorResponse.class)
     })
-    @Permission(name = "Update Group", permission = "/device-mgt/groups/update")
     Response updateGroup(@ApiParam(
                                  name = "groupId",
                                  value = "ID of the group to be updated.",
@@ -329,7 +370,15 @@ public interface GroupManagementService {
             value = "Delete a group.",
             notes = "If you wish to remove an existing group, that can be done by updating the group using " +
                     "this resource.",
-            tags = "Device Group Management")
+            tags = "Device Group Management",
+            authorizations = {
+                    @Authorization(
+                            value="permission",
+                            scopes = { @AuthorizationScope(scope = "/device-mgt/groups/remove",
+                                    description = "Remove Group") }
+                    )
+            }
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. \n Group has been deleted successfully.",
                     responseHeaders = {
@@ -361,7 +410,6 @@ public interface GroupManagementService {
                     message = "Internal Server Error. \n Server error occurred while removing the group.",
                     response = ErrorResponse.class)
     })
-    @Permission(name = "Remove Group", permission = "/device-mgt/groups/remove")
     Response deleteGroup(@ApiParam(
                                  name = "groupId",
                                  value = "ID of the group to be deleted.",
@@ -376,7 +424,15 @@ public interface GroupManagementService {
             value = "Manage group sharing with a user.",
             notes = "If you wish to share /un share an existing group with a user under defined sharing roles, " +
                     "that can be done using this resource.",
-            tags = "Device Group Management")
+            tags = "Device Group Management",
+            authorizations = {
+                    @Authorization(
+                            value="permission",
+                            scopes = { @AuthorizationScope(scope = "/device-mgt/groups/share",
+                                    description = "Share Group") }
+                    )
+            }
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. \n Sharing has been updated successfully.",
                     responseHeaders = {
@@ -408,7 +464,6 @@ public interface GroupManagementService {
                     message = "Internal Server Error. \n Server error occurred while sharing the group.",
                     response = ErrorResponse.class)
     })
-    @Permission(name = "Share Group", permission = "/device-mgt/groups/share")
     Response manageGroupSharing(@ApiParam(
                                         name = "groupName",
                                         value = "Name of the group to be shared or unshared.",
@@ -427,7 +482,15 @@ public interface GroupManagementService {
             httpMethod = HTTPConstants.HEADER_GET,
             value = "View list of users of a device group.",
             notes = "Returns details of users which particular group has been shared with.",
-            tags = "Device Group Management")
+            tags = "Device Group Management",
+            authorizations = {
+                    @Authorization(
+                            value="permission",
+                            scopes = { @AuthorizationScope(scope = "/device-mgt/groups/users/view",
+                                    description = "View users") }
+                    )
+            }
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. \n Successfully fetched the users.",
                     response = DeviceGroupUsersList.class,
@@ -460,12 +523,77 @@ public interface GroupManagementService {
                     message = "Internal Server Error. \n Server error occurred while fetching the users.",
                     response = ErrorResponse.class)
     })
-    @Permission(name = "View users", permission = "/device-mgt/groups/users/view")
     Response getUsersOfGroup(@ApiParam(
                                      name = "groupId",
                                      value = "ID of the group.",
                                      required = true)
                              @PathParam("groupId") int groupId);
+
+
+    @Path("id/{groupId}/roles/create")
+    @POST
+    @ApiOperation(
+            produces = MediaType.APPLICATION_JSON,
+            httpMethod = HTTPConstants.HEADER_GET,
+            value = "Create a group sharing role to a device group.",
+            notes = "Group sharing is done through a group sharing role.",
+            tags = "Device Group Management",
+            authorizations = {
+                    @Authorization(
+                            value="permission",
+                            scopes = { @AuthorizationScope(scope = "/device-mgt/groups/roles/create",
+                                    description = "Create roles") }
+                    )
+            }
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK. \n Successfully created the role.",
+                    response = DeviceGroupUsersList.class,
+                    responseHeaders = {
+                            @ResponseHeader(
+                                    name = "Content-Type",
+                                    description = "The content type of the body"),
+                            @ResponseHeader(
+                                    name = "ETag",
+                                    description = "Entity Tag of the response resource.\n" +
+                                            "Used by caches, or in conditional requests."),
+                            @ResponseHeader(
+                                    name = "Last-Modified",
+                                    description = "Date and time the resource has been modified the last time.\n" +
+                                            "Used by caches, or in conditional requests."),
+                    }),
+            @ApiResponse(
+                    code = 304,
+                    message = "Not Modified. \n Empty body because the client has already the latest version of " +
+                            "the requested resource."),
+            @ApiResponse(
+                    code = 404,
+                    message = "No groups found.",
+                    response = ErrorResponse.class),
+            @ApiResponse(
+                    code = 406,
+                    message = "Not Acceptable.\n The requested media type is not supported."),
+            @ApiResponse(
+                    code = 500,
+                    message = "Internal Server Error. \n Server error occurred while creating the role.",
+                    response = ErrorResponse.class)
+    })
+    Response createGroupSharingRole(
+            @ApiParam(
+                    name = "groupId",
+                    value = "ID of the group.",
+                    required = true)
+            @PathParam("groupId") int groupId,
+            @ApiParam(
+                    name = "userName",
+                    value = "User name of the current user.",
+                    required = false)
+            @QueryParam("userName") String userName,
+            @ApiParam(
+                    name = "roleInfo",
+                    value = "Group role information with permissions and users",
+                    required = true)
+            @Valid RoleInfo roleInfo);
 
     @Path("/id/{groupId}/roles")
     @GET
@@ -474,7 +602,15 @@ public interface GroupManagementService {
             httpMethod = HTTPConstants.HEADER_GET,
             value = "View list of roles of a device group.",
             notes = "Returns details of roles which particular group has been shared with.",
-            tags = "Device Group Management")
+            tags = "Device Group Management",
+            authorizations = {
+                    @Authorization(
+                            value="permission",
+                            scopes = { @AuthorizationScope(scope = "/device-mgt/groups/roles/view",
+                                    description = "View roles") }
+                    )
+            }
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. \n Successfully fetched the users.",
                     response = DeviceGroupUsersList.class,
@@ -507,7 +643,6 @@ public interface GroupManagementService {
                     message = "Internal Server Error. \n Server error occurred while fetching the roles.",
                     response = ErrorResponse.class)
     })
-    @Permission(name = "View roles", permission = "/device-mgt/groups/roles/view")
     Response getRolesOfGroup(@ApiParam(
                                      name = "groupId",
                                      value = "ID of the group.",
@@ -526,7 +661,15 @@ public interface GroupManagementService {
             httpMethod = HTTPConstants.HEADER_GET,
             value = "View list of devices in the device group.",
             notes = "Returns list of devices in the device group.",
-            tags = "Device Group Management")
+            tags = "Device Group Management",
+            authorizations = {
+                    @Authorization(
+                            value="permission",
+                            scopes = { @AuthorizationScope(scope = "/device-mgt/groups/devices/view",
+                                    description = "View devices") }
+                    )
+            }
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. \n Successfully fetched the devices.",
                     response = DeviceList.class,
@@ -559,7 +702,6 @@ public interface GroupManagementService {
                     message = "Internal Server Error. \n Server error occurred while fetching the devices.",
                     response = ErrorResponse.class)
     })
-    @Permission(name = "View devices", permission = "/device-mgt/groups/devices/view")
     Response getDevicesOfGroup(@ApiParam(
                                        name = "groupId",
                                        value = "ID of the group.",
@@ -581,7 +723,15 @@ public interface GroupManagementService {
             httpMethod = HTTPConstants.HEADER_GET,
             value = "View list of device count in the device group.",
             notes = "Returns device count in the device group.",
-            tags = "Device Group Management")
+            tags = "Device Group Management",
+            authorizations = {
+                    @Authorization(
+                            value="permission",
+                            scopes = { @AuthorizationScope(scope = "/device-mgt/groups/devices/view",
+                                    description = "View devices") }
+                    )
+            }
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. \n Successfully fetched the device count.",
                     response = DeviceList.class,
@@ -614,21 +764,28 @@ public interface GroupManagementService {
                     message = "Internal Server Error. \n Server error occurred while fetching device count.",
                     response = ErrorResponse.class)
     })
-    @Permission(name = "View devices", permission = "/device-mgt/groups/devices/view")
     Response getDeviceCountOfGroup(@ApiParam(
                                            name = "groupId",
                                            value = "ID of the group.",
                                            required = true)
                                @PathParam("groupId") int groupId);
 
-    @Path("/id/{groupId}/devices")
+    @Path("/id/{groupId}/devices/add")
     @POST
     @ApiOperation(
             produces = MediaType.APPLICATION_JSON,
             httpMethod = HTTPConstants.HEADER_POST,
             value = "Add devices to group.",
             notes = "Add existing devices to the device group.",
-            tags = "Device Group Management")
+            tags = "Device Group Management",
+            authorizations = {
+                    @Authorization(
+                            value="permission",
+                            scopes = { @AuthorizationScope(scope = "/device-mgt/groups/devices/add",
+                                    description = "Add devices") }
+                    )
+            }
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. \n Successfully add devices to the group.",
                     responseHeaders = {
@@ -660,7 +817,6 @@ public interface GroupManagementService {
                     message = "Internal Server Error. \n Server error occurred while adding devices to the group.",
                     response = ErrorResponse.class)
     })
-    @Permission(name = "Add devices", permission = "/device-mgt/groups/devices/add")
     Response addDevicesToGroup(@ApiParam(
                                        name = "groupId",
                                        value = "ID of the group.",
@@ -672,14 +828,22 @@ public interface GroupManagementService {
                                        required = true)
                                @Valid List<DeviceIdentifier> deviceIdentifiers);
 
-    @Path("/id/{groupId}/devices")
-    @DELETE
+    @Path("/id/{groupId}/devices/remove")
+    @POST
     @ApiOperation(
             produces = MediaType.APPLICATION_JSON,
             httpMethod = HTTPConstants.HEADER_DELETE,
             value = "Remove devices from group.",
             notes = "Remove existing devices from the device group.",
-            tags = "Device Group Management")
+            tags = "Device Group Management",
+            authorizations = {
+                    @Authorization(
+                            value="permission",
+                            scopes = { @AuthorizationScope(scope = "/device-mgt/groups/devices/remove",
+                                    description = "Remove devices") }
+                    )
+            }
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. \n Successfully removed devices from the group.",
                     responseHeaders = {
@@ -711,7 +875,6 @@ public interface GroupManagementService {
                     message = "Internal Server Error. \n Server error occurred while removing devices from the group.",
                     response = ErrorResponse.class)
     })
-    @Permission(name = "Remove devices", permission = "/device-mgt/groups/devices/remove")
     Response removeDevicesFromGroup(@ApiParam(
                                             name = "groupId",
                                             value = "ID of the group.",
