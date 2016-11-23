@@ -7,11 +7,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.apim.integration.common.APIMConfigReader;
+import org.wso2.carbon.apimgt.apim.integration.common.APIMIntegrationException;
 import org.wso2.carbon.apimgt.apim.integration.common.configs.APIMConfig;
 import org.wso2.carbon.apimgt.apim.integration.common.configs.StoreEndpointConfig;
 import org.wso2.carbon.apimgt.apim.integration.dcr.dto.OAuthApplicationDTO;
 import org.wso2.carbon.apimgt.apim.integration.dcr.dto.TokenDTO;
 import org.wso2.carbon.apimgt.apim.integration.publisher.InternalPublisherClient;
+import org.wso2.carbon.apimgt.apim.integration.store.StoreClient;
 import org.wso2.carbon.apimgt.apim.integration.store.dto.APIMApplicationDTO;
 import org.wso2.carbon.apimgt.apim.integration.store.dto.ApplicationKeyDTO;
 import org.wso2.carbon.apimgt.apim.integration.store.dto.ApplicationKeyGenRequestDTO;
@@ -26,30 +28,32 @@ import org.wso2.carbon.utils.CarbonUtils;
 public class APIManagementProviderRESTServiceImpl implements APIManagementProviderService {
 	
 	private static final Log log = LogFactory.getLog(APIManagementProviderRESTServiceImpl.class);
-	private static TokenDTO accessToken;
-	private static OAuthApplicationDTO dcrApp;
 	
 
 	@Override
 	public ApiApplicationKey generateAndRetrieveApplicationKeys(String apiApplicationName1, String[] tags1,
 			String keyType1, String username, boolean isAllowedAllDomains1) throws APIManagerException {
 		
-		InternalPublisherClient apimClient = new InternalPublisherClient();
-		APIMApplicationDTO requestApp = new APIMApplicationDTO();
-		requestApp.setName(apiApplicationName1);
-		requestApp.setThrottlingTier("Unlimited");
+		StoreClient apimStoreClient = null;
 		APIMConfig config = null;
 		try {
 			String configFile = CarbonUtils.getCarbonConfigDirPath() + File.separator + "apim-integration.xml";
 			config = APIMConfigReader.getAPIMConfig(configFile);
-			getAccessToken(apimClient, config);
+			apimStoreClient = new StoreClient(config);
 		} catch (APIManagementException e) {
 			throw new APIManagerException("Error generating accestoken", e);
 		}
 		
 		StoreEndpointConfig storeConfig = config.getStoreEndpointConfig();
-		String apimToken = accessToken.getAccess_token();
-		APIMApplicationDTO createdApp = apimClient.createAPIMApplication(storeConfig, requestApp, apimToken);
+		APIMApplicationDTO requestApp = new APIMApplicationDTO();
+		requestApp.setName(apiApplicationName1);
+		requestApp.setThrottlingTier("Unlimited");
+		APIMApplicationDTO createdApp = null;
+		try {
+			createdApp = apimStoreClient.createAPIMApplicationIfNotExists(requestApp);
+		} catch (APIMIntegrationException e1) {
+			log.info("App creation failed " + e1.getMessage(), e1);
+		}
 		log.info("App created succesfully createdApp.getApplicationId " + createdApp.getApplicationId());
 		
 		ApplicationKeyGenRequestDTO keygenRequest = new ApplicationKeyGenRequestDTO();
@@ -65,19 +69,34 @@ public class APIManagementProviderRESTServiceImpl implements APIManagementProvid
 			//TODO else what to do??
 			keygenRequest.setAccessAllowDomains(Arrays.asList("ALL"));
 		}
-		ApplicationKeyDTO applicationKey = apimClient.generateKeysforApp(storeConfig, keygenRequest, createdApp.getApplicationId(), apimToken);
+		ApplicationKeyDTO applicationKey = null;
+		try {
+			applicationKey = apimStoreClient.generateKeysforAppIfNotExists(keygenRequest, createdApp);
+		} catch (APIMIntegrationException e) {
+			log.error("App  key generation failed " + e.getMessage(), e);
+		}
 		log.info("API applicationKey generation successfull applicationKey.getToken().toString() = " + applicationKey.getToken().toString());
 		
 		String searchQuery = "tag:" + tags1[0]; //TODO build the correct queryString to get apis for all tags
-		StoreAPIListDTO apiList = apimClient.searchStoreAPIs(storeConfig, searchQuery, apimToken);
+		StoreAPIListDTO apiList = null;
+		try {
+			apiList = apimStoreClient.searchStoreAPIs(searchQuery);
+		} catch (APIMIntegrationException e) {
+			log.error("API search failed " + e.getMessage(), e);
+		}
 		log.info("API list retrived apiList.count = " + apiList.getCount());
 		
 		for (StoreAPIDTO storeApi :apiList.getList()) {
-			SubscriptionDTO subscription = new SubscriptionDTO();
-			subscription.setTier("Unlimited");
-			subscription.setApplicationId(createdApp.getApplicationId());
-			subscription.setApiIdentifier(storeApi.getId());
-			SubscriptionDTO subscriptionResult = apimClient.subscribeAPItoApp(storeConfig, subscription, apimToken);
+			SubscriptionDTO subscriptionRequest = new SubscriptionDTO();
+			subscriptionRequest.setTier("Unlimited");
+			subscriptionRequest.setApplicationId(createdApp.getApplicationId());
+			subscriptionRequest.setApiIdentifier(storeApi.getId());
+			SubscriptionDTO subscriptionResult = null;
+			try {
+				subscriptionResult = apimStoreClient.subscribeAPItoAppIfNotExists(subscriptionRequest);
+			} catch (APIMIntegrationException e) {
+				log.error("API susbscription failed " + e.getMessage(), e);
+			}
 			log.info("API getSubscriptionId successfull subscriptionResult.getSubscriptionId() = " + subscriptionResult.getSubscriptionId());
 		}
 		
@@ -107,29 +126,4 @@ public class APIManagementProviderRESTServiceImpl implements APIManagementProvid
 
 	}
 	
-	private static String getAccessToken(InternalPublisherClient apimClient, APIMConfig apimConfig) throws APIManagementException {
-		if (isTokenNullOrExpired(accessToken)) {
-			//TODO do the fix in apim side to return the same app if already created
-			dcrApp = apimClient.createOAuthApplication(apimConfig.getDcrEndpointConfig());
-			log.info("Auth app created sucessfully, app.getClientSecret() = " + dcrApp.getClientId());
-	
-			accessToken = apimClient.getUserToken(apimConfig.getTokenEndpointConfig(), dcrApp);
-			log.info("Token generated succesfully, token.getExpires_in() = " + accessToken.getExpires_in());
-		}
-		return accessToken.getAccess_token();
-	}
-
-	private static boolean isTokenNullOrExpired(TokenDTO token) {
-		if (token == null) {
-			return true;
-		} else {
-			return false; //Here we considered if token is there it is not expired
-			//TODO implement this logic properly, than returning false always
-			//if (DateTime.parse(token.getExpires_in()).getMillisOfSecond() > DateTime.now().getMillisOfSecond()) {
-			//	return true;
-			//}
-		}
-	}
-
-
 }

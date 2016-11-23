@@ -9,22 +9,20 @@ import org.wso2.carbon.apimgt.api.FaultGatewaysException;
 import org.wso2.carbon.apimgt.api.model.API;
 import org.wso2.carbon.apimgt.api.model.APIIdentifier;
 import org.wso2.carbon.apimgt.apim.integration.common.APIMConfigReader;
+import org.wso2.carbon.apimgt.apim.integration.common.APIMIntegrationException;
 import org.wso2.carbon.apimgt.apim.integration.common.configs.APIMConfig;
-import org.wso2.carbon.apimgt.apim.integration.common.configs.PublisherEndpointConfig;
-import org.wso2.carbon.apimgt.apim.integration.dcr.dto.PublisherAPIDTO;
-import org.wso2.carbon.apimgt.apim.integration.publisher.InternalPublisherClient;
-import org.wso2.carbon.apimgt.apim.integration.publisher.dto.PublisherAPIListDTO;
-import org.wso2.carbon.apimgt.apim.integration.store.dto.StoreAPIDTO;
-import org.wso2.carbon.apimgt.apim.integration.store.dto.StoreAPIListDTO;
+import org.wso2.carbon.apimgt.apim.integration.dcr.DcrClient;
+import org.wso2.carbon.apimgt.apim.integration.publisher.PublisherClient;
+import org.wso2.carbon.apimgt.apim.integration.publisher.dto.PublisherAPIDTO;
 import org.wso2.carbon.utils.CarbonUtils;
 
-public class APIPublisherRESTServiceImpl extends APIPublisherServiceImpl {
+public class APIPublisherRESTServiceImpl implements APIPublisherService {
 	private static final Log log = LogFactory.getLog(APIPublisherRESTServiceImpl.class);
-	InternalPublisherClient apimRestClient;
+	PublisherClient apimPublisherClient;
 	APIMConfig config;
 
 	public APIPublisherRESTServiceImpl() {
-		apimRestClient = new InternalPublisherClient();
+		
 		String configFile = CarbonUtils.getCarbonConfigDirPath() + File.separator + "apim-integration.xml";
 		log.info("configFile  " + configFile);
 
@@ -33,6 +31,14 @@ public class APIPublisherRESTServiceImpl extends APIPublisherServiceImpl {
 		} catch (APIManagementException e) {
 			log.error(e.getMessage(), e);
 		}
+		try {
+			DcrClient dcrClient = new DcrClient(config);
+			apimPublisherClient = new PublisherClient(config);
+			apimPublisherClient.setDcrClient(dcrClient);
+		} catch (APIManagementException e) {
+			log.error("Error initializing PublisherClient \n" + e.getMessage(), e);
+		}
+		
 		log.info("APIMConfig config.getDcrEndpointConfig().getUrl() =  " + config.getDcrEndpointConfig().getUrl());
 	}
 
@@ -40,37 +46,14 @@ public class APIPublisherRESTServiceImpl extends APIPublisherServiceImpl {
 	public void publishAPI(API apimAPI) throws APIManagementException, FaultGatewaysException {
 
 		PublisherAPIDTO apiDTO = APIBuilderUtil.fromAPItoDTO(apimAPI);
-		String accessToken = APIBuilderUtil.getAccessToken(apimRestClient, config);
-		log.info("APIBuilderUtil.getAccessToken() accessToken generated sucesfully");
-
-		PublisherEndpointConfig publisherConfig = config.getPublisherEndpointConfig();
-		PublisherAPIListDTO list = apimRestClient.searchPublisherAPIs(publisherConfig, "", accessToken);
-		List<PublisherAPIDTO> apiLIst = list.getList();
-		PublisherAPIDTO existingAPI = getExistingApi(apiDTO, apiLIst);
-		if (existingAPI != null) {
-			log.info("API " + existingAPI.getName() + " apready exists, therefore not creating");
-			if ("PUBLISHED".equals(existingAPI.getStatus())) {
-				log.info("API " + existingAPI.getName() + " apready in PUBLISHED state, therefore not publishing");
-			} else {
-				boolean publishResult = apimRestClient.publishAPI(publisherConfig, existingAPI.getId(), accessToken);
-				log.info("API publish result " + publishResult);
-			}
-		} else {
-			PublisherAPIDTO createdAPI = apimRestClient.createAPI(publisherConfig, apiDTO, accessToken);
-			log.info("API creation succesful : createdAPI " + createdAPI.getName() + "  " + createdAPI.getId());
-			boolean publishResult = apimRestClient.publishAPI(publisherConfig, createdAPI.getId(), accessToken);
-			log.info("API publish result " + publishResult);
+		try {
+			apimPublisherClient.createAndPublishAPIIfNotExists(apiDTO);
+		} catch (APIMIntegrationException e) {
+			log.error("Error publishing api " + apiDTO.getName() + "\n" + e.getMessage(), e);
+			throw new APIManagementException(e.getMessage(), e);
 		}
 	}
 
-	private PublisherAPIDTO getExistingApi(PublisherAPIDTO apiDTO, List<PublisherAPIDTO> apiLIst) {
-		for (PublisherAPIDTO api : apiLIst) {
-			if (api.getContext().equals(apiDTO.getContext())) {
-				return api;
-			}
-		}
-		return null;
-	}
 
 	@Override
 	public void removeAPI(APIIdentifier id) throws APIManagementException {

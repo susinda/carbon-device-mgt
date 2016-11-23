@@ -1,6 +1,5 @@
 package org.wso2.carbon.apimgt.webapp.publisher;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,25 +11,19 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joda.time.DateTime;
 import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.api.model.API;
 import org.wso2.carbon.apimgt.api.model.Scope;
 import org.wso2.carbon.apimgt.api.model.URITemplate;
-import org.wso2.carbon.apimgt.apim.integration.common.APIMConfigReader;
-import org.wso2.carbon.apimgt.apim.integration.common.configs.APIMConfig;
 import org.wso2.carbon.apimgt.apim.integration.dcr.dto.OAuthApplicationDTO;
-import org.wso2.carbon.apimgt.apim.integration.dcr.dto.PublisherAPIDTO;
 import org.wso2.carbon.apimgt.apim.integration.dcr.dto.TokenDTO;
-import org.wso2.carbon.apimgt.apim.integration.publisher.InternalPublisherClient;
+import org.wso2.carbon.apimgt.apim.integration.publisher.dto.PublisherAPIDTO;
 import org.wso2.carbon.apimgt.apim.integration.store.dto.APIBusinessInformationDTO;
 import org.wso2.carbon.apimgt.apim.integration.store.dto.APICorsConfigurationDTO;
 import org.wso2.carbon.apimgt.apim.integration.store.dto.APIEndpointSecurityDTO;
 import org.wso2.carbon.apimgt.apim.integration.store.dto.APIMaxTpsDTO;
 import org.wso2.carbon.apimgt.apim.integration.store.dto.SequenceDTO;
 import org.wso2.carbon.apimgt.impl.APIConstants;
-import org.wso2.carbon.utils.CarbonUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -42,29 +35,6 @@ public class APIBuilderUtil {
 	private static TokenDTO accessToken;
 	private static OAuthApplicationDTO dcrApp;
 	
-	public static String getAccessToken(InternalPublisherClient apimClient, APIMConfig apimConfig) throws APIManagementException {
-		if (isTokenNullOrExpired(accessToken)) {
-			//TODO do the fix in apim side to return the same app if already created
-			dcrApp = apimClient.createOAuthApplication(apimConfig.getDcrEndpointConfig());
-			log.info("Auth app created sucessfully, app.getClientSecret() = " + dcrApp.getClientId());
-	
-			accessToken = apimClient.getUserToken(apimConfig.getTokenEndpointConfig(), dcrApp);
-			log.info("Token generated succesfully, token.getExpires_in() = " + accessToken.getExpires_in());
-		}
-		return accessToken.getAccess_token();
-	}
-
-	private static boolean isTokenNullOrExpired(TokenDTO token) {
-		if (token == null) {
-			return true;
-		} else {
-			return false; //Here we considered if token is there it is not expired
-			//TODO implement this logic properly, than returning false always
-			//if (DateTime.parse(token.getExpires_in()).getMillisOfSecond() > DateTime.now().getMillisOfSecond()) {
-			//	return true;
-			//}
-		}
-	}
 
 	public static PublisherAPIDTO fromAPItoDTO(API model) throws APIManagementException {
 

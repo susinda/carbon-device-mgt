@@ -65,8 +65,8 @@ public class TestClass2 {
 			String fileString = new String(Files.readAllBytes(Paths.get("src/test/java/api6.json")));
 			PublisherAPIDTO api = new PublisherAPIDTO();
 			api.setTags(Arrays.asList("apple"));
-			api.setName("Ausi480");
-			api.setContext("/Ausi480");
+			api.setName("Aaa481");
+			api.setContext("/Aaa481");
 			api.setVersion("1.0.1");
 			api.setProvider("admin");
 			api.setApiDefinition(fileString);
@@ -84,7 +84,7 @@ public class TestClass2 {
 			StoreAPIListDTO storeApiList = storeClient.searchStoreAPIs("tag:apple");
 			System.out.println("API list retrived apiList.count = " + storeApiList.getCount());
 
-			String appName = "AusiApp480";
+			String appName = "AAA481";
 			APIMApplicationDTO requestApp = new APIMApplicationDTO();
 			requestApp.setName(appName);
 			requestApp.setThrottlingTier("Unlimited");

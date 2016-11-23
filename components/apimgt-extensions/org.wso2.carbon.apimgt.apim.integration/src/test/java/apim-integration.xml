@@ -15,7 +15,7 @@
 		<UserName>admin</UserName>
 		<Password>admin</Password>
 		<ClientProfile>
-			<clientName>iotClient1A68</clientName>
+			<clientName>iotClientA481</clientName>
 			<callbackUrl>www.goole.com</callbackUrl>
 			<tokenScope>Production</tokenScope>
 			<owner>admin</owner>
