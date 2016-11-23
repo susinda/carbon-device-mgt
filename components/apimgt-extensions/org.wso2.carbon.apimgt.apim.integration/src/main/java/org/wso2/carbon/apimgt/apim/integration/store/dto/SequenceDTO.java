@@ -52,7 +52,7 @@ public class SequenceDTO {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class SequenceDTO {\n");
-		
+
 		sb.append("  name: ").append(name).append("\n");
 		sb.append("  config: ").append(config).append("\n");
 		sb.append("  type: ").append(type).append("\n");

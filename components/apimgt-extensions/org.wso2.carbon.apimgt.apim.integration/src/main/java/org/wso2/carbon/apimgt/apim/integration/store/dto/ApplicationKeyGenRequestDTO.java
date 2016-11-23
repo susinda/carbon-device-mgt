@@ -23,8 +23,9 @@ import java.util.List;
 public class ApplicationKeyGenRequestDTO {
 
 	public enum KeyTypeEnum {
-	     PRODUCTION,  SANDBOX, 
+		PRODUCTION, SANDBOX,
 	};
+
 	private String validityTime;
 	private KeyTypeEnum keyType;
 	private List<String> accessAllowDomains;
@@ -54,7 +55,7 @@ public class ApplicationKeyGenRequestDTO {
 	public void setAccessAllowDomains(List<String> accessAllowDomains) {
 		this.accessAllowDomains = accessAllowDomains;
 	}
-	
+
 	public String getCallbackUrl() {
 		return callbackUrl;
 	}
@@ -62,7 +63,7 @@ public class ApplicationKeyGenRequestDTO {
 	public void setCallbackUrl(String callbackUrl) {
 		this.callbackUrl = callbackUrl;
 	}
-	
+
 	public List<String> getScopes() {
 		return scopes;
 	}
@@ -70,18 +71,18 @@ public class ApplicationKeyGenRequestDTO {
 	public void setScopes(List<String> scopes) {
 		this.scopes = scopes;
 	}
-	
+
 	@Override
-	  public String toString()  {
-	    StringBuilder sb = new StringBuilder();
-	    sb.append("class ApplicationKeyGenerateRequestDTO {\n");
-	    
-	    sb.append("  keyType: ").append(keyType).append("\n");
-	    sb.append("  validityTime: ").append(validityTime).append("\n");
-	    sb.append("  callbackUrl: ").append(callbackUrl).append("\n");
-	    sb.append("  accessAllowDomains: ").append(accessAllowDomains).append("\n");
-	    sb.append("  scopes: ").append(scopes).append("\n");
-	    sb.append("}\n");
-	    return sb.toString();
-	  }
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class ApplicationKeyGenerateRequestDTO {\n");
+
+		sb.append("  keyType: ").append(keyType).append("\n");
+		sb.append("  validityTime: ").append(validityTime).append("\n");
+		sb.append("  callbackUrl: ").append(callbackUrl).append("\n");
+		sb.append("  accessAllowDomains: ").append(accessAllowDomains).append("\n");
+		sb.append("  scopes: ").append(scopes).append("\n");
+		sb.append("}\n");
+		return sb.toString();
+	}
 }

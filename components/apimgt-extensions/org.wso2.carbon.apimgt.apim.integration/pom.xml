@@ -65,11 +65,8 @@
 			<artifactId>feign-jaxrs</artifactId>
 			<version>${io.github.openfeign.version}</version>
 		</dependency>
-		<!-- dependency>
-			<groupId>io.github.openfeign</groupId>
-			<artifactId>feign-jackson</artifactId>
-			<version>${io.github.openfeign.version}</version>
-		</dependency-->
+		<!-- dependency> <groupId>io.github.openfeign</groupId> <artifactId>feign-jackson</artifactId> 
+			<version>${io.github.openfeign.version}</version> </dependency -->
 		<dependency>
 			<groupId>io.github.openfeign</groupId>
 			<artifactId>feign-gson</artifactId>
@@ -101,10 +98,10 @@
 							org.osgi.framework,
 							org.osgi.service.component,
 							org.apache.commons.logging,
-							feign, 
-							feign.auth, 
-							feign.codec, 
-							feign.gson,  
+							feign,
+							feign.auth,
+							feign.codec,
+							feign.gson,
 							javax.net.ssl,
 							org.w3c.dom,
 							javax.servlet,

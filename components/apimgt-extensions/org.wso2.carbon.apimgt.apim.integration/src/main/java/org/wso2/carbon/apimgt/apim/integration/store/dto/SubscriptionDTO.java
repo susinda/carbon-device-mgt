@@ -65,19 +65,19 @@ public class SubscriptionDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	 @Override
-	  public String toString()  {
-	    StringBuilder sb = new StringBuilder();
-	    sb.append("class SubscriptionDTO {\n");
-	    
-	    sb.append("  subscriptionId: ").append(subscriptionId).append("\n");
-	    sb.append("  applicationId: ").append(applicationId).append("\n");
-	    sb.append("  apiIdentifier: ").append(apiIdentifier).append("\n");
-	    sb.append("  tier: ").append(tier).append("\n");
-	    sb.append("  status: ").append(status).append("\n");
-	    sb.append("}\n");
-	    return sb.toString();
-	  }
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class SubscriptionDTO {\n");
+
+		sb.append("  subscriptionId: ").append(subscriptionId).append("\n");
+		sb.append("  applicationId: ").append(applicationId).append("\n");
+		sb.append("  apiIdentifier: ").append(apiIdentifier).append("\n");
+		sb.append("  tier: ").append(tier).append("\n");
+		sb.append("  status: ").append(status).append("\n");
+		sb.append("}\n");
+		return sb.toString();
+	}
 
 }

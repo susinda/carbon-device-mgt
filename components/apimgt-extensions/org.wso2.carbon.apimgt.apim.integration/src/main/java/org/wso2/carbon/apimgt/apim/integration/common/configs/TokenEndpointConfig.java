@@ -20,12 +20,11 @@ package org.wso2.carbon.apimgt.apim.integration.common.configs;
 
 import javax.xml.bind.annotation.XmlElement;
 
-
 public class TokenEndpointConfig {
-	
+
 	private String url;
 	private TokenConfig token;
-	
+
 	@XmlElement(name = "URL", required = true)
 	public String getUrl() {
 		return url;
@@ -34,7 +33,6 @@ public class TokenEndpointConfig {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
 
 	@XmlElement(name = "TokenInfo", required = true)
 	public TokenConfig getTokenInfo() {

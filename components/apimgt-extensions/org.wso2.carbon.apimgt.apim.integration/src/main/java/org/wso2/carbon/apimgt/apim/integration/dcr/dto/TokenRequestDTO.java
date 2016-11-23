@@ -18,9 +18,8 @@
 
 package org.wso2.carbon.apimgt.apim.integration.dcr.dto;
 
-
 public class TokenRequestDTO {
-	
+
 	private String userName;
 	private String password;
 	private String grantType;
@@ -41,7 +40,7 @@ public class TokenRequestDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public String getGrantType() {
 		return grantType;
 	}
@@ -59,15 +58,15 @@ public class TokenRequestDTO {
 	}
 
 	@Override
-	  public String toString()  {
-	    StringBuilder sb = new StringBuilder();
-	    sb.append("class TokenRequestDTO {\n");
-	    
-	    sb.append("  userName: ").append(userName).append("\n");
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class TokenRequestDTO {\n");
+
+		sb.append("  userName: ").append(userName).append("\n");
 		sb.append("  password: ").append("not-printed").append("\n");
 		sb.append("  grantType: ").append(grantType).append("\n");
 		sb.append("  scope: ").append(scope).append("\n");
-	    sb.append("}\n");
-	    return sb.toString();
-	  }
+		sb.append("}\n");
+		return sb.toString();
+	}
 }

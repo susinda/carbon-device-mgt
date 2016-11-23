@@ -19,7 +19,7 @@
 package org.wso2.carbon.apimgt.apim.integration.store.dto;
 
 public class APIMaxTpsDTO {
-	
+
 	private Long sandbox = null;
 	private Long production = null;
 

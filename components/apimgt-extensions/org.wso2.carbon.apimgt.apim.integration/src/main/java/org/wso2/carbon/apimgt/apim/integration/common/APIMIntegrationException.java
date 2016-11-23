@@ -39,6 +39,7 @@ public class APIMIntegrationException extends Exception {
 
 	APIMIntegrationException(String methodKey, String reason, int status) {
 		super("Exception occured while invoking " + methodKey + " status = " + status + " reason = " + reason);
+		this.methodKey = methodKey;
 		this.responseReason = reason;
 		this.responseStatus = status;
 	}

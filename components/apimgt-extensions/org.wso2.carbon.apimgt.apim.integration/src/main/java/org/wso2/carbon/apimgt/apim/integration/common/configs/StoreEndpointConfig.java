@@ -21,7 +21,7 @@ package org.wso2.carbon.apimgt.apim.integration.common.configs;
 import javax.xml.bind.annotation.XmlElement;
 
 public class StoreEndpointConfig {
-	
+
 	private String url;
 
 	@XmlElement(name = "URL", required = true)

@@ -55,13 +55,12 @@ public interface APIMClientInterface {
 	// Token APIs
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public TokenDTO requestToken(@QueryParam("grant_type") String grant, @QueryParam("username") String username,
-			@QueryParam("password") String password, @QueryParam("scope") String scope) throws APIMIntegrationException;
+	public TokenDTO requestToken(@QueryParam("grant_type") String grant, @QueryParam("username") String username, @QueryParam("password") String password,
+			@QueryParam("scope") String scope) throws APIMIntegrationException;
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public TokenDTO requestTokenRenew(@QueryParam("grant_type") String grant,
-			@QueryParam("refresh_token") String refreshToken, @QueryParam("scope") String scope)
+	public TokenDTO requestTokenRenew(@QueryParam("grant_type") String grant, @QueryParam("refresh_token") String refreshToken, @QueryParam("scope") String scope)
 			throws APIMIntegrationException;
 
 	// Publisher APIs
@@ -79,8 +78,7 @@ public interface APIMClientInterface {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/apis/change-lifecycle?apiId={apiIdentifier}&action={actionName}")
-	public Response publishAPI(@QueryParam("apiIdentifier") String apiID, @QueryParam("actionName") String state)
-			throws APIMIntegrationException;
+	public Response publishAPI(@QueryParam("apiIdentifier") String apiID, @QueryParam("actionName") String state) throws APIMIntegrationException;
 
 	// Store APIs
 	@GET
@@ -91,8 +89,7 @@ public interface APIMClientInterface {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/applications/{appId}")
-	public APIMApplicationDTO getAPIMApplicationDetails(@PathParam("appId") String appId)
-			throws APIMIntegrationException;
+	public APIMApplicationDTO getAPIMApplicationDetails(@PathParam("appId") String appId) throws APIMIntegrationException;
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
@@ -103,14 +100,12 @@ public interface APIMClientInterface {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/apis?query={searchQuery}")
-	public StoreAPIListDTO getExistingStoreAPIs(@QueryParam("searchQuery") String query)
-			throws APIMIntegrationException;
+	public StoreAPIListDTO getExistingStoreAPIs(@QueryParam("searchQuery") String query) throws APIMIntegrationException;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/subscriptions?apiId={apiId}")
-	public SubscriptionListDTO getExistingSubscriptions(@QueryParam("apiId") String apiId)
-			throws APIMIntegrationException;
+	public SubscriptionListDTO getExistingSubscriptions(@QueryParam("apiId") String apiId) throws APIMIntegrationException;
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
@@ -122,7 +117,6 @@ public interface APIMClientInterface {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/applications/generate-keys?applicationId={appId}")
-	public ApplicationKeyDTO generateKeysforApp(ApplicationKeyGenRequestDTO keygenRequest,
-			@QueryParam("appId") String appId) throws APIMIntegrationException;
+	public ApplicationKeyDTO generateKeysforApp(ApplicationKeyGenRequestDTO keygenRequest, @QueryParam("appId") String appId) throws APIMIntegrationException;
 
 }

@@ -61,7 +61,7 @@ public class APIBusinessInformationDTO {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class APIBusinessInformationDTO {\n");
-		
+
 		sb.append("  businessOwnerEmail: ").append(businessOwnerEmail).append("\n");
 		sb.append("  technicalOwnerEmail: ").append(technicalOwnerEmail).append("\n");
 		sb.append("  technicalOwner: ").append(technicalOwner).append("\n");

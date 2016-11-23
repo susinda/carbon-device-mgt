@@ -42,12 +42,11 @@ public interface DcrClientInterface {
 	// Token APIs
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public TokenDTO requestToken(@QueryParam("grant_type") String grant, @QueryParam("username") String username,
-			@QueryParam("password") String password, @QueryParam("scope") String scope) throws APIMIntegrationException;
+	public TokenDTO requestToken(@QueryParam("grant_type") String grant, @QueryParam("username") String username, @QueryParam("password") String password,
+			@QueryParam("scope") String scope) throws APIMIntegrationException;
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public TokenDTO requestTokenRenew(@QueryParam("grant_type") String grant,
-			@QueryParam("refresh_token") String refreshToken, @QueryParam("scope") String scope)
+	public TokenDTO requestTokenRenew(@QueryParam("grant_type") String grant, @QueryParam("refresh_token") String refreshToken, @QueryParam("scope") String scope)
 			throws APIMIntegrationException;
 }

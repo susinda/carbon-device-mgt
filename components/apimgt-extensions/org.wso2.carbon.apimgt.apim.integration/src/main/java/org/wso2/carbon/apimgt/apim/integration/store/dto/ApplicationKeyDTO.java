@@ -28,10 +28,10 @@ public class ApplicationKeyDTO {
 	private String keyState;
 	private KeyTypeEnum keyType;
 	private APIMAccessTokenDTO token;
+
 	public enum KeyTypeEnum {
 		PRODUCTION, SANDBOX,
 	};
-
 
 	public String getConsumerKey() {
 		return consumerKey;
@@ -80,7 +80,7 @@ public class ApplicationKeyDTO {
 	public void setToken(APIMAccessTokenDTO token) {
 		this.token = token;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

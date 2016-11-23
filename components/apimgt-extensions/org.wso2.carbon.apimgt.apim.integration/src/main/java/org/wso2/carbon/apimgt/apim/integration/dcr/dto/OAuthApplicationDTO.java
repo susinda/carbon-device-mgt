@@ -83,7 +83,7 @@ public class OAuthApplicationDTO {
 	public void setClientSecret(String clientSecret) {
 		this.clientSecret = clientSecret;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -99,5 +99,5 @@ public class OAuthApplicationDTO {
 		sb.append("}\n");
 		return sb.toString();
 	}
-	
+
 }

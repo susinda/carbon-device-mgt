@@ -58,18 +58,18 @@ public class APIMApplicationListDTO {
 	public void setList(List<APIMApplicationDTO> list) {
 		this.list = list;
 	}
-	
-	 @Override
-	  public String toString()  {
-	    StringBuilder sb = new StringBuilder();
-	    sb.append("class APIMApplicationListDTO {\n");
-	    
-	    sb.append("  count: ").append(count).append("\n");
-	    sb.append("  next: ").append(next).append("\n");
-	    sb.append("  previous: ").append(previous).append("\n");
-	    sb.append("  list: ").append(list).append("\n");
-	    sb.append("}\n");
-	    return sb.toString();
-	  }
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class APIMApplicationListDTO {\n");
+
+		sb.append("  count: ").append(count).append("\n");
+		sb.append("  next: ").append(next).append("\n");
+		sb.append("  previous: ").append(previous).append("\n");
+		sb.append("  list: ").append(list).append("\n");
+		sb.append("}\n");
+		return sb.toString();
+	}
 
 }

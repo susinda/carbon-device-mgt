@@ -69,11 +69,9 @@ public class APIMClient {
 	 */
 	public OAuthApplicationDTO createOAuthApplication(DCREndpointConfig dcrConfig) throws APIMIntegrationException {
 
-		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient())
-				.contract(new JAXRSContract()).encoder(new GsonEncoder()).decoder(new GsonDecoder())
-				.errorDecoder(new APIMErrorDecoder())
-				.requestInterceptor(new BasicAuthRequestInterceptor(dcrConfig.getUserName(), dcrConfig.getPassword()))
-				.target(APIMClientInterface.class, dcrConfig.getUrl());
+		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient()).contract(new JAXRSContract()).encoder(new GsonEncoder())
+				.decoder(new GsonDecoder()).errorDecoder(new APIMErrorDecoder())
+				.requestInterceptor(new BasicAuthRequestInterceptor(dcrConfig.getUserName(), dcrConfig.getPassword())).target(APIMClientInterface.class, dcrConfig.getUrl());
 
 		ClientProfileConfig clinetConfig = dcrConfig.getClientProfile();
 		ClientProfileDTO clientProfile = new org.wso2.carbon.apimgt.apim.integration.dcr.dto.ClientProfileDTO();
@@ -99,19 +97,15 @@ public class APIMClient {
 	 * @throws APIMIntegrationException
 	 *             - If api invocation goes wrong due to any reason.
 	 */
-	public TokenDTO getUserToken(TokenEndpointConfig tokenConfig, OAuthApplicationDTO oAuthApplication)
-			throws APIMIntegrationException {
+	public TokenDTO getUserToken(TokenEndpointConfig tokenConfig, OAuthApplicationDTO oAuthApplication) throws APIMIntegrationException {
 
-		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient())
-				.contract(new JAXRSContract()).encoder(new GsonEncoder()).decoder(new GsonDecoder())
-				.errorDecoder(new APIMErrorDecoder())
-				.requestInterceptor(new BasicAuthRequestInterceptor(oAuthApplication.getClientId(),
-						oAuthApplication.getClientSecret()))
+		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient()).contract(new JAXRSContract()).encoder(new GsonEncoder())
+				.decoder(new GsonDecoder()).errorDecoder(new APIMErrorDecoder())
+				.requestInterceptor(new BasicAuthRequestInterceptor(oAuthApplication.getClientId(), oAuthApplication.getClientSecret()))
 				.target(APIMClientInterface.class, tokenConfig.getUrl());
 
 		TokenConfig tokenInfo = tokenConfig.getTokenInfo();
-		TokenDTO token = dynamicClientRegistrationService.requestToken(tokenInfo.getGrantType(),
-				tokenInfo.getUserName(), tokenInfo.getPassword(), tokenInfo.getScope());
+		TokenDTO token = dynamicClientRegistrationService.requestToken(tokenInfo.getGrantType(), tokenInfo.getUserName(), tokenInfo.getPassword(), tokenInfo.getScope());
 		return token;
 	}
 
@@ -127,19 +121,15 @@ public class APIMClient {
 	 * @throws APIMIntegrationException
 	 *             - If api invocation goes wrong due to any reason.
 	 */
-	public TokenDTO renewUserToken(TokenEndpointConfig tokenConfig, OAuthApplicationDTO oAuthApplication,
-			String refreshToken) throws APIMIntegrationException {
+	public TokenDTO renewUserToken(TokenEndpointConfig tokenConfig, OAuthApplicationDTO oAuthApplication, String refreshToken) throws APIMIntegrationException {
 
-		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient())
-				.contract(new JAXRSContract()).encoder(new GsonEncoder()).decoder(new GsonDecoder())
-				.errorDecoder(new APIMErrorDecoder())
-				.requestInterceptor(new BasicAuthRequestInterceptor(oAuthApplication.getClientId(),
-						oAuthApplication.getClientSecret()))
+		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient()).contract(new JAXRSContract()).encoder(new GsonEncoder())
+				.decoder(new GsonDecoder()).errorDecoder(new APIMErrorDecoder())
+				.requestInterceptor(new BasicAuthRequestInterceptor(oAuthApplication.getClientId(), oAuthApplication.getClientSecret()))
 				.target(APIMClientInterface.class, tokenConfig.getUrl());
 
 		TokenConfig tokenInfo = tokenConfig.getTokenInfo();
-		TokenDTO token = dynamicClientRegistrationService.requestTokenRenew("refresh_token", refreshToken,
-				tokenInfo.getScope());
+		TokenDTO token = dynamicClientRegistrationService.requestTokenRenew("refresh_token", refreshToken, tokenInfo.getScope());
 		return token;
 	}
 
@@ -161,11 +151,9 @@ public class APIMClient {
 	 * @throws APIMIntegrationException
 	 *             - If api invocation goes wrong due to any reason.
 	 */
-	public PublisherAPIListDTO searchPublisherAPIs(PublisherEndpointConfig publisherEndpointConfig, String searchQuery,
-			String accessToken) throws APIMIntegrationException {
-		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient())
-				.contract(new JAXRSContract()).decoder(new GsonDecoder()).errorDecoder(new APIMErrorDecoder())
-				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+	public PublisherAPIListDTO searchPublisherAPIs(PublisherEndpointConfig publisherEndpointConfig, String searchQuery, String accessToken) throws APIMIntegrationException {
+		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient()).contract(new JAXRSContract()).decoder(new GsonDecoder())
+				.errorDecoder(new APIMErrorDecoder()).requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMClientInterface.class, publisherEndpointConfig.getUrl());
 		PublisherAPIListDTO resultApp = null;
 
@@ -190,12 +178,10 @@ public class APIMClient {
 	 *         API
 	 * @throws APIMIntegrationException
 	 */
-	public PublisherAPIDTO createAPI(PublisherEndpointConfig publisherEndpointConfig, PublisherAPIDTO apiDTO,
-			String accessToken) throws APIMIntegrationException {
+	public PublisherAPIDTO createAPI(PublisherEndpointConfig publisherEndpointConfig, PublisherAPIDTO apiDTO, String accessToken) throws APIMIntegrationException {
 
-		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient())
-				.contract(new JAXRSContract()).encoder(new GsonEncoder()).decoder(new GsonDecoder())
-				.errorDecoder(new APIMErrorDecoder()).requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient()).contract(new JAXRSContract()).encoder(new GsonEncoder())
+				.decoder(new GsonDecoder()).errorDecoder(new APIMErrorDecoder()).requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMClientInterface.class, publisherEndpointConfig.getUrl());
 
 		PublisherAPIDTO apiCreationResult = dynamicClientRegistrationService.createAPI(apiDTO);
@@ -216,12 +202,10 @@ public class APIMClient {
 	 * @return - True if publishing is successful, false otherwise
 	 * @throws APIMIntegrationException
 	 */
-	public boolean publishAPI(PublisherEndpointConfig publisherEndpointConfig, String apiID, String accessToken)
-			throws APIMIntegrationException {
+	public boolean publishAPI(PublisherEndpointConfig publisherEndpointConfig, String apiID, String accessToken) throws APIMIntegrationException {
 
-		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient())
-				.contract(new JAXRSContract()).encoder(new GsonEncoder()).errorDecoder(new APIMErrorDecoder())
-				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient()).contract(new JAXRSContract()).encoder(new GsonEncoder())
+				.errorDecoder(new APIMErrorDecoder()).requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMClientInterface.class, publisherEndpointConfig.getUrl());
 
 		Response apiPublishResult = dynamicClientRegistrationService.publishAPI(apiID, "Publish");
@@ -246,11 +230,9 @@ public class APIMClient {
 	 * @throws APIMIntegrationException
 	 *             -
 	 */
-	public APIMApplicationListDTO searchAPIMApplications(StoreEndpointConfig storeEndpointConfig, String accessToken)
-			throws APIMIntegrationException {
-		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient())
-				.contract(new JAXRSContract()).decoder(new GsonDecoder()).errorDecoder(new APIMErrorDecoder())
-				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+	public APIMApplicationListDTO searchAPIMApplications(StoreEndpointConfig storeEndpointConfig, String accessToken) throws APIMIntegrationException {
+		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient()).contract(new JAXRSContract()).decoder(new GsonDecoder())
+				.errorDecoder(new APIMErrorDecoder()).requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMClientInterface.class, storeEndpointConfig.getUrl());
 
 		APIMApplicationListDTO resultApps = dynamicClientRegistrationService.getAPIMApplications();
@@ -272,11 +254,9 @@ public class APIMClient {
 	 * @throws APIMIntegrationException
 	 *             - If api invocation goes wrong due to any reason.
 	 */
-	public APIMApplicationDTO getAPIMApplicationDetails(StoreEndpointConfig storeEndpointConfig, String accessToken,
-			String appId) throws APIMIntegrationException {
-		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient())
-				.contract(new JAXRSContract()).decoder(new GsonDecoder()).errorDecoder(new APIMErrorDecoder())
-				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+	public APIMApplicationDTO getAPIMApplicationDetails(StoreEndpointConfig storeEndpointConfig, String accessToken, String appId) throws APIMIntegrationException {
+		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient()).contract(new JAXRSContract()).decoder(new GsonDecoder())
+				.errorDecoder(new APIMErrorDecoder()).requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMClientInterface.class, storeEndpointConfig.getUrl());
 
 		APIMApplicationDTO resultApps = dynamicClientRegistrationService.getAPIMApplicationDetails(appId);
@@ -301,11 +281,9 @@ public class APIMClient {
 	 * @throws APIMIntegrationException
 	 *             - If api invocation goes wrong due to any reason.
 	 */
-	public APIMApplicationDTO createAPIMApplication(StoreEndpointConfig storeEndpointConfig,
-			APIMApplicationDTO requestApp, String accessToken) throws APIMIntegrationException {
-		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient())
-				.contract(new JAXRSContract()).encoder(new GsonEncoder()).decoder(new GsonDecoder())
-				.errorDecoder(new APIMErrorDecoder()).requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+	public APIMApplicationDTO createAPIMApplication(StoreEndpointConfig storeEndpointConfig, APIMApplicationDTO requestApp, String accessToken) throws APIMIntegrationException {
+		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient()).contract(new JAXRSContract()).encoder(new GsonEncoder())
+				.decoder(new GsonDecoder()).errorDecoder(new APIMErrorDecoder()).requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMClientInterface.class, storeEndpointConfig.getUrl());
 
 		APIMApplicationDTO resultApp = dynamicClientRegistrationService.createAPIMApplication(requestApp);
@@ -330,11 +308,9 @@ public class APIMClient {
 	 * @throws APIMIntegrationException
 	 *             - If api invocation goes wrong due to any reason.
 	 */
-	public StoreAPIListDTO searchStoreAPIs(StoreEndpointConfig storeEndpointConfig, String searchQuery,
-			String accessToken) throws APIMIntegrationException {
-		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient())
-				.contract(new JAXRSContract()).decoder(new GsonDecoder()).errorDecoder(new APIMErrorDecoder())
-				.target(APIMClientInterface.class, storeEndpointConfig.getUrl());
+	public StoreAPIListDTO searchStoreAPIs(StoreEndpointConfig storeEndpointConfig, String searchQuery, String accessToken) throws APIMIntegrationException {
+		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient()).contract(new JAXRSContract()).decoder(new GsonDecoder())
+				.errorDecoder(new APIMErrorDecoder()).target(APIMClientInterface.class, storeEndpointConfig.getUrl());
 
 		StoreAPIListDTO resultApp = dynamicClientRegistrationService.getExistingStoreAPIs(searchQuery);
 		return resultApp;
@@ -354,11 +330,9 @@ public class APIMClient {
 	 * @throws APIMIntegrationException
 	 *             - If api invocation goes wrong due to any reason.
 	 */
-	public SubscriptionListDTO getExistingSubscriptions(StoreEndpointConfig storeEndpointConfig, String accessToken,
-			String apiId) throws APIMIntegrationException {
-		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient())
-				.contract(new JAXRSContract()).decoder(new GsonDecoder()).errorDecoder(new APIMErrorDecoder())
-				.requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+	public SubscriptionListDTO getExistingSubscriptions(StoreEndpointConfig storeEndpointConfig, String accessToken, String apiId) throws APIMIntegrationException {
+		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient()).contract(new JAXRSContract()).decoder(new GsonDecoder())
+				.errorDecoder(new APIMErrorDecoder()).requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMClientInterface.class, storeEndpointConfig.getUrl());
 
 		SubscriptionListDTO subscriptionResult = dynamicClientRegistrationService.getExistingSubscriptions(apiId);
@@ -383,11 +357,9 @@ public class APIMClient {
 	 * @throws APIMIntegrationException
 	 *             - If api invocation goes wrong due to any reason.
 	 */
-	public SubscriptionDTO subscribeAPItoApp(StoreEndpointConfig storeEndpointConfig,
-			SubscriptionDTO subscriptionRequest, String accessToken) throws APIMIntegrationException {
-		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient())
-				.contract(new JAXRSContract()).encoder(new GsonEncoder()).decoder(new GsonDecoder())
-				.errorDecoder(new APIMErrorDecoder()).requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+	public SubscriptionDTO subscribeAPItoApp(StoreEndpointConfig storeEndpointConfig, SubscriptionDTO subscriptionRequest, String accessToken) throws APIMIntegrationException {
+		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient()).contract(new JAXRSContract()).encoder(new GsonEncoder())
+				.decoder(new GsonDecoder()).errorDecoder(new APIMErrorDecoder()).requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMClientInterface.class, storeEndpointConfig.getUrl());
 
 		SubscriptionDTO subscriptionResult = dynamicClientRegistrationService.subscribeAPItoApp(subscriptionRequest);
@@ -415,16 +387,13 @@ public class APIMClient {
 	 * @throws APIMIntegrationException
 	 *             - If api invocation goes wrong due to any reason.
 	 */
-	public ApplicationKeyDTO generateKeysforApp(StoreEndpointConfig storeEndpointConfig,
-			ApplicationKeyGenRequestDTO keygenRequest, String applicationId, String accessToken)
+	public ApplicationKeyDTO generateKeysforApp(StoreEndpointConfig storeEndpointConfig, ApplicationKeyGenRequestDTO keygenRequest, String applicationId, String accessToken)
 			throws APIMIntegrationException {
-		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient())
-				.contract(new JAXRSContract()).encoder(new GsonEncoder()).decoder(new GsonDecoder())
-				.errorDecoder(new APIMErrorDecoder()).requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
+		APIMClientInterface dynamicClientRegistrationService = Feign.builder().client(new TrustedFeignClient()).contract(new JAXRSContract()).encoder(new GsonEncoder())
+				.decoder(new GsonDecoder()).errorDecoder(new APIMErrorDecoder()).requestInterceptor(new AuthBearerRequestInterceptor(accessToken))
 				.target(APIMClientInterface.class, storeEndpointConfig.getUrl());
 
-		ApplicationKeyDTO appKeyResult = dynamicClientRegistrationService.generateKeysforApp(keygenRequest,
-				applicationId);
+		ApplicationKeyDTO appKeyResult = dynamicClientRegistrationService.generateKeysforApp(keygenRequest, applicationId);
 		return appKeyResult;
 	}
 }

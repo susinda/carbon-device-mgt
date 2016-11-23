@@ -16,7 +16,6 @@
  * under the License.
  */
 
-
 package org.wso2.carbon.apimgt.apim.integration.store.dto;
 
 import java.util.List;
@@ -59,18 +58,18 @@ public class StoreAPIListDTO {
 	public void setList(List<StoreAPIDTO> list) {
 		this.list = list;
 	}
-	
-	 @Override
-	  public String toString()  {
-	    StringBuilder sb = new StringBuilder();
-	    sb.append("class SubscriptionListDTO {\n");
-	    
-	    sb.append("  count: ").append(count).append("\n");
-	    sb.append("  next: ").append(next).append("\n");
-	    sb.append("  previous: ").append(previous).append("\n");
-	    sb.append("  list: ").append(list).append("\n");
-	    sb.append("}\n");
-	    return sb.toString();
-	  }
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class SubscriptionListDTO {\n");
+
+		sb.append("  count: ").append(count).append("\n");
+		sb.append("  next: ").append(next).append("\n");
+		sb.append("  previous: ").append(previous).append("\n");
+		sb.append("  list: ").append(list).append("\n");
+		sb.append("}\n");
+		return sb.toString();
+	}
 
 }

@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "APIMConfiguration")
 public class APIMConfig {
-	
+
 	DCREndpointConfig dcrEndpointConfig;
 	TokenEndpointConfig tokenEndpointConfig;
 	PublisherEndpointConfig publisherEndpoint;
@@ -46,7 +46,7 @@ public class APIMConfig {
 	public void setTokenEndpointConfig(TokenEndpointConfig tokenEndpointConfig) {
 		this.tokenEndpointConfig = tokenEndpointConfig;
 	}
-	
+
 	@XmlElement(name = "PublisherEndpoint", required = true)
 	public PublisherEndpointConfig getPublisherEndpointConfig() {
 		return publisherEndpoint;
@@ -55,7 +55,7 @@ public class APIMConfig {
 	public void setPublisherEndpointConfig(PublisherEndpointConfig publisherEndpoint) {
 		this.publisherEndpoint = publisherEndpoint;
 	}
-	
+
 	@XmlElement(name = "StoreEndpoint", required = true)
 	public StoreEndpointConfig getStoreEndpointConfig() {
 		return storeEndpoint;

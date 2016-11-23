@@ -73,7 +73,7 @@ public class APICorsConfigurationDTO {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class APICorsConfigurationDTO {\n");
-		
+
 		sb.append("  accessControlAllowOrigins: ").append(accessControlAllowOrigins).append("\n");
 		sb.append("  accessControlAllowHeaders: ").append(accessControlAllowHeaders).append("\n");
 		sb.append("  accessControlAllowMethods: ").append(accessControlAllowMethods).append("\n");

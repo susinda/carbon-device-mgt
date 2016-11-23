@@ -39,33 +39,33 @@ import org.wso2.carbon.apimgt.apim.integration.store.dto.SubscriptionListDTO;
 @Path("/")
 public interface StoreClientInterface {
 
-	//Store APIs
+	// Store APIs
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/applications")
 	public APIMApplicationListDTO getAPIMApplications() throws APIMIntegrationException;
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/applications/{appId}")
 	public APIMApplicationDTO getAPIMApplicationDetails(@PathParam("appId") String appId) throws APIMIntegrationException;
-	
+
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/applications")
 	public APIMApplicationDTO createAPIMApplication(APIMApplicationDTO requestApp) throws APIMIntegrationException;
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/apis?query={searchQuery}")
 	public StoreAPIListDTO getExistingStoreAPIs(@QueryParam("searchQuery") String query) throws APIMIntegrationException;
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/subscriptions?apiId={apiId}")
 	public SubscriptionListDTO getExistingSubscriptions(@QueryParam("apiId") String apiId) throws APIMIntegrationException;
-	
+
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)

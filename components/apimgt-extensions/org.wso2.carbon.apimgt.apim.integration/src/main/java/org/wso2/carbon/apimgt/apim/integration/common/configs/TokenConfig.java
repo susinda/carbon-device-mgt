@@ -21,7 +21,7 @@ package org.wso2.carbon.apimgt.apim.integration.common.configs;
 import javax.xml.bind.annotation.XmlElement;
 
 public class TokenConfig {
-	
+
 	private String userName;
 	private String password;
 	private String grantType;
@@ -44,7 +44,7 @@ public class TokenConfig {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	@XmlElement(name = "GrantType", required = true)
 	public String getGrantType() {
 		return grantType;

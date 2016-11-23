@@ -50,7 +50,6 @@ public interface PublisherClientInterface {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/apis/change-lifecycle?apiId={apiIdentifier}&action={actionName}")
-	public Response publishAPI(@QueryParam("apiIdentifier") String apiID, @QueryParam("actionName") String state)
-			throws APIMIntegrationException;
+	public Response publishAPI(@QueryParam("apiIdentifier") String apiID, @QueryParam("actionName") String state) throws APIMIntegrationException;
 
 }

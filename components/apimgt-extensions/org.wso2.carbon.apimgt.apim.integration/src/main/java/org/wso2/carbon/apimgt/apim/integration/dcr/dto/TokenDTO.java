@@ -65,20 +65,19 @@ public class TokenDTO {
 	public void setToken_type(String token_type) {
 		this.token_type = token_type;
 	}
-	
+
 	@Override
-	  public String toString()  {
-	    StringBuilder sb = new StringBuilder();
-	    sb.append("class TokenDTO {\n");
-	    
-	    sb.append("  access_token: ").append(access_token).append("\n");
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class TokenDTO {\n");
+
+		sb.append("  access_token: ").append(access_token).append("\n");
 		sb.append("  refresh_token: ").append(refresh_token).append("\n");
 		sb.append("  expires_in: ").append(expires_in).append("\n");
 		sb.append("  scope: ").append(scope).append("\n");
 		sb.append("  token_type: ").append(token_type).append("\n");
-	    sb.append("}\n");
-	    return sb.toString();
-	  }
-
+		sb.append("}\n");
+		return sb.toString();
+	}
 
 }

@@ -47,9 +47,11 @@ public class PublisherAPIDTO {
 	private List<String> tiers = new ArrayList<String>();
 	private APIMaxTpsDTO maxTps;
 	private String thumbnailUri;
+
 	public enum VisibilityEnum {
 		PUBLIC, PRIVATE, RESTRICTED, CONTROLLED,
 	};
+
 	private VisibilityEnum visibility;
 	private List<String> visibleRoles = new ArrayList<String>();
 	private List<String> visibleTenants = new ArrayList<String>();
@@ -57,9 +59,11 @@ public class PublisherAPIDTO {
 	private APIEndpointSecurityDTO endpointSecurity;
 	private String gatewayEnvironments;
 	private List<SequenceDTO> sequences = new ArrayList<SequenceDTO>();
+
 	public enum SubscriptionAvailabilityEnum {
 		current_tenant, all_tenants, specific_tenants,
 	};
+
 	private SubscriptionAvailabilityEnum subscriptionAvailability;
 	private List<String> subscriptionAvailableTenants = new ArrayList<String>();
 	private APIBusinessInformationDTO businessInformation;

@@ -36,10 +36,9 @@ public class StoreAPIDTO {
 	private List<String> tiers;
 	private String thumbnailUrl;
 	private List<APIEndpointURLsDTO> endpointURLs;
-    private APIBusinessInformationDTO businessInformation;
-    private boolean isDefaultVersion;
-    
-	
+	private APIBusinessInformationDTO businessInformation;
+	private boolean isDefaultVersion;
+
 	public String getProvider() {
 		return provider;
 	}
@@ -96,7 +95,6 @@ public class StoreAPIDTO {
 		this.id = id;
 	}
 
-	
 	public String getApiDefinition() {
 		return apiDefinition;
 	}
@@ -168,8 +166,7 @@ public class StoreAPIDTO {
 	public void setDefaultVersion(boolean isDefaultVersion) {
 		this.isDefaultVersion = isDefaultVersion;
 	}
-	
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

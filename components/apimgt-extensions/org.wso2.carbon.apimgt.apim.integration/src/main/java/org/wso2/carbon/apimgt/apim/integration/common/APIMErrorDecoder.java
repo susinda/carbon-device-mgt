@@ -24,8 +24,8 @@ import feign.codec.ErrorDecoder;
 public class APIMErrorDecoder implements ErrorDecoder {
 
 	@Override
-    public Exception decode(String methodKey, Response response) {
-        return new APIMIntegrationException(methodKey, response.reason(), response.status());
-    }
+	public Exception decode(String methodKey, Response response) {
+		return new APIMIntegrationException(methodKey, response.reason(), response.status());
+	}
 
 }

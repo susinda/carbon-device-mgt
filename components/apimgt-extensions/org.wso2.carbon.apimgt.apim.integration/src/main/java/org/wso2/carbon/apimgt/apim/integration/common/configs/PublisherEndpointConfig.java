@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlElement;
 public class PublisherEndpointConfig {
 
 	private String url;
-	
+
 	@XmlElement(name = "URL", required = true)
 	public String getUrl() {
 		return url;
