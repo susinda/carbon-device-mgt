@@ -118,11 +118,12 @@ public class StoreClient {
 		SubscriptionListDTO existingSubscriptions = getExistingSubscriptions(subscriptionRequest.getApiIdentifier());  
 		SubscriptionDTO availableSubscription = getExistingSubscription(existingSubscriptions, subscriptionRequest);
 		if (availableSubscription != null) {
+			result = availableSubscription;
 			System.out.println("API subscription already exists for apiID " + subscriptionRequest.getApiIdentifier() + " and appID " +  subscriptionRequest.getApplicationId());
 			System.out.println("API subscription already exists availableSubscription.getSubscriptionId() = " + availableSubscription.getSubscriptionId());
 		} else {
-			SubscriptionDTO subscriptionResult = subscribeAPItoApp(subscriptionRequest);
-			System.out.println("API getSubscriptionId successfull subscriptionResult.getSubscriptionId() = " + subscriptionResult.getSubscriptionId());
+			result = subscribeAPItoApp(subscriptionRequest);
+			System.out.println("API getSubscriptionId successfull subscriptionResult.getSubscriptionId() = " + result.getSubscriptionId());
 		}
 		return result;
 	}

@@ -9,10 +9,6 @@ import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.apim.integration.common.APIMConfigReader;
 import org.wso2.carbon.apimgt.apim.integration.common.APIMIntegrationException;
 import org.wso2.carbon.apimgt.apim.integration.common.configs.APIMConfig;
-import org.wso2.carbon.apimgt.apim.integration.common.configs.StoreEndpointConfig;
-import org.wso2.carbon.apimgt.apim.integration.dcr.dto.OAuthApplicationDTO;
-import org.wso2.carbon.apimgt.apim.integration.dcr.dto.TokenDTO;
-import org.wso2.carbon.apimgt.apim.integration.publisher.InternalPublisherClient;
 import org.wso2.carbon.apimgt.apim.integration.store.StoreClient;
 import org.wso2.carbon.apimgt.apim.integration.store.dto.APIMApplicationDTO;
 import org.wso2.carbon.apimgt.apim.integration.store.dto.ApplicationKeyDTO;
@@ -39,12 +35,13 @@ public class APIManagementProviderRESTServiceImpl implements APIManagementProvid
 		try {
 			String configFile = CarbonUtils.getCarbonConfigDirPath() + File.separator + "apim-integration.xml";
 			config = APIMConfigReader.getAPIMConfig(configFile);
+			config.getDcrEndpointConfig().getClientProfile().setClientName("store_" + config.getDcrEndpointConfig().getClientProfile().getClientName());
+            //TODO above line is a temporary fix, remove it when properly fixed
 			apimStoreClient = new StoreClient(config);
 		} catch (APIManagementException e) {
 			throw new APIManagerException("Error generating accestoken", e);
 		}
 		
-		StoreEndpointConfig storeConfig = config.getStoreEndpointConfig();
 		APIMApplicationDTO requestApp = new APIMApplicationDTO();
 		requestApp.setName(apiApplicationName1);
 		requestApp.setThrottlingTier("Unlimited");

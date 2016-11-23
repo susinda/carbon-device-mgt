@@ -132,7 +132,7 @@ public class PublisherClient {
 	
 	private static  PublisherAPIDTO getExistingApi(PublisherAPIDTO apiDTO, List<PublisherAPIDTO> apiLIst) {
 		for (PublisherAPIDTO api : apiLIst) {
-			if (api.getContext().equals(apiDTO.getContext())) {
+			if (api.getContext().equals(apiDTO.getContext()) || api.getName().equals(apiDTO.getName())) {
 				return api;
 			}
 		}

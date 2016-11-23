@@ -11,7 +11,6 @@ import org.wso2.carbon.apimgt.api.model.APIIdentifier;
 import org.wso2.carbon.apimgt.apim.integration.common.APIMConfigReader;
 import org.wso2.carbon.apimgt.apim.integration.common.APIMIntegrationException;
 import org.wso2.carbon.apimgt.apim.integration.common.configs.APIMConfig;
-import org.wso2.carbon.apimgt.apim.integration.dcr.DcrClient;
 import org.wso2.carbon.apimgt.apim.integration.publisher.PublisherClient;
 import org.wso2.carbon.apimgt.apim.integration.publisher.dto.PublisherAPIDTO;
 import org.wso2.carbon.utils.CarbonUtils;
@@ -32,9 +31,7 @@ public class APIPublisherRESTServiceImpl implements APIPublisherService {
 			log.error(e.getMessage(), e);
 		}
 		try {
-			DcrClient dcrClient = new DcrClient(config);
 			apimPublisherClient = new PublisherClient(config);
-			apimPublisherClient.setDcrClient(dcrClient);
 		} catch (APIManagementException e) {
 			log.error("Error initializing PublisherClient \n" + e.getMessage(), e);
 		}
