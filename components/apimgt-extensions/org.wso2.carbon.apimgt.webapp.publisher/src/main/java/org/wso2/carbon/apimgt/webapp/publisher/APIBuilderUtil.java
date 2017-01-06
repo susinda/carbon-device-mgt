@@ -15,30 +15,21 @@ import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.api.model.API;
 import org.wso2.carbon.apimgt.api.model.Scope;
 import org.wso2.carbon.apimgt.api.model.URITemplate;
-import org.wso2.carbon.apimgt.apim.integration.dcr.dto.OAuthApplicationDTO;
-import org.wso2.carbon.apimgt.apim.integration.dcr.dto.TokenDTO;
-import org.wso2.carbon.apimgt.apim.integration.publisher.dto.PublisherAPIDTO;
-import org.wso2.carbon.apimgt.apim.integration.store.dto.APIBusinessInformationDTO;
-import org.wso2.carbon.apimgt.apim.integration.store.dto.APICorsConfigurationDTO;
-import org.wso2.carbon.apimgt.apim.integration.store.dto.APIEndpointSecurityDTO;
-import org.wso2.carbon.apimgt.apim.integration.store.dto.APIMaxTpsDTO;
-import org.wso2.carbon.apimgt.apim.integration.store.dto.SequenceDTO;
 import org.wso2.carbon.apimgt.impl.APIConstants;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import org.wso2.carbon.apimgt.publisher.client.model.*;
 
 public class APIBuilderUtil {
 	private static final Log log = LogFactory.getLog(APIBuilderUtil.class);
-	private static TokenDTO accessToken;
-	private static OAuthApplicationDTO dcrApp;
 	
 
-	public static PublisherAPIDTO fromAPItoDTO(API model) throws APIManagementException {
+	public static org.wso2.carbon.apimgt.publisher.client.model.API fromAPItoDTO(API model) throws APIManagementException {
 
-		PublisherAPIDTO dto = new PublisherAPIDTO();
+		org.wso2.carbon.apimgt.publisher.client.model.API  dto = new org.wso2.carbon.apimgt.publisher.client.model.API();
 		dto.setName(model.getId().getApiName());
 		dto.setVersion(model.getId().getVersion());
 		String providerName = model.getId().getProviderName();
@@ -56,11 +47,11 @@ public class APIBuilderUtil {
 		// if (!StringUtils.isBlank(model.getThumbnailUrl())) {
 		// dto.setThumbnailUri(getThumbnailUri(model.getUUID()));
 		// }
-		List<SequenceDTO> sequences = new ArrayList<>();
+		List<Sequence> sequences = new ArrayList<>();
 
 		String inSequenceName = model.getInSequence();
 		if (inSequenceName != null && !inSequenceName.isEmpty()) {
-			SequenceDTO inSequence = new SequenceDTO();
+			Sequence inSequence = new Sequence();
 			inSequence.setName(inSequenceName);
 			inSequence.setType("in");
 			sequences.add(inSequence);
@@ -68,7 +59,7 @@ public class APIBuilderUtil {
 
 		String outSequenceName = model.getOutSequence();
 		if (outSequenceName != null && !outSequenceName.isEmpty()) {
-			SequenceDTO outSequence = new SequenceDTO();
+			Sequence outSequence = new Sequence();
 			outSequence.setName(outSequenceName);
 			outSequence.setType("out");
 			sequences.add(outSequence);
@@ -76,7 +67,7 @@ public class APIBuilderUtil {
 
 		String faultSequenceName = model.getFaultSequence();
 		if (faultSequenceName != null && !faultSequenceName.isEmpty()) {
-			SequenceDTO faultSequence = new SequenceDTO();
+			Sequence faultSequence = new Sequence();
 			faultSequence.setName(faultSequenceName);
 			faultSequence.setType("fault");
 			sequences.add(faultSequence);
@@ -117,9 +108,7 @@ public class APIBuilderUtil {
 		// if (!model.getType().equals(APIConstants.APIType.WS)) {
 		dto.setTransport(Arrays.asList(model.getTransports().split(",")));
 		// }
-		dto.setVisibility(
-
-				mapVisibilityFromAPItoDTO(model.getVisibility()));
+		dto.setVisibility(mapVisibilityFromAPItoDTO(model.getVisibility()));
 
 		if (model.getVisibleRoles() != null) {
 			dto.setVisibleRoles(Arrays.asList(model.getVisibleRoles().split(",")));
@@ -129,7 +118,7 @@ public class APIBuilderUtil {
 			dto.setVisibleRoles(Arrays.asList(model.getVisibleTenants().split(",")));
 		}
 
-		APIBusinessInformationDTO apiBusinessInformationDTO = new APIBusinessInformationDTO();
+		APIBusinessInformation apiBusinessInformationDTO = new APIBusinessInformation();
 		apiBusinessInformationDTO.setBusinessOwner(model.getBusinessOwner());
 		apiBusinessInformationDTO.setBusinessOwnerEmail(model.getBusinessOwnerEmail());
 		apiBusinessInformationDTO.setTechnicalOwner(model.getTechnicalOwner());
@@ -137,7 +126,7 @@ public class APIBuilderUtil {
 		dto.setBusinessInformation(apiBusinessInformationDTO);
 		String gatewayEnvironments = StringUtils.join(model.getEnvironments(), ",");
 		dto.setGatewayEnvironments(gatewayEnvironments);
-		APICorsConfigurationDTO apiCorsConfigurationDTO = new APICorsConfigurationDTO();
+		APICorsConfiguration apiCorsConfigurationDTO = new APICorsConfiguration();
 		// CORSConfiguration corsConfiguration = model.getCorsConfiguration();
 		// if (corsConfiguration == null) {
 		// corsConfiguration = APIUtil.getDefaultCorsConfiguration();
@@ -222,27 +211,27 @@ public class APIBuilderUtil {
         return swaggerDefinition.toString();
     }
 
-	private static void setEndpointSecurityFromModelToApiDTO(API api, PublisherAPIDTO dto) {
+	private static void setEndpointSecurityFromModelToApiDTO(API api, org.wso2.carbon.apimgt.publisher.client.model.API dto) {
 		if (api.isEndpointSecured()) {
-			APIEndpointSecurityDTO securityDTO = new APIEndpointSecurityDTO();
-			securityDTO.setType(APIEndpointSecurityDTO.TypeEnum.basic); // set
+			APIEndpointSecurity securityDTO = new APIEndpointSecurity();
+			securityDTO.setType(APIEndpointSecurity.TypeEnum.BASIC); // set
 																		// default
 																		// as
 																		// basic
 			securityDTO.setUsername(api.getEndpointUTUsername());
 			securityDTO.setPassword(api.getEndpointUTPassword());
 			if (api.isEndpointAuthDigest()) {
-				securityDTO.setType(APIEndpointSecurityDTO.TypeEnum.digest);
+				securityDTO.setType(APIEndpointSecurity.TypeEnum.DIGEST);
 			}
 			dto.setEndpointSecurity(securityDTO);
 		}
 	}
 
-	private static void setMaxTpsFromModelToApiDTO(API api, PublisherAPIDTO dto) {
+	private static void setMaxTpsFromModelToApiDTO(API api, org.wso2.carbon.apimgt.publisher.client.model.API dto) {
 		if (StringUtils.isBlank(api.getProductionMaxTps()) && StringUtils.isBlank(api.getSandboxMaxTps())) {
 			return;
 		}
-		APIMaxTpsDTO maxTpsDTO = new APIMaxTpsDTO();
+		APIMaxTps maxTpsDTO = new APIMaxTps();
 		try {
 			if (!StringUtils.isBlank(api.getProductionMaxTps())) {
 				maxTpsDTO.setProduction(Long.parseLong(api.getProductionMaxTps()));
@@ -257,32 +246,32 @@ public class APIBuilderUtil {
 		}
 	}
 
-	private static PublisherAPIDTO.SubscriptionAvailabilityEnum mapSubscriptionAvailabilityFromAPItoDTO(
+	private static org.wso2.carbon.apimgt.publisher.client.model.API.SubscriptionAvailabilityEnum mapSubscriptionAvailabilityFromAPItoDTO(
 			String subscriptionAvailability) {
 
 		switch (subscriptionAvailability) {
 		case APIConstants.SUBSCRIPTION_TO_CURRENT_TENANT:
-			return PublisherAPIDTO.SubscriptionAvailabilityEnum.current_tenant;
+			return org.wso2.carbon.apimgt.publisher.client.model.API.SubscriptionAvailabilityEnum.CURRENT_TENANT;
 		case APIConstants.SUBSCRIPTION_TO_ALL_TENANTS:
-			return PublisherAPIDTO.SubscriptionAvailabilityEnum.all_tenants;
+			return org.wso2.carbon.apimgt.publisher.client.model.API.SubscriptionAvailabilityEnum.ALL_TENANTS;
 		case APIConstants.SUBSCRIPTION_TO_SPECIFIC_TENANTS:
-			return PublisherAPIDTO.SubscriptionAvailabilityEnum.specific_tenants;
+			return org.wso2.carbon.apimgt.publisher.client.model.API.SubscriptionAvailabilityEnum.SPECIFIC_TENANTS;
 		default:
 			return null; // how to handle this?
 		}
 
 	}
 
-	private static PublisherAPIDTO.VisibilityEnum mapVisibilityFromAPItoDTO(String visibility) {
+	private static org.wso2.carbon.apimgt.publisher.client.model.API.VisibilityEnum mapVisibilityFromAPItoDTO(String visibility) {
 		switch (visibility) { // public, private,controlled, restricted
 		case APIConstants.API_GLOBAL_VISIBILITY:
-			return PublisherAPIDTO.VisibilityEnum.PUBLIC;
+			return org.wso2.carbon.apimgt.publisher.client.model.API.VisibilityEnum.PUBLIC;
 		case APIConstants.API_PRIVATE_VISIBILITY:
-			return PublisherAPIDTO.VisibilityEnum.PRIVATE;
+			return org.wso2.carbon.apimgt.publisher.client.model.API.VisibilityEnum.PRIVATE;
 		case APIConstants.API_RESTRICTED_VISIBILITY:
-			return PublisherAPIDTO.VisibilityEnum.RESTRICTED;
+			return org.wso2.carbon.apimgt.publisher.client.model.API.VisibilityEnum.RESTRICTED;
 		case APIConstants.API_CONTROLLED_VISIBILITY:
-			return PublisherAPIDTO.VisibilityEnum.CONTROLLED;
+			return org.wso2.carbon.apimgt.publisher.client.model.API.VisibilityEnum.CONTROLLED;
 		default:
 			return null; // how to handle this?
 		}

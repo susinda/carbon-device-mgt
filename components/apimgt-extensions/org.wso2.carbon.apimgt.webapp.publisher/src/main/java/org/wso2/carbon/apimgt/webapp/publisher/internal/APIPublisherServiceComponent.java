@@ -34,7 +34,7 @@ import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
 /**
- * @scr.component name="org.wso2.carbon.apimgt.webapp.publisher" immediate="true"
+ * @scr.component name="org.wso2.carbon.apimgt.webapp.helpers" immediate="true"
  * @scr.reference name="config.context.service"
  * interface="org.wso2.carbon.utils.ConfigurationContextService"
  * cardinality="0..1"
@@ -61,23 +61,23 @@ public class APIPublisherServiceComponent {
     protected void activate(ComponentContext componentContext) {
         try {
             if (log.isDebugEnabled()) {
-                log.debug("Initializing webapp publisher bundle");
+                log.debug("Initializing webapp helpers bundle");
             }
 
             if (log.isDebugEnabled()) {
-                log.debug("Loading webapp publisher configurations");
+                log.debug("Loading webapp helpers configurations");
             }
-            /* Initializing webapp publisher configuration */
+            /* Initializing webapp helpers configuration */
             WebappPublisherConfig.init();
 
             /* Registering declarative service instances exposed by DeviceManagementServiceComponent */
             this.registerServices(componentContext);
 
             if (log.isDebugEnabled()) {
-                log.debug("Webapp publisher bundle has been successfully initialized");
+                log.debug("Webapp helpers bundle has been successfully initialized");
             }
         } catch (Throwable e) {
-            log.error("Error occurred while initializing webapp publisher bundle", e);
+            log.error("Error occurred while initializing webapp helpers bundle", e);
         }
     }
 

@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * This is used to manage data publisher per tenant.
+ * This is used to manage data helpers per tenant.
  */
 public class DeviceDataPublisher {
 
@@ -76,7 +76,7 @@ public class DeviceDataPublisher {
     }
 
     /**
-     * this return the data publisher for the tenant.
+     * this return the data helpers for the tenant.
      *
      * @return
      * @throws DataPublisherConfigurationException
@@ -110,7 +110,7 @@ public class DeviceDataPublisher {
                 //Add created DataPublisher.
                 addDataPublisher(tenantDomain, dataPublisher);
             } catch (DataEndpointAgentConfigurationException e) {
-                throw new DataPublisherConfigurationException("Configuration Exception on data publisher for " +
+                throw new DataPublisherConfigurationException("Configuration Exception on data helpers for " +
                         "ReceiverGroup = " + analyticsServerUrlGroups + " for username " + analyticsServerUsername, e);
             } catch (DataEndpointException e) {
                 throw new DataPublisherConfigurationException("Invalid ReceiverGroup = " + analyticsServerUrlGroups, e);
@@ -120,10 +120,10 @@ public class DeviceDataPublisher {
                 throw new DataPublisherConfigurationException("Authentication Failed for user " +
                         analyticsServerUsername, e);
             } catch (TransportException e) {
-                throw new DataPublisherConfigurationException("Error occurred while retrieving data publisher", e);
+                throw new DataPublisherConfigurationException("Error occurred while retrieving data helpers", e);
             } catch (DataPublisherAlreadyExistsException e) {
-                log.warn("Attempting to register a data publisher for the tenant " + tenantDomain +
-                        " when one already exists. Returning existing data publisher");
+                log.warn("Attempting to register a data helpers for the tenant " + tenantDomain +
+                        " when one already exists. Returning existing data helpers");
                 return getDataPublisher(tenantDomain);
             }
         }
@@ -131,9 +131,9 @@ public class DeviceDataPublisher {
     }
 
     /**
-     * Fetch the data publisher which has been registered under the tenant domain.
+     * Fetch the data helpers which has been registered under the tenant domain.
      *
-     * @param tenantDomain - The tenant domain under which the data publisher is registered
+     * @param tenantDomain - The tenant domain under which the data helpers is registered
      * @return - Instance of the DataPublisher which was registered. Null if not registered.
      */
     private DataPublisher getDataPublisher(String tenantDomain) {
@@ -144,13 +144,13 @@ public class DeviceDataPublisher {
     }
 
     /**
-     * Adds a LoadBalancingDataPublisher to the data publisher map.
+     * Adds a LoadBalancingDataPublisher to the data helpers map.
      *
-     * @param tenantDomain  - The tenant domain under which the data publisher will be registered.
+     * @param tenantDomain  - The tenant domain under which the data helpers will be registered.
      * @param dataPublisher - Instance of the LoadBalancingDataPublisher
      * @throws DataPublisherAlreadyExistsException
      *          -
-     *          If a data publisher has already been registered under the tenant
+     *          If a data helpers has already been registered under the tenant
      *          domain
      */
     private void addDataPublisher(String tenantDomain, DataPublisher dataPublisher)

@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
 
 /**
- * Configurations related to DAS data publisher and DAL.
+ * Configurations related to DAS data helpers and DAL.
  */
 @XmlRootElement(name = "AnalyticsConfiguration")
 public class AnalyticsConfiguration {

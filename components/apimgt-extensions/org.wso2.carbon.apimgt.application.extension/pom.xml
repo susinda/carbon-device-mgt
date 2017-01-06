@@ -71,6 +71,21 @@
           <groupId>org.wso2.carbon.devicemgt</groupId>
           <artifactId>org.wso2.carbon.apimgt.apim.integration</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>org.wso2.carbon.apimgt.client</artifactId>
+            <version>2.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>org.wso2.carbon.apimgt.publisher.client</artifactId>
+            <version>2.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>org.wso2.carbon.apimgt.store.client</artifactId>
+            <version>2.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -113,7 +128,10 @@
                             org.wso2.carbon.context,
                             org.wso2.carbon.base,
                             org.wso2.carbon.utils,
-                            org.wso2.carbon.apimgt.apim.integration.*,
+                            org.wso2.carbon.apimgt.client;version="[2.0.0, 2.1.0)",
+                            org.wso2.carbon.apimgt.store.client;version="[2.0.0, 2.1.0)",
+                            org.wso2.carbon.apimgt.client.configs;version="[2.0.0, 2.1.0)",
+                            org.wso2.carbon.apimgt.store.client.model;version="[2.0.0, 2.1.0)",
                             org.wso2.carbon.registry.core.*;resolution:=optional,
                             org.wso2.carbon.registry.indexing.*; version="${carbon.registry.imp.pkg.version.range}"
                         </Import-Package>

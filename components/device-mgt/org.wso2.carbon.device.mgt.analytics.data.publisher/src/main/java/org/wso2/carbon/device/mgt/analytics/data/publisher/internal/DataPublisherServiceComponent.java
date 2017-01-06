@@ -31,7 +31,7 @@ import org.wso2.carbon.registry.core.service.TenantRegistryLoader;
 import org.wso2.carbon.registry.indexing.service.TenantIndexingLoader;
 
 /**
- * @scr.component name="org.wso2.carbon.device.mgt.analytics.data.publisher.internal.DataPublisherServiceComponent"
+ * @scr.component name="org.wso2.carbon.device.mgt.analytics.data.helpers.internal.DataPublisherServiceComponent"
  * immediate="true"
  * @scr.reference name="registry.service"
  * interface="org.wso2.carbon.registry.core.service.RegistryService"

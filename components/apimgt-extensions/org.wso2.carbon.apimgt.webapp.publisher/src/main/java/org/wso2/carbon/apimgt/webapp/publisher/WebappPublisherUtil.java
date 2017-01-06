@@ -27,7 +27,7 @@ import java.io.File;
 
 /**
  * This class contains the util methods which are needed
- * to web app publisher related functions.
+ * to web app helpers related functions.
  */
 public class WebappPublisherUtil {
 

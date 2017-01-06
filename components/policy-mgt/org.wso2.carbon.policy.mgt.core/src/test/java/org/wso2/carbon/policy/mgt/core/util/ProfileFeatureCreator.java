@@ -108,7 +108,7 @@ public class ProfileFeatureCreator {
                 "        \"packageName\": \"com.imangi.templerun2\",\n" +
                 "        \"name\": \"Temle Run\",\n" +
                 "        \"appIdentifier\": \"572395608\",\n" +
-                "        \"iconImage\": \"http://10.100.5.6:9763/publisher/api/mobileapp/getfile/FHmJReGEV3cExtf.png\",\n" +
+                "        \"iconImage\": \"http://10.100.5.6:9763/helpers/api/mobileapp/getfile/FHmJReGEV3cExtf.png\",\n" +
                 "        \"type\": \"PUBLIC\",\n" +
                 "        \"identifier\": \"572395608\",\n" +
                 "        \"version\": \"1\",\n" +

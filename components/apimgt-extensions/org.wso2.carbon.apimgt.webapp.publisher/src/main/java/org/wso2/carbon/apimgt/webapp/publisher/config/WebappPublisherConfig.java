@@ -51,7 +51,7 @@ public class WebappPublisherConfig {
     private static WebappPublisherConfig config;
 
     private static final String WEBAPP_PUBLISHER_CONFIG_PATH =
-            CarbonUtils.getEtcCarbonConfigDirPath() + File.separator + "webapp-publisher-config.xml";
+            CarbonUtils.getEtcCarbonConfigDirPath() + File.separator + "webapp-helpers-config.xml";
 
     private WebappPublisherConfig() {
     }
